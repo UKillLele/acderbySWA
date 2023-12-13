@@ -230,7 +230,7 @@ const Players = () => {
                             <Form.Group
                                 controlId="image"
                                 onClick={() => onAddImageClick("image")}
-                                className={`skater-image d-flex flex-column justify-content-center align-items-center border cursor-pointer bg-white ${image == "" ? 'd-flex' : 'd-none'}`}>
+                                className={`skater-image d-flex flex-column justify-content-center align-items-center border cursor-pointer bg-white ${image === "" ? 'd-flex' : 'd-none'}`}>
                                 <Button
                                     className="rounded-circle"
                                     variant="outline-dark"

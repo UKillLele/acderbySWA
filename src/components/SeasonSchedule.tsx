@@ -92,16 +92,16 @@ const SeasonSchedule = () => {
                                     </Row> 
                                 </Card.Title>
                                 {date.sort((a, b) => a.date > b.date ? 1 : -1).map((bout, i) =>
-                                    <Row key={bout.date.toString()} className="align-items-center mb-2 text-light fw-bold text-shadow pb-2 text-center" style={{ borderBottom: i + 1 != date.length ? '1px solid black' : '' }}>
+                                    <Row key={bout.date.toString()} className="align-items-center mb-2 text-light fw-bold text-shadow pb-2 text-center" style={{ borderBottom: i + 1 !== date.length ? '1px solid black' : '' }}>
                                         <Col className="p-0 bout-bg" style={{ background: bout.homeTeam && `url(${bout.homeTeam.imageUrl})`, backgroundPosition: 'center', backgroundSize: 'cover' }}>
                                             <Container fluid style={{ backgroundColor: bout.homeTeam && bout.homeTeam.color }} className="m-0 h-100 d-flex align-items-center justify-content-center fs-1">
-                                                <span>{bout.homeTeam ? bout.homeTeam.name : bout.name == "Champs" ? i == 0 ? 'Team 3' : 'Team 1' : 'TBA'}</span>
+                                                <span>{bout.homeTeam ? bout.homeTeam.name : bout.name === "Champs" ? i === 0 ? 'Team 3' : 'Team 1' : 'TBA'}</span>
                                             </Container>
                                         </Col>
                                         <Col lg="auto" className="fw-bold xl-title text-light text-shadow vs">VS</Col>
                                         <Col className="p-0 bout-bg" style={{ background: bout.awayTeam && `url(${bout.awayTeam.imageUrl})`, backgroundPosition: 'center', backgroundSize: 'cover' }}>
                                             <Container fluid style={{ backgroundColor: bout.awayTeam && bout.awayTeam.color }} className="m-0 h-100 d-flex align-items-center justify-content-center fs-1">
-                                                <span>{bout.awayTeam ? bout.awayTeam.name : bout.name == "Champs" ? i == 0 ? 'Team 4' : 'Team 2' : 'TBA'}</span>
+                                                <span>{bout.awayTeam ? bout.awayTeam.name : bout.name === "Champs" ? i === 0 ? 'Team 4' : 'Team 2' : 'TBA'}</span>
                                             </Container>
                                         </Col>
                                     </Row>

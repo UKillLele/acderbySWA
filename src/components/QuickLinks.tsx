@@ -32,10 +32,10 @@ const QuickLinks = () => {
                     <Card>
                         <Card.Body className="text-center">
                             <Card.Title>Social Media</Card.Title>
-                            <Button href="https://www.facebook.com/AssassinationCityRollerDerby" target="_blank" rel="noopener" className="d-block m-2">Facebook</Button>
-                            <Button href="https://www.instagram.com/assassinationcityrollerderby" target="_blank" rel="noopener" className="d-block m-2">Instagram</Button>
-                            <Button href="https://twitter.com/ACDerby" target="_blank" rel="noopener" className="d-block m-2">X AKA Twitter</Button>
-                            <Button href="https://www.tiktok.com/@assassinationcityderby" target="_blank" rel="noopener" className="d-block m-2">TikTok</Button>
+                            <Button href="https://www.facebook.com/AssassinationCityRollerDerby" target="_blank" rel="noreferrer" className="d-block m-2">Facebook</Button>
+                            <Button href="https://www.instagram.com/assassinationcityrollerderby" target="_blank" rel="noreferrer" className="d-block m-2">Instagram</Button>
+                            <Button href="https://twitter.com/ACDerby" target="_blank" rel="noreferrer" className="d-block m-2">X AKA Twitter</Button>
+                            <Button href="https://www.tiktok.com/@assassinationcityderby" target="_blank" rel="noreferrer" className="d-block m-2">TikTok</Button>
                         </Card.Body>
                     </Card>
                 </Col>
@@ -43,10 +43,10 @@ const QuickLinks = () => {
                     <Card>
                         <Card.Body className="text-center">
                             <Card.Title>Team Social Media</Card.Title>
-                            <Button href="https://www.facebook.com/TheDeadlyKennedys" target="_blank" rel="noopener" className="d-block m-2 btn-warning">Deadly Kennedys</Button>
-                            <Button href="https://www.facebook.com/LoneStarAssassins" target="_blank" rel="noopener" className="d-block m-2 btn-dark">Lone Star Assassins</Button>
-                            <Button href="https://www.facebook.com/larevrollerderby" target="_blank" rel="noopener" className="d-block m-2 btn-danger">&iexcl;Viva La Revoluci&oacute;n!</Button>
-                            <Button href="http://facebook.com/ACRD.Officials" target="_blank" rel="noopener" className="d-block m-2 btn-secondary">Internal Affairs</Button>
+                            <Button href="https://www.facebook.com/TheDeadlyKennedys" target="_blank" rel="noreferrer" className="d-block m-2 btn-warning">Deadly Kennedys</Button>
+                            <Button href="https://www.facebook.com/LoneStarAssassins" target="_blank" rel="noreferrer" className="d-block m-2 btn-dark">Lone Star Assassins</Button>
+                            <Button href="https://www.facebook.com/larevrollerderby" target="_blank" rel="noreferrer" className="d-block m-2 btn-danger">&iexcl;Viva La Revoluci&oacute;n!</Button>
+                            <Button href="http://facebook.com/ACRD.Officials" target="_blank" rel="noreferrer" className="d-block m-2 btn-secondary">Internal Affairs</Button>
                         </Card.Body>
                     </Card>
                 </Col>
@@ -54,12 +54,12 @@ const QuickLinks = () => {
                     <Card>
                         <Card.Body className="text-center">
                             <Card.Title>Email us</Card.Title>
-                            <Button href="mailto:info@acderby.com" target="_blank" rel="noopener" className="d-block m-2">Info</Button>
-                            <Button href="mailto:acrdwelcomewagon@gmail.com" target="_blank" rel="noopener" className="d-block m-2">Fresh Meat</Button>
-                            <Button href="mailto:sponsorshipacderby@gmail.com" target="_blank" rel="noopener" className="d-block m-2">Sponsorship</Button>
-                            <Button href="mailto:merchacrd@gmail.com" target="_blank" rel="noopener" className="d-block m-2">Merchandise</Button>
-                            <Button href="mailto:acrd.officials@gmail.com" target="_blank" rel="noopener" className="d-block m-2">Refs & Volunteers</Button>
-                            <Button href="mailto:acrdtraining2022@gmail.com" target="_blank" rel="noopener" className="d-block m-2">Training/Interleague</Button>
+                            <Button href="mailto:info@acderby.com" target="_blank" rel="noreferrer" className="d-block m-2">Info</Button>
+                            <Button href="mailto:acrdwelcomewagon@gmail.com" target="_blank" rel="noreferrer" className="d-block m-2">Fresh Meat</Button>
+                            <Button href="mailto:sponsorshipacderby@gmail.com" target="_blank" rel="noreferrer" className="d-block m-2">Sponsorship</Button>
+                            <Button href="mailto:merchacrd@gmail.com" target="_blank" rel="noreferrer" className="d-block m-2">Merchandise</Button>
+                            <Button href="mailto:acrd.officials@gmail.com" target="_blank" rel="noreferrer" className="d-block m-2">Refs & Volunteers</Button>
+                            <Button href="mailto:acrdtraining2022@gmail.com" target="_blank" rel="noreferrer" className="d-block m-2">Training/Interleague</Button>
                         </Card.Body>
                     </Card>
                 </Col>
@@ -67,8 +67,8 @@ const QuickLinks = () => {
                     <Card>
                         <Card.Body className="text-center">
                             <Card.Title>Affiliates</Card.Title>
-                            <Button href="https://wftda.org/" target="_blank" rel="noopener" className="d-block m-2">WFTDA</Button>
-                            <Button href="http://thunderbirdrink.com/" target="_blank" rel="noopener" className="d-block m-2">Thunderbird</Button>
+                            <Button href="https://wftda.org/" target="_blank" rel="noreferrer" className="d-block m-2">WFTDA</Button>
+                            <Button href="http://thunderbirdrink.com/" target="_blank" rel="noreferrer" className="d-block m-2">Thunderbird</Button>
                         </Card.Body>
                     </Card>
                 </Col>

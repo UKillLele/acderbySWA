@@ -13,7 +13,6 @@ function getItemPrice(item: CatalogObject) {
         const num = Number(price) / 100;
         if (price && !prices.some(x => x === num)) prices.push(num);
     })
-    prices
     if (prices.length > 1) {
         const minPrice = Math.min.apply(null, prices);
         const maxPrice = Math.max.apply(null, prices);
@@ -196,19 +195,19 @@ const Shop = () => {
                     method: 'POST',
                     body: formData
                 }).then(resp => resp.json()).then(data => {
-                    if (data.address1 && data.address1.toLowerCase() != address1.toLowerCase()) {
+                    if (data.address1 && data.address1.toLowerCase() !== address1.toLowerCase()) {
                         setAddress1(data.address1);
                     }
-                    if (data.address2 && data.address2.toLowerCase() != address2.toLowerCase()) {
+                    if (data.address2 && data.address2.toLowerCase() !== address2.toLowerCase()) {
                         setAddress2(data.address2);
                     }
-                    if (data.city && data.city.toLowerCase() != city.toLowerCase()) {
+                    if (data.city && data.city.toLowerCase() !== city.toLowerCase()) {
                         setCity(data.city);
                     }
-                    if (data.state && data.state != state) {
+                    if (data.state && data.state !== state) {
                         setState(data.State);
                     }
-                    if (data.zipcode && data.zipcode != zipcode) {
+                    if (data.zipcode && data.zipcode !== zipcode) {
                         setZipcode(data.zipcode);
                     }
                     if (data.returnText || typeof data == 'string') {
@@ -239,7 +238,7 @@ const Shop = () => {
             fulfillment,
             version: order?.version,
             orderId: order?.id,
-            fulfillmentUid: order?.fulfillments && order?.fulfillments[0].type?.toLowerCase() != fulfillment ? order.fulfillments[0].uid : null // only set fulfillment to be recreated if type has changed
+            fulfillmentUid: order?.fulfillments && order?.fulfillments[0].type?.toLowerCase() !== fulfillment ? order.fulfillments[0].uid : null // only set fulfillment to be recreated if type has changed
         }
         fetch('/api/add-fulfillment', {
             method: 'POST',
@@ -443,12 +442,12 @@ const Shop = () => {
                                                         </Form.Group>
                                                     </Row>
                                                 }
-                                                {fulfillment == "shipment" &&
+                                                {fulfillment === "shipment" &&
                                                     <Row className="pb-3">
                                                         <Form.Group as={Col} className="py-1" xs="12" controlId="address1">
                                                             <Form.Control
                                                                 placeholder="Address 1"
-                                                                required={fulfillment == "shipment"}
+                                                                required={fulfillment === "shipment"}
                                                                 value={address1}
                                                                 onChange={(e) => setAddress1(e.currentTarget.value)}
                                                                 type="string"
@@ -471,7 +470,7 @@ const Shop = () => {
                                                         <Form.Group as={Col} className="py-1" xs="12" controlId="city">
                                                             <Form.Control
                                                                 placeholder="City"
-                                                                required={fulfillment == "shipment"}
+                                                                required={fulfillment === "shipment"}
                                                                 value={city}
                                                                 onChange={(e) => setCity(e.currentTarget.value)}
                                                                 type="string"
@@ -483,7 +482,7 @@ const Shop = () => {
                                                         <Form.Group as={Col} className="py-1" xs="6" controlId="state">
                                                             <Form.Select
                                                                 placeholder="State"
-                                                                required={fulfillment == "shipment"}
+                                                                required={fulfillment === "shipment"}
                                                                 value={state}
                                                                 onChange={(e) => setState(e.currentTarget.value)}
                                                             >
@@ -515,7 +514,7 @@ const Shop = () => {
                                                 }
                                                 <Row>
                                                     <Col className="text-center">
-                                                        <Button size="lg" className="px-5" hidden={!fulfillment} type="submit">{fulfillment === "shipment" && (!validated || uspsResponse != "") ? 'Verify' : 'Checkout'}</Button>
+                                                        <Button size="lg" className="px-5" hidden={!fulfillment} type="submit">{fulfillment === "shipment" && (!validated || uspsResponse !== "") ? 'Verify' : 'Checkout'}</Button>
                                                     </Col>
                                                     {fulfillmentSaved &&
                                                         <Col>
