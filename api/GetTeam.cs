@@ -1,35 +1,38 @@
 using System;
-using System.IO;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Extensions.Http;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
+using Microsoft.Azure.Functions.Worker;
+using System.Net;
+using Microsoft.Azure.WebJobs.Extensions.Http;
+using Microsoft.Azure.Functions.Worker.Http;
+using acderby.Models;
+using System.Collections.Generic;
+using Microsoft.Azure.Cosmos;
+using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace ACDerby.Functions
 {
     public static class GetTeam
     {
         [FunctionName("GetTeam")]
-        public static async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = null)] HttpRequest req,
-            ILogger log)
+        public static IActionResult Run(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "teams/{slug}")] HttpRequestData req,
+            [CosmosDBInput(
+                "acderby",
+                "teams",
+                Connection = "CosmosDbConnectionString",
+                SqlQuery = "SELECT TOP 1 * FROM teams WHERE teams.slug={slug}"
+            )] Team team,
+            ILogger logger,
+            string slug)
         {
-            log.LogInformation("C# HTTP trigger function processed a request.");
+            if (team == null)
+            {
+                return new NotFoundResult();
+            }
 
-            string name = req.Query["name"];
-
-            string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-            dynamic data = JsonConvert.DeserializeObject(requestBody);
-            name = name ?? data?.name;
-
-            string responseMessage = string.IsNullOrEmpty(name)
-                ? "This HTTP triggered function executed successfully. Pass a name in the query string or in the request body for a personalized response."
-                : $"Hello, {name}. This HTTP triggered function executed successfully.";
-
-            return new OkObjectResult(responseMessage);
+            return new OkObjectResult(team);
         }
     }
 }
