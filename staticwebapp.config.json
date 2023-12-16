@@ -19,7 +19,7 @@
     }
   },
   "globalHeaders": {
-    "content-security-policy": "default-src 'self'; object-src 'none'"
+    "content-security-policy": "default-src 'unsaf-inline'; object-src 'none';"
   },
   "mimeTypes": {
     ".tsx": "application/javascript",
