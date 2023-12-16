@@ -5,5 +5,5 @@ export interface Person {
     name: string,
     number: string,
     imageUrl: string,
-    positions: Position[]
+    teams: Position[]
 }

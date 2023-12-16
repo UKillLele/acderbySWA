@@ -1,18 +1,15 @@
-import { Person } from "./Person";
-import { Team } from "./Team";
-
 export interface Bout {
     id: string,
     name: string,
     date: Date,
-    homeTeam: Team,
+    homeTeam: string,
     homeTeamScore: number,
-    homeTeamMVPJammer: Person,
-    homeTeamMVPBlocker: Person,
-    awayTeam: Team,
+    homeTeamMVPJammer: string,
+    homeTeamMVPBlocker: string,
+    awayTeam: string,
     awayTeamScore: number,
-    awayTeamMVPJammer: Person,
-    awayTeamMVPBlocker: Person,
+    awayTeamMVPJammer: string,
+    awayTeamMVPBlocker: string,
     imageUrl: string
 
 }

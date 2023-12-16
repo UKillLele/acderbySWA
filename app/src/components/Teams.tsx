@@ -4,29 +4,33 @@ import { Container, Row, Col, Image } from 'react-bootstrap'
 import { Person } from '../models/Person'
 import '../styles/Teams.scss'
 import { PositionType } from '../models/Position'
+import { useEffect, useState } from 'react'
 
 const Teams = () => {
     const team: Team = useLoaderData() as Team;
-    const captain: Person = team.positions.find(x => x.type === PositionType.captain)?.person as Person;
-    const coCaptain: Person = team.positions.find(x => x.type === PositionType.coCaptain)?.person as Person;
-    const headCoach: Person = team.positions.find(x => x.type === PositionType.headCoach)?.person as Person;
-    const benchCoach: Person = team.positions.find(x => x.type === PositionType.benchCoach)?.person as Person;
-    const members: Person[] = team.positions
-        .filter(x => x.type === PositionType.member)
-        .map(x => x.person!)
-        .sort((a: Person, b: Person) => {
-            if (a.number && b.number) return a.number > b.number ? 1 : -1
-            else if (!a.number && !b.number) return a.name > b.name ? 1 : -1
-            else return a.number ? 1 : -1
-        }) as Person[];
+    const [captain, setCaptain] = useState<Person>();
+    const [coCaptain, setCoCaptain] = useState<Person>();
+    const [headCoach, setHeadCoach] = useState<Person>();
+    const [benchCoach, setBenchCoach] = useState<Person>();
+    const [members, setMembers] = useState<Person[]>();
+    useEffect(() => {
+        fetch(`/api/players/${team.id}`).then(resp => resp.json()).then((players: Person[]) => {
+            setCaptain(players.find(x => x.teams.some(y => y.id == team.id && y.positionType == PositionType.captain)));
+            setCoCaptain(players.find(x => x.teams.some(y => y.id == team.id && y.positionType == PositionType.coCaptain)));
+            setHeadCoach(players.find(x => x.teams.some(y => y.id == team.id && y.positionType == PositionType.headCoach)));
+            setBenchCoach(players.find(x => x.teams.some(y => y.id == team.id && y.positionType == PositionType.benchCoach)));
+            setMembers(players.filter(x => x.teams.some(y => y.id == team.id && y.positionType == PositionType.member)).sort((a,b) => a.number.toString() > b.number.toString() ? 1 : -1));
+        });
+    }, [team])
 
     function getImage(imgUrl: string) {
         if (imgUrl) return imgUrl;
-        return team.defaultSkaterImage;
+        return team?.defaultSkaterImage;
     }
 
     return (
-        <Container fluid className="content" style={{ background: team.imageUrl ? `url(${team.imageUrl}) ${team.color}` : team.color, backgroundBlendMode: team.imageUrl && 'multiply', backgroundPosition: 'center', backgroundSize: 'cover' }}>
+        
+        <Container fluid className="content" style={{ background: team?.imageUrl ? `url(${team.imageUrl}) ${team.color}` : team?.color, backgroundBlendMode: team?.imageUrl && 'multiply', backgroundPosition: 'center', backgroundSize: 'cover' }}>
             <Container fluid className="px-0">
                 <Row className="header-img px-lg-5 mx-0">
                     <Row>

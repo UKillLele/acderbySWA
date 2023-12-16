@@ -1,10 +1,6 @@
-import { Person } from "./Person";
-import { Team } from "./Team";
-
 export interface Position {
-    person: Person | null,
-    type: PositionType,
-    team: Team | null
+    id: string,
+    positionType: PositionType
 }
 
 export enum PositionType {

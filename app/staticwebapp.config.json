@@ -2,58 +2,27 @@
   "platform": {
     "apiRuntime": "node:18"
   },
-  "trailingSlash": "auto",
   "routes": [
-    {
-      "route": "/players",
-      "allowedRoles": ["administrator"]
-    },
-    {
-      "route": "/api/*",
-      "methods": ["GET"],
-      "allowedRoles": ["registeredusers"]
-    },
-    {
-      "route": "/api/*",
-      "methods": ["PUT", "POST", "PATCH", "DELETE"],
-      "allowedRoles": ["administrator"]
-    },
-    {
-      "route": "/api/*",
-      "allowedRoles": ["authenticated"]
-    },
     {
       "route": "/login",
       "rewrite": "/.auth/login/github"
-    },
-    {
-      "route": "/logout",
-      "redirect": "/.auth/logout"
     }
   ],
   "navigationFallback": {
     "rewrite": "/index.html",
-    "exclude": ["/public/images/*.{png,jpg,gif}", "/css/*"]
+    "exclude": ["/public/images/*.{png,jpg,jpeg,gif,bmp}", "/css/*"]
   },
   "responseOverrides": {
-    "400": {
-      "rewrite": "/invalid-invitation-error.html"
-    },
     "401": {
       "redirect": "/login",
       "statusCode": 302
-    },
-    "403": {
-      "rewrite": "/custom-forbidden-page.html"
-    },
-    "404": {
-      "rewrite": "/404.html"
     }
   },
   "globalHeaders": {
-    "content-security-policy": "default-src https: 'unsafe-eval' 'unsafe-inline'; object-src 'none'"
+    "content-security-policy": "default-src 'self'; object-src 'none'"
   },
   "mimeTypes": {
+    ".tsx": "application/javascript",
     ".json": "text/json"
   }
 }

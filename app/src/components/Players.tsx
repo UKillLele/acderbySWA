@@ -32,6 +32,10 @@ const Players = () => {
             setTeams(resp.sort((a, b) => a.name > b.name ? 1 : -1));
         });
     }, []);
+    
+    function getTeamName(id: string) {
+        return teams.find(x => x.id === id)?.name;
+    }
 
     function onPlayerClick(skater: Person) {
         setUpdatingId(skater.id);
@@ -39,8 +43,8 @@ const Players = () => {
         setUpdatingNumber(skater.number);
         setUpdatingImage(skater.imageUrl);
         const up: { teamId: string; type: number }[] = [];
-        skater.positions.forEach(position => {
-            up.push({ teamId: position.team!.id, type: position.type });
+        skater.teams.forEach(team => {
+            up.push({ teamId: team.id, type: team.positionType });
         });
         setUpdatingPositions(up);
         if (skater.imageUrl) document.getElementsByClassName("updating-image")[0].classList.add("d-none");
@@ -368,9 +372,9 @@ const Players = () => {
                                     <Row>
                                         <p className={`${skater.number && 'd-flex justify-content-between px-3'} text-center fs-3 m-0`}>{skater.number && <span>#{skater.number}</span>}<span className="text-nowrap">{skater.name}</span></p>
                                 </Row>
-                                {skater.positions && skater.positions.map((position: Position) =>
-                                    <Row key={`${skater.id}-${position.team?.id}`}>
-                                        <p>{position.team?.name} - {GetPositionDisplayName(position.type)}</p>
+                                {skater.teams && skater.teams.map((t: Position) =>
+                                    <Row key={`${skater.id}-${t.id}`}>
+                                        <p>{getTeamName(t.id)} - {GetPositionDisplayName(t.positionType)}</p>
                                     </Row>
                                 )}
                             </Container>

@@ -1,6 +1,8 @@
 import { Container, Row, Col, Card, Accordion, ListGroup } from "react-bootstrap";
 import { Bout } from "../models/Bout";
 import { Link, useLoaderData } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Team } from "../models/Team";
 
 const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
@@ -19,6 +21,18 @@ function checkTix(dates, index) {
 
 const SeasonSchedule = () => {
     const bouts: [] = useLoaderData() as [];
+    const [teams, setTeams] = useState<Team[]>();
+
+    useEffect(() => {
+        fetch(`/api/teams`).then(resp => resp.json()).then((teams: Team[]) => {
+            setTeams(teams);
+        });
+    }, []);
+
+    function getTeam(id: string) {
+        return teams?.find(x => x.id === id);
+    }
+
     return (
         <Container fluid className="content bg-dark text-light">
             <Row className="m-5 align-items-center">
@@ -91,20 +105,24 @@ const SeasonSchedule = () => {
                                         </Col>
                                     </Row> 
                                 </Card.Title>
-                                {date.sort((a, b) => a.date > b.date ? 1 : -1).map((bout, i) =>
-                                    <Row key={bout.date.toString()} className="align-items-center mb-2 text-light fw-bold text-shadow pb-2 text-center" style={{ borderBottom: i + 1 !== date.length ? '1px solid black' : '' }}>
-                                        <Col className="p-0 bout-bg" style={{ background: bout.homeTeam && `url(${bout.homeTeam.imageUrl})`, backgroundPosition: 'center', backgroundSize: 'cover' }}>
-                                            <Container fluid style={{ backgroundColor: bout.homeTeam && bout.homeTeam.color }} className="m-0 h-100 d-flex align-items-center justify-content-center fs-1">
-                                                <span>{bout.homeTeam ? bout.homeTeam.name : bout.name === "Champs" ? i === 0 ? 'Team 3' : 'Team 1' : 'TBA'}</span>
-                                            </Container>
-                                        </Col>
-                                        <Col lg="auto" className="fw-bold xl-title text-light text-shadow vs">VS</Col>
-                                        <Col className="p-0 bout-bg" style={{ background: bout.awayTeam && `url(${bout.awayTeam.imageUrl})`, backgroundPosition: 'center', backgroundSize: 'cover' }}>
-                                            <Container fluid style={{ backgroundColor: bout.awayTeam && bout.awayTeam.color }} className="m-0 h-100 d-flex align-items-center justify-content-center fs-1">
-                                                <span>{bout.awayTeam ? bout.awayTeam.name : bout.name === "Champs" ? i === 0 ? 'Team 4' : 'Team 2' : 'TBA'}</span>
-                                            </Container>
-                                        </Col>
-                                    </Row>
+                                {date.sort((a, b) => a.date > b.date ? 1 : -1).map((bout, i) => {
+                                    const homeTeam = getTeam(bout.homeTeam);
+                                    const awayTeam = getTeam(bout.awayTeam);
+                                    return (
+                                        <Row key={bout.date.toString()} className="align-items-center mb-2 text-light fw-bold text-shadow pb-2 text-center" style={{ borderBottom: i + 1 !== date.length ? '1px solid black' : '' }}>
+                                            <Col className="p-0 bout-bg" style={{ background: homeTeam && `url(${homeTeam.imageUrl})` }}>
+                                                <Container fluid style={{ backgroundColor: homeTeam && homeTeam.color }} className="m-0 h-100 d-flex align-items-center justify-content-center fs-1">
+                                                    <span>{homeTeam ? homeTeam.name : bout.name === "Champs" ? i === 0 ? 'Team 3' : 'Team 1' : 'TBA'}</span>
+                                                </Container>
+                                            </Col>
+                                            <Col lg="auto" className="fw-bold xl-title text-light text-shadow vs">VS</Col>
+                                            <Col className="p-0 bout-bg" style={{ background: awayTeam && `url(${awayTeam.imageUrl})` }}>
+                                                <Container fluid style={{ backgroundColor: awayTeam && awayTeam.color }} className="m-0 h-100 d-flex align-items-center justify-content-center fs-1">
+                                                    <span>{awayTeam ? awayTeam.name : bout.name === "Champs" ? i === 0 ? 'Team 4' : 'Team 2' : 'TBA'}</span>
+                                                </Container>
+                                            </Col>
+                                        </Row>
+                                    )}
                                 )}
                             </Card.Body>
                         </Card>

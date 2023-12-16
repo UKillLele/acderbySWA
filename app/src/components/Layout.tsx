@@ -46,7 +46,7 @@ const Layout = () => {
                                 <NavDropdown.Item as={NavLink} to="teams/la-rev">&iexcl;Viva La Revoluci&oacute;n!</NavDropdown.Item>
                                 <NavDropdown.Divider />
                                 <NavDropdown.Header>Volunteers</NavDropdown.Header>
-                                <NavDropdown.Item as={NavLink} to="teams/officials">Internal Affairs</NavDropdown.Item>
+                                <NavDropdown.Item as={NavLink} to="teams/officials">The Warren Commission</NavDropdown.Item>
                                 {editor && 
                                     <>
                                         <NavDropdown.Divider />

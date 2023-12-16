@@ -5,32 +5,30 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace ACDerby.Functions
 {
-    public static class GetTeam
+    public static class GetPlayers
     {
-        [FunctionName("GetTeam")]
+        [FunctionName("GetPlayers")]
         public static IActionResult Run(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "teams/{slug}")] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "players/{teamId}")] HttpRequest req,
             [CosmosDB(
                 "acderby",
-                "teams",
+                "players",
                 Connection = "CosmosDbConnectionString",
-                SqlQuery = "SELECT * FROM teams t WHERE t.slug = {slug}")] IEnumerable<Team> teams,
+                SqlQuery = "SELECT * FROM players where exists(select value t from t in players.teams where t.id = {teamId})")] IEnumerable<Person> players,
                 ILogger log)
         {
             log.LogInformation("C# HTTP trigger function processed a request.");
 
-            if (teams == null)
+            if (players == null)
             {
-                log.LogInformation($"Team not found");
+                log.LogInformation($"Players not found");
                 return new NotFoundResult();
             }
-            var team = teams.ToList()[0];
-            log.LogInformation($"Found Team {teams.ToList()[0].Name}");
-            return new OkObjectResult(team);
+            log.LogInformation($"Found players for team.");
+            return new OkObjectResult(players);
         }
     }
 }
