@@ -4,6 +4,28 @@ import { Accordion, Button, Card, CloseButton, Col, Container, Form, ListGroup, 
 import { PaymentForm, CreditCard } from "react-square-web-payments-sdk";
 import { CatalogObject, Order, } from "square";
 
+function keysToCamel(o: unknown): unknown {
+    if (o === Object(o) && !Array.isArray(o) && typeof o !== 'function') {
+        const p = o as object;
+        const n = {};
+        Object.keys(p).forEach((k) => {
+        n[toCamel(k)] = keysToCamel(p[k]);
+      });
+      return n;
+    } else if (Array.isArray(o)) {
+      return o.map((i) => {
+        return keysToCamel(i);
+      });
+    }
+    return o;
+  }
+
+  function toCamel(s: string): string {
+    return s.replace(/([-_][a-z0-9])/gi, ($1) => {
+      return $1.toUpperCase().replaceAll('-', '').replaceAll('_', '');
+    });
+  }
+
 const states = ["AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "DC", "FL", "GA", "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD", "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ", "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC", "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WI", "WV", "WY"];
 
 function getItemPrice(item: CatalogObject) {
@@ -52,6 +74,7 @@ const Shop = () => {
         if (orderId) {
             fetch(`/api/order/${orderId}`).then(resp => resp.json()).then(data => {
                 if (data.id) {
+                    data = keysToCamel(data);
                     setOrder(data);
                 } else {
                     setToast(data[0].detail);
@@ -64,8 +87,9 @@ const Shop = () => {
                 setToast(data[0].detail);
                 setLoading(false);
             } else {
-                const images = data.filter(x => x.imageData);
-                const items = data.filter(x => !x.imageData);
+                const catalogObjects = keysToCamel(data) as CatalogObject[];
+                const images = catalogObjects.filter(x => x.type === "IMAGE");
+                const items = catalogObjects.filter(x => x.type === "ITEM");
                 items.forEach(item => {
                     if (item.itemData?.imageIds) {
                         item.imageData = images.find(x => x.id === item.itemData?.imageIds![0])?.imageData;
@@ -141,6 +165,7 @@ const Shop = () => {
         }).then(resp => resp.json()).then((order) => {
             if (order.id) {
                 // set cookie so cart persists
+                order = keysToCamel(order);
                 setOrder(order);
                 document.cookie = `orderId=${order.id}`;
             } else {
@@ -184,16 +209,17 @@ const Shop = () => {
         event.preventDefault();
         if (event.currentTarget.checkValidity() === true) {
             if (fulfillment === "shipment") {
-                const formData = new FormData();
-                formData.append('address1', address1.replace("&", "%26").replace("#", "%23"));
-                formData.append('address2', address2.replace("&", "%26").replace("#", "%23"));
-                formData.append('city', city.replace("&", "%26").replace("#", "%23"));
-                formData.append('state', state);
-                formData.append('zipcode', zipcode.replace("&", "%26").replace("#", "%23"));
+                const body = {
+                    address1: address1.replace("&", "%26").replace("#", "%23"),
+                    address2: address2.replace("&", "%26").replace("#", "%23"),
+                    city: city.replace("&", "%26").replace("#", "%23"),
+                    state,
+                    zipcode: zipcode.replace("&", "%26").replace("#", "%23")
+                }
 
                 fetch('/api/validate-address',{
                     method: 'POST',
-                    body: formData
+                    body: JSON.stringify(body)
                 }).then(resp => resp.json()).then(data => {
                     if (data.address1 && data.address1.toLowerCase() !== address1.toLowerCase()) {
                         setAddress1(data.address1);
@@ -238,7 +264,7 @@ const Shop = () => {
             fulfillment,
             version: order?.version,
             orderId: order?.id,
-            fulfillmentUid: order?.fulfillments && order?.fulfillments[0].type?.toLowerCase() !== fulfillment ? order.fulfillments[0].uid : null // only set fulfillment to be recreated if type has changed
+            fulfillmentUid: order?.fulfillments && order?.fulfillments[0].type?.toLowerCase() === fulfillment ? order.fulfillments[0].uid : null // only set fulfillment to be recreated if type has changed
         }
         fetch('/api/add-fulfillment', {
             method: 'POST',
@@ -246,6 +272,7 @@ const Shop = () => {
             body: JSON.stringify(request)
         }).then(resp => resp.json()).then((data) => {
             if (data.id) {
+                data = keysToCamel(data);
                 setOrder(data);
                 setActiveKey("2");
                 document.cookie = `orderId=${data.id}`;

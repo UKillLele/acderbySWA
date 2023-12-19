@@ -8,5 +8,6 @@
         public int Version { get; set; }
         public string OrderId { get; set; }
         public string Fulfillment { get; set; }
+        public string FulfillmentUid { get; set; }
     }
 }
