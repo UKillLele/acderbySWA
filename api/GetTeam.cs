@@ -13,7 +13,7 @@ namespace ACDerby.Functions
     {
         [FunctionName("GetTeam")]
         public static IActionResult Run(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "teams/{slug}")] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "teams/{slug}")] HttpRequest req,
             [CosmosDB(
                 "acderby",
                 "teams",
