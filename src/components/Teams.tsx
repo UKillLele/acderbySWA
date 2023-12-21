@@ -8,7 +8,7 @@ import { useEffect, useState } from 'react'
 
 const Teams = () => {
     const data = useLoaderData();
-    const [team, setTeam] = useState<Team>({});
+    const [team, setTeam] = useState<Team>();
     const [captain, setCaptain] = useState<Person>();
     const [coCaptain, setCoCaptain] = useState<Person>();
     const [headCoach, setHeadCoach] = useState<Person>();
@@ -33,8 +33,8 @@ const Teams = () => {
     }
 
     return (
-        
         <Container fluid className="content" style={{ background: team?.imageUrl ? `url(${team.imageUrl}) ${team.color}` : team?.color, backgroundBlendMode: team?.imageUrl && 'multiply', backgroundPosition: 'center', backgroundSize: 'cover' }}>
+            {team && 
             <Container fluid className="px-0">
                 <Row className="header-img px-lg-5 mx-0">
                     <Row>
@@ -98,6 +98,7 @@ const Teams = () => {
                     }
                 </Row>
             </Container>
+            }
         </Container>
     );
 }
