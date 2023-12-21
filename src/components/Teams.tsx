@@ -7,21 +7,25 @@ import { PositionType } from '../models/Position'
 import { useEffect, useState } from 'react'
 
 const Teams = () => {
-    const team: Team = useLoaderData() as Team;
+    const data = useLoaderData();
+    const [team, setTeam] = useState<Team>({});
     const [captain, setCaptain] = useState<Person>();
     const [coCaptain, setCoCaptain] = useState<Person>();
     const [headCoach, setHeadCoach] = useState<Person>();
     const [benchCoach, setBenchCoach] = useState<Person>();
     const [members, setMembers] = useState<Person[]>();
+
     useEffect(() => {
-        fetch(`/api/players/${team.id}`).then(resp => resp.json()).then((players: Person[]) => {
-            setCaptain(players.find(x => x.teams.some(y => y.id == team.id && y.positionType == PositionType.captain)));
-            setCoCaptain(players.find(x => x.teams.some(y => y.id == team.id && y.positionType == PositionType.coCaptain)));
-            setHeadCoach(players.find(x => x.teams.some(y => y.id == team.id && y.positionType == PositionType.headCoach)));
-            setBenchCoach(players.find(x => x.teams.some(y => y.id == team.id && y.positionType == PositionType.benchCoach)));
-            setMembers(players.filter(x => x.teams.some(y => y.id == team.id && y.positionType == PositionType.member)).sort((a,b) => a.number.toString() > b.number.toString() ? 1 : -1));
+        const t = JSON.parse(data as string);
+        setTeam(t);
+        fetch(`/api/players/${t.id}`).then(resp => resp.json()).then((players: Person[]) => {
+            setCaptain(players.find(x => x.teams.some(y => y.id == t.id && y.positionType == PositionType.captain)));
+            setCoCaptain(players.find(x => x.teams.some(y => y.id == t.id && y.positionType == PositionType.coCaptain)));
+            setHeadCoach(players.find(x => x.teams.some(y => y.id == t.id && y.positionType == PositionType.headCoach)));
+            setBenchCoach(players.find(x => x.teams.some(y => y.id == t.id && y.positionType == PositionType.benchCoach)));
+            setMembers(players.filter(x => x.teams.some(y => y.id == t.id && y.positionType == PositionType.member)).sort((a,b) => a.number.toString() > b.number.toString() ? 1 : -1));
         });
-    }, [team])
+    }, [])
 
     function getImage(imgUrl: string) {
         if (imgUrl) return imgUrl;

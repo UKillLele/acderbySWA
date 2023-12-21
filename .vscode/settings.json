@@ -1,7 +1,9 @@
 {
-  "azureFunctions.deploySubpath": "api/bin/Release/net6.0/publish",
-  "azureFunctions.projectLanguage": "C#",
+  "azureFunctions.deploySubpath": "apiJs",
+  "azureFunctions.projectLanguage": "TypeScript",
   "azureFunctions.projectRuntime": "~4",
   "debug.internalConsoleOptions": "neverOpen",
-  "azureFunctions.preDeployTask": "publish (functions)"
+  "azureFunctions.preDeployTask": "npm prune (functions)",
+  "azureFunctions.postDeployTask": "npm install (functions)",
+  "azureFunctions.projectLanguageModel": 4
 }
