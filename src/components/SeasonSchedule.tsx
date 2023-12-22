@@ -1,6 +1,6 @@
 import { Container, Row, Col, Card, Accordion, ListGroup } from "react-bootstrap";
 import { Bout } from "../models/Bout";
-import { Link, useLoaderData } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Team } from "../models/Team";
 
