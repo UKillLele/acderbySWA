@@ -5,28 +5,28 @@ interface Document {}
 const cosmosInput = input.cosmosDB({
     databaseName: 'acderby',
     containerName: 'teams',
-    connection: 'CosmosDbConnectionString'
+    connection: 'CosmosDbConnectionString',
+    partitionKey: '{slug}'
 });
 
-export async function getTeams(request: HttpRequest, context: InvocationContext): Promise<HttpResponseInit> {
-    cosmosInput.sqlQuery = 'SELECT * from c';
+export async function getTeam(request: HttpRequest, context: InvocationContext): Promise<HttpResponseInit> {
     const teams = <Document>context.extraInputs.get(cosmosInput);
     if (!teams) {
         return {
             status: 404,
-            body: 'Teams not found',
+            body: 'Team not found',
         };
     } else {
         return {
-            jsonBody: teams,
+            jsonBody: teams[0],
         };
     }
 }
 
-app.http('getTeams', {
+app.http('getTeam', {
     methods: ['GET'],
     authLevel: 'function',
-    route: 'teams',
+    route: 'teams/{slug}',
     extraInputs: [cosmosInput],
-    handler: getTeams,
+    handler: getTeam,
 });

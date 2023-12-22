@@ -48,7 +48,6 @@ const router = createBrowserRouter(createRoutesFromElements(
         <Route
             path="/season"
             element={<SeasonSchedule />}
-            loader={async () => { return fetch('/api/bouts') }}
         />
         <Route element={<EditorRoutes />} >
             <Route path="/players" element={<Players />} />

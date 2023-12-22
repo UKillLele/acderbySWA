@@ -20,10 +20,24 @@ function checkTix(dates, index) {
 }
 
 const SeasonSchedule = () => {
-    const bouts: [] = useLoaderData() as [];
+    const [bouts, setBouts] = useState<Bout[][]>();
     const [teams, setTeams] = useState<Team[]>();
 
     useEffect(() => {
+        fetch(`/api/bouts`).then(resp => resp.json()).then((b: Bout[]) => {
+            const groupedBouts = b.reduce((r, a) => {
+                const date: Date = new Date(a.date);
+                const ymd = `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}`;
+                r[ymd] = r[ymd] || [];
+                r[ymd].push(a);
+                return r;
+            }, {});
+            var resultArray: Bout[][] = Object.keys(groupedBouts).map(function(bout){
+                const b = groupedBouts[bout];
+                return b;
+            });
+            setBouts(resultArray);
+        });
         fetch(`/api/teams`).then(resp => resp.json()).then((teams: Team[]) => {
             setTeams(teams);
         });
@@ -87,7 +101,7 @@ const SeasonSchedule = () => {
                     </Accordion>
                 </Col>
             </Row>
-            {bouts.map((date: Bout[], index: number) =>
+            {bouts && bouts.map((date: Bout[], index: number) =>
                 <Row className="m-5" key={date[0].date.toString()}>
                     <Col>
                         <Card data-bs-theme="light">
@@ -110,13 +124,13 @@ const SeasonSchedule = () => {
                                     const awayTeam = getTeam(bout.awayTeam);
                                     return (
                                         <Row key={bout.date.toString()} className="align-items-center mb-2 text-light fw-bold text-shadow pb-2 text-center" style={{ borderBottom: i + 1 !== date.length ? '1px solid black' : '' }}>
-                                            <Col className="p-0 bout-bg" style={{ background: homeTeam && `url(${homeTeam.imageUrl})` }}>
+                                            <Col className="p-0 bout-bg" style={{ backgroundImage: homeTeam && `url(${homeTeam.imageUrl})` }}>
                                                 <Container fluid style={{ backgroundColor: homeTeam && homeTeam.color }} className="m-0 h-100 d-flex align-items-center justify-content-center fs-1">
                                                     <span>{homeTeam ? homeTeam.name : bout.name === "Champs" ? i === 0 ? 'Team 3' : 'Team 1' : 'TBA'}</span>
                                                 </Container>
                                             </Col>
                                             <Col lg="auto" className="fw-bold xl-title text-light text-shadow vs">VS</Col>
-                                            <Col className="p-0 bout-bg" style={{ background: awayTeam && `url(${awayTeam.imageUrl})` }}>
+                                            <Col className="p-0 bout-bg" style={{ backgroundImage: awayTeam && `url(${awayTeam.imageUrl})` }}>
                                                 <Container fluid style={{ backgroundColor: awayTeam && awayTeam.color }} className="m-0 h-100 d-flex align-items-center justify-content-center fs-1">
                                                     <span>{awayTeam ? awayTeam.name : bout.name === "Champs" ? i === 0 ? 'Team 4' : 'Team 2' : 'TBA'}</span>
                                                 </Container>
