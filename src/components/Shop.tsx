@@ -171,7 +171,7 @@ const Shop = () => {
             } else {
                 setToast(order[0].detail);
             }
-        }, error => setToast(error));
+        }, error => setToast(error[0]));
     }
 
     function onAddItemModalClick(item: CatalogObject) {
@@ -208,45 +208,46 @@ const Shop = () => {
     function validateFulfillment(event: FormEvent<HTMLFormElement>) {
         event.preventDefault();
         if (event.currentTarget.checkValidity() === true) {
-            if (fulfillment === "shipment") {
-                const body = {
-                    address1: address1.replace("&", "%26").replace("#", "%23"),
-                    address2: address2.replace("&", "%26").replace("#", "%23"),
-                    city: city.replace("&", "%26").replace("#", "%23"),
-                    state,
-                    zipcode: zipcode.replace("&", "%26").replace("#", "%23")
-                }
+            // if (fulfillment === "shipment") {
+            //     const body = {
+            //         address1: address1.replace("&", "%26").replace("#", "%23"),
+            //         address2: address2.replace("&", "%26").replace("#", "%23"),
+            //         city: city.replace("&", "%26").replace("#", "%23"),
+            //         state,
+            //         zipcode: zipcode.replace("&", "%26").replace("#", "%23")
+            //     }
 
-                fetch('/api/validate-address',{
-                    method: 'POST',
-                    body: JSON.stringify(body)
-                }).then(resp => resp.json()).then(data => {
-                    if (data.address1 && data.address1.toLowerCase() !== address1.toLowerCase()) {
-                        setAddress1(data.address1);
-                    }
-                    if (data.address2 && data.address2.toLowerCase() !== address2.toLowerCase()) {
-                        setAddress2(data.address2);
-                    }
-                    if (data.city && data.city.toLowerCase() !== city.toLowerCase()) {
-                        setCity(data.city);
-                    }
-                    if (data.state && data.state !== state) {
-                        setState(data.State);
-                    }
-                    if (data.zipcode && data.zipcode !== zipcode) {
-                        setZipcode(data.zipcode);
-                    }
-                    if (data.returnText || typeof data == 'string') {
-                        setUspsResponse(data.returnText ?? data);
-                    } else {
-                        setUspsResponse("");
-                    }
+            //     fetch('/api/validate-address',{
+            //         method: 'POST',
+            //         body: JSON.stringify(body)
+            //     }).then(resp => resp.json()).then(data => {
+            //         if (data.address1 && data.address1.toLowerCase() !== address1.toLowerCase()) {
+            //             setAddress1(data.address1);
+            //         }
+            //         if (data.address2 && data.address2.toLowerCase() !== address2.toLowerCase()) {
+            //             setAddress2(data.address2);
+            //         }
+            //         if (data.city && data.city.toLowerCase() !== city.toLowerCase()) {
+            //             setCity(data.city);
+            //         }
+            //         if (data.state && data.state !== state) {
+            //             setState(data.State);
+            //         }
+            //         if (data.zipcode && data.zipcode !== zipcode) {
+            //             setZipcode(data.zipcode);
+            //         }
+            //         if (data.returnText || typeof data == 'string') {
+            //             setUspsResponse(data.returnText ?? data);
+            //         } else {
+            //             setUspsResponse("");
+            //         }
 
-                    if (uspsResponse === "") {
-                        addFulfillmentToOrder();
-                    }
-                }, error => setToast(error));
-            } else addFulfillmentToOrder();
+            //         if (uspsResponse === "") {
+            //             addFulfillmentToOrder();
+            //         }
+            //     }, error => setToast(error));
+            // } else 
+            addFulfillmentToOrder();
         }
         setValidated(true);
     }

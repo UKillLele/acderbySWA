@@ -5,11 +5,11 @@ interface Document {}
 const cosmosInput = input.cosmosDB({
     databaseName: 'acderby',
     containerName: 'teams',
-    sqlQuery: 'SELECT * from c where c.slug = {slug}',
     connection: 'CosmosDbConnectionString',
 });
 
 export async function getTeam(request: HttpRequest, context: InvocationContext): Promise<HttpResponseInit> {
+    cosmosInput.sqlQuery = 'SELECT * from c where c.slug = {slug}';
     const teams = <Document>context.extraInputs.get(cosmosInput);
     if (!teams) {
         return {
@@ -18,15 +18,38 @@ export async function getTeam(request: HttpRequest, context: InvocationContext):
         };
     } else {
         return {
-            body: JSON.stringify(teams[0]),
+            jsonBody: teams[0],
+        };
+    }
+}
+
+export async function getTeams(request: HttpRequest, context: InvocationContext): Promise<HttpResponseInit> {
+    cosmosInput.sqlQuery = 'SELECT * from c';
+    const teams = <Document>context.extraInputs.get(cosmosInput);
+    if (!teams) {
+        return {
+            status: 404,
+            body: 'Teams not found',
+        };
+    } else {
+        return {
+            jsonBody: teams,
         };
     }
 }
 
 app.http('getTeam', {
-    methods: ['GET', 'POST'],
+    methods: ['GET'],
     authLevel: 'function',
     route: 'teams/{slug}',
     extraInputs: [cosmosInput],
     handler: getTeam,
+});
+
+app.http('getTeams', {
+    methods: ['GET'],
+    authLevel: 'function',
+    route: 'teams',
+    extraInputs: [cosmosInput],
+    handler: getTeams,
 });

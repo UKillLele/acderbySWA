@@ -37,7 +37,7 @@ export async function getPlayers(request: HttpRequest, context: InvocationContex
         };
     } else {
         return {
-            body: JSON.stringify(players),
+            jsonBody: players,
         };
     }
 }
