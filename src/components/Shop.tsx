@@ -53,7 +53,7 @@ const Shop = () => {
     const [activeKey, setActiveKey] = useState("0");
     const [fulfillment, setFulfillment] = useState("");
     const [validated, setValidated] = useState(false);
-    const [uspsResponse, setUspsResponse] = useState("");
+    // const [uspsResponse, setUspsResponse] = useState("");
     const [error, setMessage] = useState("");
     const [showToast, setShowToast] = useState(false);
     const [toastState, setToastState] = useState("");
@@ -533,16 +533,16 @@ const Shop = () => {
                                                         <span className="ps-3">Address validation by www.usps.com</span>
                                                     </Row>
                                                 }
-                                                {uspsResponse && 
+                                                {/* {uspsResponse && 
                                                     <Row>
                                                         <Col className="m-4 border border-danger rounded pt-3 text-center">
                                                             <p>{uspsResponse}</p>
                                                         </Col>
                                                     </Row>    
-                                                }
+                                                } */}
                                                 <Row>
                                                     <Col className="text-center">
-                                                        <Button size="lg" className="px-5" hidden={!fulfillment} type="submit">{fulfillment === "shipment" && (!validated || uspsResponse !== "") ? 'Verify' : 'Checkout'}</Button>
+                                                        <Button size="lg" className="px-5" hidden={!fulfillment} type="submit">{fulfillment === "shipment" && (!validated) ? 'Verify' : 'Checkout'}</Button>
                                                     </Col>
                                                     {fulfillmentSaved &&
                                                         <Col>
