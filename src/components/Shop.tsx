@@ -558,43 +558,48 @@ const Shop = () => {
                                             Payment
                                         </Accordion.Header>
                                         <Accordion.Body>
-                                            <PaymentForm
-                                                key={paymentKey}
-                                                applicationId="sq0idp-BXIl-QUxiAsKZDxLImqRsg"
-                                                cardTokenizeResponseReceived={async (token: TokenResult) => {
-                                                    const dataJsonString = JSON.stringify({ sourceId: token.token, order });
-                                                    await fetch('api/process-payment', {
-                                                        method: 'POST',
-                                                        headers: { "Content-Type": "application/json"},
-                                                        body: dataJsonString
-                                                    }).then(resp => resp.json()).then(data => {
-                                                        if (data.errors && data.errors.length > 0) {
-                                                            if (data.errors[0].detail) {
-                                                                setToast(data.errors[0].detail);
+                                            {order?.fulfillments && 
+                                                (order.fulfillments[0].shipmentDetails?.recipient?.displayName || order.fulfillments[0].pickupDetails?.recipient?.displayName) ?
+                                                <PaymentForm
+                                                    key={paymentKey}
+                                                    applicationId="sq0idp-BXIl-QUxiAsKZDxLImqRsg"
+                                                    cardTokenizeResponseReceived={async (token: TokenResult) => {
+                                                        const dataJsonString = JSON.stringify({ sourceId: token.token, order });
+                                                        await fetch('api/process-payment', {
+                                                            method: 'POST',
+                                                            headers: { "Content-Type": "application/json"},
+                                                            body: dataJsonString
+                                                        }).then(resp => resp.json()).then(data => {
+                                                            if (data.errors && data.errors.length > 0) {
+                                                                if (data.errors[0].detail) {
+                                                                    setToast(data.errors[0].detail);
+                                                                } else {
+                                                                    setToast('Payment Failed.');
+                                                                }
                                                             } else {
-                                                                setToast('Payment Failed.');
+                                                                setToast('Payment Successful!', true);
+                                                                clearCart();
                                                             }
-                                                        } else {
-                                                            setToast('Payment Successful!', true);
-                                                            clearCart();
+                                                        })
+                                                    }}
+                                                    /*createPaymentRequest={() => ({
+                                                        countryCode: "US",
+                                                        currencyCode: "USD",
+                                                        total: {
+                                                            amount: "1.00",
+                                                            label: "Total",
                                                         }
-                                                    })
-                                                }}
-                                                /*createPaymentRequest={() => ({
-                                                    countryCode: "US",
-                                                    currencyCode: "USD",
-                                                    total: {
-                                                        amount: "1.00",
-                                                        label: "Total",
-                                                    }
-                                                })}*/
-                                                locationId="7PS8GHVEB4J0R"
-                                            >
-                                                {/*<ApplePay />*/}
-                                                {/*<GooglePay />*/}
-                                                {/*<CashAppPay />*/}
-                                                <CreditCard />
-                                            </PaymentForm>
+                                                    })}*/
+                                                    locationId="7PS8GHVEB4J0R"
+                                                >
+                                                    {/*<ApplePay />*/}
+                                                    {/*<GooglePay />*/}
+                                                    {/*<CashAppPay />*/}
+                                                    <CreditCard />
+                                                </PaymentForm>
+                                            :
+                                                    <p className="text-center">Please enter fulfillment details</p>
+                                            }
                                         </Accordion.Body>
                                     </Accordion.Item>
                                 </Accordion>
