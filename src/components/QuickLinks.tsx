@@ -43,6 +43,7 @@ const QuickLinks = () => {
                     <Card>
                         <Card.Body className="text-center">
                             <Card.Title>Team Social Media</Card.Title>
+                            <Button href="https://www.facebook.com/profile.php?id=61553290352768" target="_blank" rel="noreferrer" className="d-block m-2 btn-primary">Bombshell Brigade</Button>
                             <Button href="https://www.facebook.com/TheDeadlyKennedys" target="_blank" rel="noreferrer" className="d-block m-2 btn-warning">Deadly Kennedys</Button>
                             <Button href="https://www.facebook.com/LoneStarAssassins" target="_blank" rel="noreferrer" className="d-block m-2 btn-dark">Lone Star Assassins</Button>
                             <Button href="https://www.facebook.com/larevrollerderby" target="_blank" rel="noreferrer" className="d-block m-2 btn-danger">&iexcl;Viva La Revoluci&oacute;n!</Button>
