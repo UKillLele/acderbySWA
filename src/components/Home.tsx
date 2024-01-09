@@ -57,6 +57,12 @@ const Home = () => {
                                 <p className="fs-1 text-shadow">Oct 19</p>
                             </Col>
                         </Row>
+                        <Row>
+                            <Col className="text-center text-shadow">
+                                <p className="m-0">7pm @ Thunderbird Roller Rink</p>
+                                <p>3200 Thunderbird Ln, Plano, TX 75075</p>
+                            </Col>
+                        </Row>
                     </Col>
                 </Row>
             </Container>

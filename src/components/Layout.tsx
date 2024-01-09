@@ -26,8 +26,8 @@ const Layout = () => {
                         <Nav className="text-shadow">
                             <Nav.Link as={NavLink} to="/" className="my-auto">Home</Nav.Link>
                             <NavDropdown title="Events" className="my-auto">
-                                <NavDropdown.Item as={NavLink} to="/events">Events</NavDropdown.Item>
                                 <NavDropdown.Item as={NavLink} to="/season">2024 Season</NavDropdown.Item>
+                                <NavDropdown.Item as={NavLink} to="/events">Events</NavDropdown.Item>
                                 <NavDropdown.Item as={NavLink} to="/tickets">Tickets</NavDropdown.Item>
                             </NavDropdown>
                             <NavDropdown title="About" className="my-auto">
