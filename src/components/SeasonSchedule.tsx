@@ -59,7 +59,7 @@ const SeasonSchedule = () => {
             </Row>
             <Row className="mx-5">
                 <Col>
-                    <Accordion data-bs-theme="light" activeKey="0">
+                    <Accordion data-bs-theme="light" defaultActiveKey="0">
                         <Accordion.Item eventKey="0">
                             <Accordion.Header>Bout Day Info</Accordion.Header>
                             <Accordion.Body>
