@@ -1,7 +1,9 @@
-import { Outlet, NavLink } from 'react-router-dom'
-import { Nav, Navbar, Container, NavDropdown } from 'react-bootstrap'
+import { Outlet, NavLink, useNavigation } from 'react-router-dom'
+import { Nav, Navbar, Container, NavDropdown, Spinner } from 'react-bootstrap'
 
 const Layout = () => {
+
+    const { state } = useNavigation();
 
     const userInfo = localStorage.getItem("userInfo");
     let editor;
@@ -71,7 +73,16 @@ const Layout = () => {
                     </Navbar.Collapse>
                 </Container>
             </Navbar>
-            <Outlet />
+            {state === 'loading' 
+            ?
+                <Container fluid className="page-loader">
+                    <Spinner animation="border" role="status">
+                        <span className="visually-hidden">Loading...</span>
+                    </Spinner>
+                </Container>
+            :
+                <Outlet />
+            }
         </Container>
     )
 }
