@@ -17,3 +17,7 @@ export const isEditor = () => {
         return false;
     }
 }
+
+export const clearStorage = () => {
+    localStorage.removeItem("auth@github");
+}

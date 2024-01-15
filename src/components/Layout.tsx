@@ -1,6 +1,7 @@
 import { Outlet, NavLink, useNavigation } from 'react-router-dom'
 import { Nav, Navbar, Container, NavDropdown, Spinner } from 'react-bootstrap'
-import { isEditor } from './ProtectedRoute';
+import { isEditor, clearStorage } from './ProtectedRoute';
+
 
 const Layout = () => {
     const { state } = useNavigation();
@@ -64,7 +65,7 @@ const Layout = () => {
                             {/*<Nav.Link as={NavLink} to="/news" className="my-auto">News</Nav.Link>*/}
                             <Nav.Link as={NavLink} to="/contact" className="my-auto">Contact</Nav.Link>
                             {editor && 
-                                <Nav.Link href="/.auth/logout" className="my-auto">Log out</Nav.Link>
+                                <Nav.Link href="/.auth/logout" onClick={() => clearStorage()} className="my-auto">Log out</Nav.Link>
                             }
                         </Nav>
                     </Navbar.Collapse>
