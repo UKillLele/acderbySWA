@@ -10,7 +10,7 @@ const EditorRoutes = () => {
 export default EditorRoutes;
 
 export const isEditor = () => {
-    const userInfo = localStorage.getItem("auth@github") ?? localStorage.getItem("auth@microsoft");
+    const userInfo = sessionStorage.getItem("auth");
     if (userInfo) {
         const roles: string[] = JSON.parse(userInfo).userRoles;
         if (roles.includes("admin") || roles.includes("editor")) return true;
@@ -19,5 +19,5 @@ export const isEditor = () => {
 }
 
 export const clearStorage = () => {
-    localStorage.removeItem("auth@github");
+    sessionStorage.removeItem("auth");
 }

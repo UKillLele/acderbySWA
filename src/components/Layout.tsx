@@ -5,6 +5,7 @@ import { isEditor, clearStorage } from './ProtectedRoute';
 
 const Layout = () => {
     const { state } = useNavigation();
+
     const editor = isEditor();
     return (
         <Container fluid className="bg-dark text-light page-bg" data-bs-theme="dark">

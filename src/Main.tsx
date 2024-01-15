@@ -26,10 +26,12 @@ import Players from './components/Players.tsx'
 import EditorRoutes from './components/ProtectedRoute.tsx'
 import NotFound from './components/NotFound.tsx'
 import QuickLinks from './components/QuickLinks.tsx'
+import Login from './components/Login.tsx'
 
 const router = createBrowserRouter(createRoutesFromElements(
     <Route path="/" element={<Layout />}>
         <Route index element={<Home />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/league" element={<AboutLeague />} />
         <Route path="/derby" element={<Derby />} />
         <Route

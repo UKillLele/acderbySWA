@@ -2,12 +2,6 @@
   "platform": {
     "apiRuntime": "node:18"
   },
-  "routes": [
-    {
-      "route": "/login",
-      "rewrite": "/.auth/login/github"
-    }
-  ],
   "navigationFallback": {
     "rewrite": "/index.html",
     "exclude": ["/public/images/*.{png,jpg,jpeg,gif,bmp}", "/css/*"]
