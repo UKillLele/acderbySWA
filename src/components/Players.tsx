@@ -11,8 +11,8 @@ const Players = () => {
     const [number, setNumber] = useState("");
     const [imageFile, setImageFile] = useState<File>();
     const [image, setImage] = useState("");
-    const [positions, setPositions] = useState<{ teamId: string; type: number }[]>([]);
-    const [tempPosition, setTempPosition] = useState<{ teamId: string; type: number }>({ teamId: "", type: 0 });
+    const [positions, setPositions] = useState<{ id: string; positionType: number }[]>([]);
+    const [tempPosition, setTempPosition] = useState<{ id: string; positionType: number }>({ id: "", positionType: 0 });
     const [addLoading, setAddLoading] = useState<boolean>(false);
 
     const [updatingName, setUpdatingName] = useState("");
@@ -20,8 +20,8 @@ const Players = () => {
     const [updatingNumber, setUpdatingNumber] = useState("");
     const [updatingImage, setUpdatingImage] = useState("");
     const [updatingImageFile, setUpdatingImageFile] = useState<File>();
-    const [updatingPositions, setUpdatingPositions] = useState<{ teamId: string; type: number }[]>([]);
-    const [tempUpdatingPosition, setTempUpdatingPosition] = useState<{ teamId: string; type: number }>({ teamId: "", type: 0 });
+    const [updatingPositions, setUpdatingPositions] = useState<{ id: string; positionType: number }[]>([]);
+    const [tempUpdatingPosition, setTempUpdatingPosition] = useState<{ id: string; positionType: number }>({ id: "", positionType: 0 });
     const [updateLoading, setUpdateLoading] = useState<boolean>(false);
 
     const [teams, setTeams] = useState<Team[]>([]);
@@ -42,42 +42,41 @@ const Players = () => {
         setUpdatingName(skater.name);
         setUpdatingNumber(skater.number);
         setUpdatingImage(skater.imageUrl);
-        const up: { teamId: string; type: number }[] = [];
-        skater.teams.forEach(team => {
-            up.push({ teamId: team.id, type: team.positionType });
+        const up: { id: string; positionType: number }[] = [];
+        skater.teams?.forEach(team => {
+            up.push({ id: team.id, positionType: team.positionType });
         });
         setUpdatingPositions(up);
-        if (skater.imageUrl) document.getElementsByClassName("updating-image")[0].classList.add("d-none");
     }
 
     function onAddPosition() {
-        if (tempPosition.teamId && !positions.some(x => x.teamId === tempPosition.teamId)) {
+        if (tempPosition.id && !positions.some(x => x.id === tempPosition.id)) {
             setPositions([...positions, tempPosition]);
-            setTempPosition({ teamId: "", type: 0 });
+            setTempPosition({ id: "", positionType: 0 });
         }
     }
 
     function onAddUpdatingPosition() {
-        if (tempUpdatingPosition.teamId && !updatingPositions.some(x => x.teamId === tempUpdatingPosition.teamId)) {
+        if (tempUpdatingPosition.id && !updatingPositions.some(x => x.id === tempUpdatingPosition.id)) {
             setUpdatingPositions([...updatingPositions, tempUpdatingPosition]);
-            setTempUpdatingPosition({ teamId: "", type: 0 });
+            setTempUpdatingPosition({ id: "", positionType: 0 });
         }
     }
 
-    function onDeletePosition(teamId: string) {
-        setPositions(positions.filter(x => x.teamId !== teamId))
+    function onDeletePosition(id: string) {
+        setPositions(positions.filter(x => x.id !== id))
     }
 
-    function onDeleteUpdatingPosition(teamId: string) {
-        setUpdatingPositions(updatingPositions.filter(x => x.teamId !== teamId))
+    function onDeleteUpdatingPosition(id: string) {
+        setUpdatingPositions(updatingPositions.filter(x => x.id !== id))
     }
 
     function onTeamsSelect(event: ChangeEvent) {
         const target = event.target as HTMLSelectElement;
         const { options } = target;
         const selectedteamId = options[options.selectedIndex].value;
-        if (!positions.some(x => x.teamId === selectedteamId)) {
-            setTempPosition({ teamId: selectedteamId, type: tempPosition.type });
+        if (!positions.some(x => x.id === selectedteamId)) {
+            setTempPosition({ id: selectedteamId, positionType: tempPosition.positionType });
         }
     }
     
@@ -85,8 +84,8 @@ const Players = () => {
         const target = event.target as HTMLSelectElement;
         const { options } = target;
         const selectedteamId = options[options.selectedIndex].value;
-        if (!updatingPositions.some(x => x.teamId === selectedteamId)) {
-            setTempUpdatingPosition({ teamId: selectedteamId, type: tempUpdatingPosition.type });
+        if (!updatingPositions.some(x => x.id === selectedteamId)) {
+            setTempUpdatingPosition({ id: selectedteamId, positionType: tempUpdatingPosition.positionType });
         }
     }
 
@@ -94,14 +93,14 @@ const Players = () => {
         const target = event.target as HTMLSelectElement;
         const { options } = target;
         const selectedPosition = Number(options[options.selectedIndex].value);
-        setTempPosition({ teamId: tempPosition.teamId, type: selectedPosition });
+        setTempPosition({ id: tempPosition.id, positionType: selectedPosition });
     }
 
     function onUpdatingPositionsSelect(event: ChangeEvent) {
         const target = event.target as HTMLSelectElement;
         const { options } = target;
         const selectedPosition = Number(options[options.selectedIndex].value);
-        setTempUpdatingPosition({ teamId: tempUpdatingPosition.teamId, type: selectedPosition });
+        setTempUpdatingPosition({ id: tempUpdatingPosition.id, positionType: selectedPosition });
     }
 
     function onAddImage(event: ChangeEvent) {
@@ -129,14 +128,14 @@ const Players = () => {
     function onPlayerAdd(event: FormEvent) {
         event.preventDefault();
         setAddLoading(true);
-        if (tempPosition.teamId.length > 0) setPositions([...positions, tempPosition]);
-        setTempPosition({teamId: "", type: 0});
+        if (tempPosition.id.length > 0) setPositions([...positions, tempPosition]);
+        setTempPosition({id: "", positionType: 0});
 
         const formData = new FormData();
-        formData.append("Name", name);
-        formData.append("Number", number.toString() ?? "");
-        formData.append("ImageFile", imageFile ?? "");
-        formData.append("Positions", JSON.stringify(positions));
+        formData.append("name", name);
+        formData.append("number", number.toString() ?? "");
+        formData.append("imageFile", imageFile ?? "");
+        formData.append("positions", JSON.stringify(positions));
 
         return fetch('api/add-person', {
             method: 'POST',
@@ -155,18 +154,19 @@ const Players = () => {
     function onPlayerUpdate(event: FormEvent) {
         event.preventDefault();
         setUpdateLoading(true);
-        if (tempUpdatingPosition.teamId.length > 0) setPositions([...updatingPositions, tempUpdatingPosition]);
-        setTempUpdatingPosition({ teamId: "", type: 0 });
+        if (tempUpdatingPosition.id.length > 0) setPositions([...updatingPositions, tempUpdatingPosition]);
+        setTempUpdatingPosition({ id: "", positionType: 0 });
 
         const formData = new FormData();
-        formData.append("Id", updatingId);
-        formData.append("Name", updatingName);
-        formData.append("Number", updatingNumber.toString() ?? "");
-        formData.append("ImageFile", updatingImageFile ?? "");
-        formData.append("Positions", JSON.stringify(updatingPositions));
+        formData.append("id", updatingId);
+        formData.append("name", updatingName);
+        formData.append("number", updatingNumber?.toString() ?? "");
+        formData.append("imageFile", updatingImageFile ?? "");
+        formData.append("imageUrl", updatingImage);
+        formData.append("positions", JSON.stringify(updatingPositions));
 
         return fetch('api/update-person', {
-            method: 'PUT',
+            method: 'POST',
             body: formData
         }).then((resp) => {
             if (resp.status === 200) {
@@ -181,9 +181,9 @@ const Players = () => {
 
     function onDeleteClick() {
         const formData = new FormData();
-        formData.append("Id", updatingId);
+        formData.append("id", updatingId);
         return fetch(`api/delete-person`, {
-            method: 'Post',
+            method: 'Delete',
             body: formData
         }).then((resp) => {
             if (resp.status === 200) {
@@ -198,7 +198,7 @@ const Players = () => {
         setImage("");
         setImageFile(undefined);
         setPositions([]);
-        setTempPosition({ teamId: "", type: 0 });
+        setTempPosition({ id: "", positionType: 0 });
         setAddLoading(false);
         refreshPlayers();
     }
@@ -210,7 +210,7 @@ const Players = () => {
         setUpdatingImage("");
         setUpdatingImageFile(undefined);
         setUpdatingPositions([]);
-        setTempUpdatingPosition({ teamId: "", type: 0 });
+        setTempUpdatingPosition({ id: "", positionType: 0 });
         setUpdateLoading(false);
         refreshPlayers();
     }
@@ -229,7 +229,7 @@ const Players = () => {
         <Container fluid className="content text-light text-shadow bg-secondary">
             <Container>
                 <Row className="mt-5">
-                    <Col xs lg="3" className="text-center mb-3">
+                    <Col xs lg="6" xl="4" xxl="3" className="text-center mb-3">
                         <Form onSubmit={onPlayerAdd}>
                             <Form.Group
                                 controlId="image"
@@ -286,7 +286,7 @@ const Players = () => {
                                     </Col>
                                 </Row>
                                 {positions && positions.map((position, index) =>
-                                    <Row className="p-2" key={`${position.teamId}-${position.type}-${index}`}>
+                                    <Row className="p-2" key={`${position.id}-${position.positionType}-${index}`}>
                                         <Col>
                                             <Form.Group controlId="positions">
                                                 <Form.Control
@@ -296,10 +296,10 @@ const Players = () => {
                                                     value={JSON.stringify(positions)}
                                                 />
                                             </Form.Group>
-                                            <p>{teams.find(x => x.id === position.teamId)?.name} - {GetPositionDisplayName(position.type)}</p>
+                                            <p>{teams.find(x => x.id === position.id)?.name} - {GetPositionDisplayName(position.positionType)}</p>
                                         </Col>
                                         <Col xs="auto">
-                                            <Button type="button" variant="danger" onClick={() => onDeletePosition(position.teamId)}>&times;</Button>
+                                            <Button type="button" variant="danger" onClick={() => onDeletePosition(position.id)}>&times;</Button>
                                         </Col>
                                     </Row>
                                 )}
@@ -307,7 +307,7 @@ const Players = () => {
                                     <Col>
                                         <Form.Select
                                             name="tempTeam"
-                                            value={tempPosition.teamId}
+                                            value={tempPosition.id}
                                             onChange={onTeamsSelect}
                                         >
                                             <option>Team</option>
@@ -319,7 +319,7 @@ const Players = () => {
                                     <Col>
                                         <Form.Select
                                             name="tempPosition"
-                                            value={tempPosition.type}
+                                            value={tempPosition.positionType}
                                             onChange={onPositionsSelect}
                                         >
                                             {GetPositionsArray().map((key: number) =>
@@ -353,7 +353,7 @@ const Players = () => {
                     </Col>
                     {players.length > 0 && players.map((skater: Person) =>
                         updatingId !== skater.id ?
-                        <Col key={skater.id} xs lg="3" className="mb-3" onClick={() => onPlayerClick(skater)}>
+                        <Col key={skater.id} xs lg="6" xl="4" xxl="3" className="mb-3 text-center" onClick={() => onPlayerClick(skater)}>
                             {skater.imageUrl ?
                                 <Image className="skater-image cursor-pointer" src={skater.imageUrl} />
                             :
@@ -380,7 +380,7 @@ const Players = () => {
                             </Container>
                         </Col>
                         :
-                        <Col xs lg="3" key={skater.id} className="text-center position-relative">
+                        <Col xs lg="6" xl="4" xxl="3" key={skater.id} className="text-center position-relative">
                             <Form onSubmit={onPlayerUpdate}>
                                 <Form.Group
                                     controlId="updateImage"
@@ -436,7 +436,7 @@ const Players = () => {
                                         </Col>
                                     </Row>
                                     {updatingPositions && updatingPositions.map((position, index) =>
-                                        <Row className="p-2" key={`${position.teamId}-${position.type}-${index}`}>
+                                        <Row className="p-2" key={`${position.id}-${position.positionType}-${index}`}>
                                             <Col>
                                                 <Form.Group controlId="positions">
                                                     <Form.Control
@@ -446,10 +446,10 @@ const Players = () => {
                                                         value={JSON.stringify(updatingPositions)}
                                                     />
                                                 </Form.Group>
-                                                <p>{teams.find(x => x.id === position.teamId)?.name} - {GetPositionDisplayName(position.type)}</p>
+                                                <p>{teams.find(x => x.id === position.id)?.name} - {GetPositionDisplayName(position.positionType)}</p>
                                             </Col>
                                             <Col xs="auto">
-                                                <Button type="button" variant="danger" onClick={() => onDeleteUpdatingPosition(position.teamId)}>&times;</Button>
+                                                <Button type="button" variant="danger" onClick={() => onDeleteUpdatingPosition(position.id)}>&times;</Button>
                                             </Col>
                                         </Row>
                                     )}
@@ -457,7 +457,7 @@ const Players = () => {
                                         <Col>
                                             <Form.Select
                                                 name="tempUpdateTeam"
-                                                value={tempUpdatingPosition.teamId}
+                                                value={tempUpdatingPosition.id}
                                                 onChange={onUpdatingTeamsSelect}
                                             >
                                                 <option>Team</option>
@@ -469,7 +469,7 @@ const Players = () => {
                                         <Col>
                                             <Form.Select
                                                 name="tempUpdatePosition"
-                                                value={tempUpdatingPosition.type}
+                                                value={tempUpdatingPosition.positionType}
                                                 onChange={onUpdatingPositionsSelect}
                                             >
                                                 {GetPositionsArray().map((key: number) =>

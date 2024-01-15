@@ -1,20 +1,19 @@
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet } from "react-router-dom";
+import NotFound from "./NotFound";
 
 
 const EditorRoutes = () => {
-    const navigate = useNavigate();
-    const signedIn = decodeURIComponent(document.cookie).includes(".AspNetCore.Identity.Application");
-    const userInfo = localStorage.getItem("userInfo");
-    let role;
-    if (userInfo) {
-        role = JSON.parse(userInfo).role;
-        if (!signedIn || (role !== "Admin" && role !== "Editor")) {
-            navigate("/not-found");
-        }
-        return (
-            <Outlet />
-        );
-    }
+    if (isEditor()) return (<Outlet />);
+    return (<NotFound />);
 };
 
 export default EditorRoutes;
+
+export const isEditor = () => {
+    const userInfo = localStorage.getItem("auth@github") ?? localStorage.getItem("auth@microsoft");
+    if (userInfo) {
+        const roles: string[] = JSON.parse(userInfo).userRoles;
+        if (roles.includes("admin") || roles.includes("editor")) return true;
+        return false;
+    }
+}

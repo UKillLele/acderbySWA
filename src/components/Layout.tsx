@@ -1,16 +1,10 @@
 import { Outlet, NavLink, useNavigation } from 'react-router-dom'
 import { Nav, Navbar, Container, NavDropdown, Spinner } from 'react-bootstrap'
+import { isEditor } from './ProtectedRoute';
 
 const Layout = () => {
-
     const { state } = useNavigation();
-
-    const userInfo = localStorage.getItem("userInfo");
-    let editor;
-    if (userInfo) {
-        const role = JSON.parse(userInfo).role;
-        if (role === "Admin" || role === "Editor") editor = true;
-    }
+    const editor = isEditor();
     return (
         <Container fluid className="bg-dark text-light page-bg" data-bs-theme="dark">
             <Navbar expand="lg">
@@ -69,6 +63,9 @@ const Layout = () => {
                             <Nav.Link as={NavLink} to="/join" className="my-auto">Join</Nav.Link>
                             {/*<Nav.Link as={NavLink} to="/news" className="my-auto">News</Nav.Link>*/}
                             <Nav.Link as={NavLink} to="/contact" className="my-auto">Contact</Nav.Link>
+                            {editor && 
+                                <Nav.Link href="/.auth/logout" className="my-auto">Log out</Nav.Link>
+                            }
                         </Nav>
                     </Navbar.Collapse>
                 </Container>
