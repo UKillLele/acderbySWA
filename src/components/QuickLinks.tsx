@@ -47,7 +47,7 @@ const QuickLinks = () => {
                             <Button href="https://www.facebook.com/TheDeadlyKennedys" target="_blank" rel="noreferrer" className="d-block m-2 btn-warning">Deadly Kennedys</Button>
                             <Button href="https://www.facebook.com/LoneStarAssassins" target="_blank" rel="noreferrer" className="d-block m-2 btn-dark">Lone Star Assassins</Button>
                             <Button href="https://www.facebook.com/larevrollerderby" target="_blank" rel="noreferrer" className="d-block m-2 btn-danger">&iexcl;Viva La Revoluci&oacute;n!</Button>
-                            <Button href="http://facebook.com/ACRD.Officials" target="_blank" rel="noreferrer" className="d-block m-2 btn-secondary">Internal Affairs</Button>
+                            <Button href="http://facebook.com/ACRD.Officials" target="_blank" rel="noreferrer" className="d-block m-2 btn-secondary">The Warren Commission</Button>
                         </Card.Body>
                     </Card>
                 </Col>
