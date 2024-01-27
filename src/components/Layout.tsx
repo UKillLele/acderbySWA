@@ -31,7 +31,7 @@ const Layout = () => {
                             <NavDropdown title="About" className="my-auto">
                                 <NavDropdown.Item as={NavLink} to="/league">Our League</NavDropdown.Item>
                                 <NavDropdown.Item as={NavLink} to="/derby">Roller Derby</NavDropdown.Item>
-                                {/*<NavDropdown.Item as={NavLink} to="/sponsors">Sponsors</NavDropdown.Item>*/}
+                                <NavDropdown.Item as={NavLink} to="/sponsors">Sponsors</NavDropdown.Item>
                             </NavDropdown>
                             <NavDropdown title="Teams" className="my-auto">
                                 <NavDropdown.Header>Travel Team</NavDropdown.Header>
