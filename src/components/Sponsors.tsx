@@ -1,47 +1,57 @@
-import { Col, Container, Row } from "react-bootstrap"
+import { Col, Container, Row, Image } from "react-bootstrap"
 
 
 const Sponsors = () => {
     return (
         <Container fluid className="content bg-dark text-light">
-            <Row className="m-5 border-bottom">
-                <Col className="my-auto">
-                    <h1 className="xl-title my-5 text-shadow">Sponsors</h1>
-                    <p>Thanks to all our sponsors, we can bring all the action to the fans all season!</p>
-                </Col>
+            <Row className="header-img px-lg-5 mx-0">
+                <Row>
+                    <Col className="my-auto">
+                        <h1 className="xl-title my-5 text-shadow">Sponsors</h1>
+                    </Col>
+                </Row>
+                <p className="text-center bg-white rounded text-black p-3">Thanks to all our sponsors, we can bring all the action to the fans all season!</p>
             </Row>
-            <Row className="text-center mb-5 pb-3 border-bottom">
-                <Col>
-                    <p className="fs-1">Jam Line</p>
-                    <a href="https://madnessgames.com/" target="_blank" rel="noreferrer">
-                        <img src="https://acrdphotos.blob.core.windows.net/photos/Madness%20Gray.jpg" alt="Madness Games & Comics" height={300}/>
+            <Row className="justify-content-center px-5">
+                <Col xs lg="4" className="text-center mt-5">
+                    <a href="https://madnessgames.com/" target="_blank" rel="noreferrer" className="text-decoration-none">
+                        <Image className="skater-image" alt="Madness Games & Comics" src="https://acrdphotos.blob.core.windows.net/photos/Madness%20Gray.jpg" />
+                        <div className="mt-0 border bg-light rounded">
+                            <p className="fs-3 m-0"><span className="text-nowrap">Madness Games & Comics</span></p>
+                            <p className="fs-3 m-0 text-dark">Jam Line Sponsor</p>
+                            <p className="pt-4 text-dark">This wonderful sponsor is a +12 to all athletics checks. They're right down the road from where we skate and have all the games and accessories your nerdy little heart could desire.</p>
+                        </div>
                     </a>
-                    <p className="pt-4">This wonderful sponsor is a +12 to all athletics checks. They're right down the road from where we skate and have all the games and accessories your nerdy little heart could desire.</p>
                 </Col>
-            </Row>
-            <Row className="text-center mb-5 pb-3 border-bottom">
-                <Col>
-                    <p className="fs-2">Afterparty</p>
-                    <a href="https://www.lionandcrownpub.com/" target="_blank" rel="noreferrer">
-                        <img src="https://acrdphotos.blob.core.windows.net/photos/the-lion-and-crown-pub-logo.png" alt="Lion & Crown, Allen" height={250}/>
+                <Col xs lg="4" className="text-center mt-5">
+                    <a href="https://www.lionandcrownpub.com/" target="_blank" rel="noreferrer" className="text-decoration-none">
+                        <Image className="skater-image" alt="Lion & Crown, Allen" src="https://acrdphotos.blob.core.windows.net/photos/the-lion-and-crown-pub-logo.png" />
+                        <div className="mt-0 border bg-light rounded">
+                            <p className="fs-3 m-0"><span className="text-nowrap">Madness Games & Comics</span></p>
+                            <p className="fs-3 m-0 text-dark">Afterparty Sponsor</p>
+                            <p className="pt-4 text-dark">Want to hang out with the skaters? Meet us at the Allen location after the bout!</p>
+                        </div>
                     </a>
-                <p className="pt-4">Want to hang out with the skaters? Meet us at the Allen location after the bout!</p>
                 </Col>
-            </Row>
-            <Row className="text-center mb-5">
-                <Col>
-                    <p className="fs-3">Beeramid</p>
-                    <a href="https://aceofskatestx.com/" target="_blank" rel="noreferrer">
-                        <img src="https://acrdphotos.blob.core.windows.net/photos/Ace%20of%20Skates.png" alt="Ace of Skates" height={200} className="bg-light" />
+                <Col xs lg="4" className="text-center mt-5">
+                    <a href="https://aceofskatestx.com/" target="_blank" rel="noreferrer" className="text-decoration-none">
+                        <Image className="skater-image bg-light" alt="Ace of Skates" src="https://acrdphotos.blob.core.windows.net/photos/Ace%20of%20Skates.png" />
+                        <div className="mt-0 border bg-light rounded">
+                            <p className="fs-3 m-0"><span className="text-nowrap">Ace of Skates</span></p>
+                            <p className="fs-3 m-0 text-dark">Beeramid Sponsor</p>
+                            <p className="pt-4 text-dark">Ace of skates is where we get our gear. If you're thinking about skating, we recommend them!</p>
+                        </div>
                     </a>
-                    <p className="pt-4">Ace of skates is where we get our gear. If you're thinking about skating, we recommend them!</p>
                 </Col>
-                <Col>
-                    <p className="fs-3">First Whistle</p>
-                    <a href="https://cryptidcornerstore.com/" target="_blank" rel="noreferrer">
-                        <img src="https://acrdphotos.blob.core.windows.net/photos/cryptid.jpeg" alt="Cryptid Corner Store" height={200}/>
+                <Col xs lg="4" className="text-center mt-5">
+                    <a href="https://cryptidcornerstore.com/" target="_blank" rel="noreferrer" className="text-decoration-none">
+                        <Image className="skater-image" alt="Cryptid Corner Store" src="https://acrdphotos.blob.core.windows.net/photos/cryptid.jpeg" />
+                        <div className="mt-0 border bg-light rounded">
+                            <p className="fs-3 m-0"><span className="text-nowrap">Cryptid Corner Store</span></p>
+                            <p className="fs-3 m-0 text-dark">First Whistle Sponsor</p>
+                            <p className="pt-4 text-dark">Check this sponsor out at our games to get some really unique art and art jewelry!</p>
+                        </div>
                     </a>
-                    <p className="pt-4">Check this sponsor out at our games to get some really unique art and art jewelry!</p>
                 </Col>
             </Row>
         </Container>

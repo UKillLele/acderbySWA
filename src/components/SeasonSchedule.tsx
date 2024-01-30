@@ -1,4 +1,4 @@
-import { Container, Row, Col, Card, Accordion, ListGroup } from "react-bootstrap";
+import { Container, Row, Col, Card, Accordion, ListGroup, Spinner } from "react-bootstrap";
 import { Bout } from "../models/Bout";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -101,7 +101,7 @@ const SeasonSchedule = () => {
                     </Accordion>
                 </Col>
             </Row>
-            {bouts && bouts.map((date: Bout[], index: number) =>
+            {bouts ? bouts.map((date: Bout[], index: number) =>
                 <Row className="m-5" key={date[0].date.toString()}>
                     <Col>
                         <Card data-bs-theme="light">
@@ -142,7 +142,13 @@ const SeasonSchedule = () => {
                         </Card>
                     </Col>
                 </Row>
-            )}
+            ) : 
+                <Container fluid className="page-loader">
+                    <Spinner animation="border" role="status">
+                        <span className="visually-hidden">Loading...</span>
+                    </Spinner>
+                </Container>
+            }
         </Container>
     )
 }
