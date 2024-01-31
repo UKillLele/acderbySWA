@@ -1,4 +1,4 @@
-import { Col, Container, Row, Image, Button } from "react-bootstrap"
+import { Col, Container, Row, Image } from "react-bootstrap"
 
 
 const Sponsors = () => {
