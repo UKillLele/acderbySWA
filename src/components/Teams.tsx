@@ -43,7 +43,7 @@ const Teams = () => {
                             <h1 className="xl-title my-5 text-shadow">{team.name}</h1>
                         </Col>
                         <Col xs lg="auto">
-                            <Image src={`/images/${team.logoUrl}`} className="skater-image p-5" />
+                            <Image src={team.logoUrl} className="skater-image p-5" />
                         </Col>
                     </Row>
                     {team.description && <p className="text-center bg-white rounded text-black p-3">{team.description}</p>}
