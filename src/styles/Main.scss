@@ -119,3 +119,27 @@
     background-size: cover;
     background-position: center;
 }
+
+.skater-image {
+    max-height: 300px;
+    max-width: 90%;
+}
+
+// for sponsorship brochure download button
+@media only screen and (orientation: landscape) {
+    .horizontal {
+        display: inline-block;
+    }
+    .vertical {
+        display: none;
+    }
+}
+@media only screen and (orientation: portrait) {
+    .vertical {
+        display: inline-block;
+    }
+
+    .horizontal {
+        display: none;
+    }
+}

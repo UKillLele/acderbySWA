@@ -2,7 +2,6 @@ import { useLoaderData } from 'react-router-dom'
 import { Team } from '../models/Team'
 import { Container, Row, Col, Image } from 'react-bootstrap'
 import { Person } from '../models/Person'
-import '../styles/Teams.scss'
 import { PositionType } from '../models/Position'
 import { useEffect, useState } from 'react'
 
