@@ -42,7 +42,7 @@ const Sponsors = () => {
                     <a href="https://www.lionandcrownpub.com/" target="_blank" rel="noreferrer" className="text-decoration-none">
                         <Image className="skater-image" alt="Lion & Crown, Allen" src="https://acrdphotos.blob.core.windows.net/photos/the-lion-and-crown-pub-logo.png" />
                         <div className="mt-0 border bg-light rounded p-3">
-                            <p className="fs-3 m-0"><span className="text-nowrap">Madness Games & Comics</span></p>
+                            <p className="fs-3 m-0"><span className="text-nowrap">Lion & Crown</span></p>
                             <p className="fs-3 m-0 text-dark">Afterparty Sponsor</p>
                             <p className="pt-4 text-dark">Want to hang out with the skaters? Meet us at the Allen location after the bout!</p>
                         </div>
