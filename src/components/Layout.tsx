@@ -64,7 +64,7 @@ const Layout = () => {
                             </Navbar.Brand>
                             <Nav.Link as={NavLink} to="/shop" className="my-auto">Shop</Nav.Link>
                             <Nav.Link as={NavLink} to="/join" className="my-auto">Join</Nav.Link>
-                            {/*<Nav.Link as={NavLink} to="/news" className="my-auto">News</Nav.Link>*/}
+                            <Nav.Link as={NavLink} to="/news" className="my-auto">News</Nav.Link>
                             <Nav.Link as={NavLink} to="/contact" className="my-auto">Contact</Nav.Link>
                             {editor && 
                                 <Nav.Link href="/.auth/logout" onClick={() => clearStorage()} className="my-auto">Log out</Nav.Link>
