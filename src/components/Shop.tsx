@@ -82,21 +82,28 @@ const Shop = () => {
             }, error => setToast(error));
         }
         
-        fetch(`/api/catalog?category=${page.split('/')[1]}`).then(resp => resp.json()).then((data) => {
-            if (data[0].detail) {
-                setToast(data[0].detail);
+        fetch(`/api/catalog?category=${page.split('/')[1]}`).then(resp => resp.json()).catch(() => {
+            if (page.split('/')[1] === "tickets") {
+                setToast("Ticket sales have ended.");
                 setLoading(false);
-            } else {
-                const catalogObjects = keysToCamel(data) as CatalogObject[];
-                const images = catalogObjects.filter(x => x.type === "IMAGE");
-                const items = catalogObjects.filter(x => x.type === "ITEM");
-                items.forEach(item => {
-                    if (item.itemData?.imageIds) {
-                        item.imageData = images.find(x => x.id === item.itemData?.imageIds![0])?.imageData;
-                    }
-                })
-                setCatalog(items);
-                setLoading(false);
+            }
+        }).then((data) => {
+            if (data) {
+                if (data[0].detail) {
+                    setToast(data[0].detail);
+                    setLoading(false);
+                } else {
+                    const catalogObjects = keysToCamel(data) as CatalogObject[];
+                    const images = catalogObjects.filter(x => x.type === "IMAGE");
+                    const items = catalogObjects.filter(x => x.type === "ITEM");
+                    items.forEach(item => {
+                        if (item.itemData?.imageIds) {
+                            item.imageData = images.find(x => x.id === item.itemData?.imageIds![0])?.imageData;
+                        }
+                    })
+                    setCatalog(items);
+                    setLoading(false);
+                }
             }
         }, categoryError => {
             setToast(categoryError)
