@@ -1,4 +1,4 @@
-import { Container, Row, Col, Card, Accordion, ListGroup, Spinner, Image } from "react-bootstrap";
+import { Container, Row, Col, Card, Accordion, ListGroup, Spinner } from "react-bootstrap";
 import { Bout } from "../models/Bout";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
