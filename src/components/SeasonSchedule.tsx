@@ -1,8 +1,9 @@
-import { Container, Row, Col, Card, Accordion, ListGroup, Spinner } from "react-bootstrap";
+import { Container, Row, Col, Card, Accordion, ListGroup, Spinner, Image } from "react-bootstrap";
 import { Bout } from "../models/Bout";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Team } from "../models/Team";
+import { Person } from "../models/Person";
 
 const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
@@ -22,8 +23,12 @@ function checkTix(dates, index) {
 const SeasonSchedule = () => {
     const [bouts, setBouts] = useState<Bout[][]>();
     const [teams, setTeams] = useState<Team[]>();
+    const [players, setPlayers] = useState<Person[]>();
 
     useEffect(() => {
+        fetch(`/api/players`).then(resp => resp.json()).then(players => {
+            setPlayers(players);
+        })
         fetch(`/api/bouts`).then(resp => resp.json()).then((b: Bout[]) => {
             const groupedBouts = b.reduce((r, a) => {
                 const date: Date = new Date(a.date);
@@ -33,8 +38,7 @@ const SeasonSchedule = () => {
                 return r;
             }, {});
             var resultArray: Bout[][] = Object.keys(groupedBouts).map(function(bout){
-                const b = groupedBouts[bout];
-                return b;
+                return groupedBouts[bout];
             });
             setBouts(resultArray);
         });
@@ -45,6 +49,11 @@ const SeasonSchedule = () => {
 
     function getTeam(id: string) {
         return teams?.find(x => x.id === id);
+    }
+
+    function getSkaterImage(skaterId: string) {
+        const player = players?.find(x =>  x.id === skaterId);
+        return encodeURI(player?.imageUrl ?? "");
     }
 
     return (
@@ -108,6 +117,11 @@ const SeasonSchedule = () => {
                             <Card.Body>
                                 <Card.Title>
                                     <Row className="align-items-center">
+                                        {date[0].imageUrl  && 
+                                            <Col lg="auto" className="text-center py-2">
+                                                <a href={date[0].imageUrl} target="_blank" rel="noreferrer" className="btn btn-primary ms-auto">Program</a>
+                                            </Col>
+                                        }
                                         <Col xs="12" lg className="text-lg-end fs-1 fw-bold mx-lg-3">
                                             {date[0].name}
                                         </Col>
@@ -125,15 +139,73 @@ const SeasonSchedule = () => {
                                     return (
                                         <Row key={bout.date.toString()} className="align-items-center mb-2 text-light fw-bold text-shadow pb-2 text-center" style={{ borderBottom: i + 1 !== date.length ? '1px solid black' : '' }}>
                                             <Col className="p-0 bout-bg" style={{ backgroundImage: homeTeam && `url(${homeTeam.imageUrl})` }}>
-                                                <Container fluid style={{ backgroundColor: homeTeam && homeTeam.color }} className="m-0 h-100 d-flex align-items-center justify-content-center fs-1">
-                                                    <span>{homeTeam ? homeTeam.name : bout.name === "Champs" ? i === 0 ? 'Team 3' : 'Team 1' : 'TBA'}</span>
-                                                </Container>
+                                                <Row style={{ backgroundColor: homeTeam && homeTeam.color }} className="m-0 h-100 d-flex flex-column justify-content-center fs-1">
+                                                    {/* center text */}
+                                                    {!bout.homeTeamMVPJammer && <Col></Col>}
+                                                    <Col>
+                                                        <div>{homeTeam ? homeTeam.name : bout.name === "Champs" ? i === 0 ? 'Team 3' : 'Team 1' : 'TBA'}</div>
+                                                        {bout.homeTeamScore && <div className="lg-only-block">{bout.homeTeamScore}</div>}
+                                                    </Col>
+                                                    <Col className="w-100 lg-only justify-content-evenly">
+                                                        {bout.homeTeamMVPJammer && 
+                                                            <div style={{backgroundImage: `url(${getSkaterImage(bout.homeTeamMVPJammer)})`,
+                                                                backgroundPosition: 'center',
+                                                                backgroundSize: 'cover',
+                                                                backgroundRepeat: 'no-repeat',
+                                                                width: '20%'}}
+                                                                className="d-flex flex-column justify-content-end"
+                                                            >
+                                                                <div className="lh-1 fs-3">MVJ</div>
+                                                            </div>
+                                                        }
+                                                        {bout.homeTeamMVPBlocker && 
+                                                            <div style={{backgroundImage: `url(${getSkaterImage(bout.homeTeamMVPBlocker)})`,
+                                                                backgroundPosition: 'center',
+                                                                backgroundSize: 'cover',
+                                                                backgroundRepeat: 'no-repeat',
+                                                                width: '20%'}}
+                                                                className="d-flex flex-column justify-content-end"
+                                                            >
+                                                                <div className="lh-1 fs-3">MVB</div>
+                                                            </div>
+                                                        }
+                                                    </Col>
+                                                </Row>
                                             </Col>
                                             <Col lg="auto" className="fw-bold xl-title text-light text-shadow vs">VS</Col>
                                             <Col className="p-0 bout-bg" style={{ backgroundImage: awayTeam && `url(${awayTeam.imageUrl})` }}>
-                                                <Container fluid style={{ backgroundColor: awayTeam && awayTeam.color }} className="m-0 h-100 d-flex align-items-center justify-content-center fs-1">
-                                                    <span>{awayTeam ? awayTeam.name : bout.name === "Champs" ? i === 0 ? 'Team 4' : 'Team 2' : 'TBA'}</span>
-                                                </Container>
+                                                <Row style={{ backgroundColor: awayTeam && awayTeam.color }} className="m-0 h-100 d-flex flex-column justify-content-center fs-1">
+                                                    {/* center text */}
+                                                    {!bout.awayTeamMVPJammer && <Col></Col>}
+                                                    <Col>
+                                                        <div>{awayTeam ? awayTeam.name : bout.name === "Champs" ? i === 0 ? 'Team 4' : 'Team 2' : 'TBA'}</div>
+                                                        {bout.awayTeamScore && <div className="lg-only-block">{bout.awayTeamScore}</div>}
+                                                    </Col>
+                                                    <Col className="w-100 lg-only justify-content-evenly">
+                                                        {bout.awayTeamMVPJammer && 
+                                                            <div style={{backgroundImage: `url(${getSkaterImage(bout.awayTeamMVPJammer)})`,
+                                                                backgroundPosition: 'center',
+                                                                backgroundSize: 'cover',
+                                                                backgroundRepeat: 'no-repeat',
+                                                                width: '20%'}}
+                                                                className="d-flex flex-column justify-content-end"
+                                                            >
+                                                                <div className="lh-1 fs-3">MVJ</div>
+                                                            </div>
+                                                        }
+                                                        {bout.awayTeamMVPBlocker && 
+                                                            <div style={{backgroundImage: `url(${getSkaterImage(bout.awayTeamMVPBlocker)})`,
+                                                                backgroundPosition: 'center',
+                                                                backgroundSize: 'cover',
+                                                                backgroundRepeat: 'no-repeat',
+                                                                width: '20%'}}
+                                                                className="d-flex flex-column justify-content-end"
+                                                            >
+                                                                <div className="lh-1 fs-3">MVB</div>
+                                                            </div>
+                                                        }
+                                                    </Col>
+                                                </Row>
                                             </Col>
                                         </Row>
                                     )}

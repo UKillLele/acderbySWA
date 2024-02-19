@@ -11,5 +11,4 @@ export interface Bout {
     awayTeamMVPJammer: string,
     awayTeamMVPBlocker: string,
     imageUrl: string
-
 }

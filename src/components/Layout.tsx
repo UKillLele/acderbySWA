@@ -39,8 +39,8 @@ const Layout = () => {
                                 <NavDropdown.Divider />
                                 <NavDropdown.Header>Home Teams</NavDropdown.Header>
                                 <NavDropdown.Item as={NavLink} to="teams/bombshells">Bombshell Brigade</NavDropdown.Item>
-                                <NavDropdown.Item as={NavLink} to="teams/dk">Deadly Kennedys</NavDropdown.Item>
                                 <NavDropdown.Item as={NavLink} to="teams/lsa">Lone Star Assassins</NavDropdown.Item>
+                                <NavDropdown.Item as={NavLink} to="teams/dk">The Deadly Kennedys</NavDropdown.Item>
                                 <NavDropdown.Item as={NavLink} to="teams/la-rev">&iexcl;Viva La Revoluci&oacute;n!</NavDropdown.Item>
                                 <NavDropdown.Divider />
                                 <NavDropdown.Header>Volunteers</NavDropdown.Header>

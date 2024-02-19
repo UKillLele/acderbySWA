@@ -35,6 +35,14 @@
     .bout-bg {
         height: 300px;
     }
+
+    .lg-only {
+        display:flex;
+    }
+    
+    .lg-only-block {
+        display: block;
+    }
 }
 
 @include media-breakpoint-down(lg) {
@@ -56,6 +64,10 @@
 
     .bout-bg {
         height: 100px;
+    }
+    
+    .lg-only, .lg-only-block {
+        display: none;
     }
 }
 
