@@ -115,7 +115,7 @@ const Join = () => {
                             <Row>
                                 <Col>
                                     <p>We're happy to partner with local and national businesses to reach our audience and support our passion! From the jam line to vendor booths, we've got something for every budget.</p>
-                                    <div className="my-5 text-center"><a href="mailto:sponsorship@acderby.com?subject=Sponsor" target="_blank" rel="noreferrer"><Button>Sponosor</Button></a></div>
+                                    <div className="my-5 text-center"><a href="mailto:sponsorship@acderby.com?subject=Sponsor" target="_blank" rel="noreferrer"><Button>Sponsor</Button></a></div>
                                 </Col>
                             </Row>
                         </Col>
