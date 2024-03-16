@@ -84,7 +84,7 @@ const Shop = () => {
         
         fetch(`/api/catalog?category=${page.split('/')[1]}`).then(resp => resp.json()).catch(() => {
             if (page.split('/')[1] === "tickets") {
-                setToast("Ticket sales have ended.");
+                setToast("Ticket sales have ended. Please purchase tickets at the door.");
                 setLoading(false);
             }
         }).then((data) => {
