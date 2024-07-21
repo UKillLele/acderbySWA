@@ -10,7 +10,7 @@ const Home = () => {
                     <Col>
                         <Row>
                             <Col>
-                                <h2 className="xl-title mb-5 text-shadow">2024 Season Passes on sale now!</h2>
+                                <h2 className="xl-title mb-5 text-shadow">2024 Champs tickets on sale now!</h2>
                             </Col>
                         </Row>
                         <Row>
