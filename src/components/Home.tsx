@@ -54,7 +54,7 @@ const Home = () => {
                                 <p className="fs-1 text-shadow text-end">Aug 17</p>
                             </Col>
                             <Col className="ps-5">
-                                <p className="fs-1 text-shadow">Oct 19</p>
+                                <p className="fs-1 text-shadow">Oct 12</p>
                             </Col>
                         </Row>
                         <Row>
