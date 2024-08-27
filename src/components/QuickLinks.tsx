@@ -10,7 +10,7 @@ const QuickLinks = () => {
                     <h1 className="xl-title my-5 text-shadow">Quick Links</h1>
                 </Col>
             </Row>
-            <Row className="my-5 justify-content-center">
+            <Row className="m-2 justify-content-center">
                 <Col xs="12" lg="auto" data-bs-theme="light">
                     <Card>
                         <Card.Body className="text-center">
@@ -70,6 +70,14 @@ const QuickLinks = () => {
                             <Card.Title>Affiliates</Card.Title>
                             <Button href="https://wftda.org/" target="_blank" rel="noreferrer" className="d-block m-2">WFTDA</Button>
                             <Button href="http://thunderbirdrink.com/" target="_blank" rel="noreferrer" className="d-block m-2">Thunderbird</Button>
+                        </Card.Body>
+                    </Card>
+                </Col>
+                <Col xs="12" lg="auto" data-bs-theme="light">
+                    <Card>
+                        <Card.Body className="text-center">
+                            <Card.Title>Newsletter</Card.Title>
+                            <iframe src="https://assassinationcityrollerderby.substack.com/embed" width="480" height="150"></iframe>
                         </Card.Body>
                     </Card>
                 </Col>
