@@ -252,12 +252,13 @@ export async function processPayment(request: HttpRequest, context: InvocationCo
             accessToken: process.env.SquareAccessToken,
             environment: Environment.Production
         });
-            const response = await _client.paymentsApi.createPayment({
-                sourceId: req.sourceId,
-                orderId: req.order?.id,
-                amountMoney: req.order?.netAmountDueMoney,
-                idempotencyKey: Guid.create().toString()
-            });
+        const response = await _client.paymentsApi.createPayment({
+            sourceId: req.sourceId,
+            orderId: req.order?.id,
+            amountMoney: req.order?.netAmountDueMoney,
+            idempotencyKey: Guid.create().toString()
+        });
+        try{
             const fulfillment = req.order?.fulfillments[0]?.type ==="PICKUP" ? req.order.fulfillments[0].pickupDetails.recipient : req.order.fulfillments[0].shipmentDetails.recipient;
             if (fulfillment) {
                 let code: string;
@@ -316,11 +317,20 @@ export async function processPayment(request: HttpRequest, context: InvocationCo
                         cid: 'QRCode'
                     }]
                 });
-                return {
-                    status: 200,
-                    body: JSON.stringify(response.result.payment, (_, v) => typeof v === 'bigint' ? v.toString() : v)
-                }
             }
+        } catch(err)
+        {
+            return {
+                status: 200,
+                jsonBody: 'Payment received but email receipt failed to generate. Please contact info@acderby.com'
+            }
+        }
+        finally {
+            return {
+                status: 200,
+                body: JSON.stringify(response.result.payment, (_, v) => typeof v === 'bigint' ? v.toString() : v)
+            }
+        }
     } else {
         return {
             status: 404,
