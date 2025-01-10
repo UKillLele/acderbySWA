@@ -22,6 +22,7 @@ function checkTix(dates, index) {
 
 const SeasonSchedule = () => {
     const [bouts, setBouts] = useState<Bout[][]>();
+    const [error, setError] = useState<boolean>();
     const [teams, setTeams] = useState<Team[]>();
     const [players, setPlayers] = useState<Person[]>();
 
@@ -41,6 +42,8 @@ const SeasonSchedule = () => {
                 return groupedBouts[bout];
             });
             setBouts(resultArray);
+        }).catch((_: any) => {
+            setError(true);
         });
         fetch(`/api/teams`).then(resp => resp.json()).then((teams: Team[]) => {
             setTeams(teams);
@@ -60,7 +63,7 @@ const SeasonSchedule = () => {
         <Container fluid className="content bg-dark text-light">
             <Row className="m-5 align-items-center">
                 <Col className="my-auto">
-                    <h1 className="xl-title my-5 text-shadow">2024 Season</h1>
+                    <h1 className="xl-title my-5 text-shadow">2025 Season</h1>
                 </Col>
                 <Col xs="auto">
                     <Link className="btn btn-primary ms-auto" to="/tickets">Get Season Passes</Link>
@@ -214,7 +217,15 @@ const SeasonSchedule = () => {
                         </Card>
                     </Col>
                 </Row>
-            ) : 
+            ) : error ? (
+                <Container>
+                    <Col>
+                        <Row>
+                            <p className="pt-5 h1">Season Info Coming Soon!</p>
+                        </Row>
+                    </Col>
+                </Container>
+            ) :
                 <Container fluid className="page-loader">
                     <Spinner animation="border" role="status">
                         <span className="visually-hidden">Loading...</span>
