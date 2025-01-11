@@ -31,14 +31,14 @@ const SeasonSchedule = () => {
             setPlayers(players);
         })
         fetch(`/api/bouts`).then(resp => resp.json()).then((b: Bout[]) => {
-            const groupedBouts = b.reduce((r, a) => {
+            const groupedBouts = b.filter(x => x.date >= new Date(2025)).reduce((r, a) => {
                 const date: Date = new Date(a.date);
-                const ymd = `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}`;
+                const ymd = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
                 r[ymd] = r[ymd] || [];
                 r[ymd].push(a);
                 return r;
             }, {});
-            var resultArray: Bout[][] = Object.keys(groupedBouts).map(function(bout){
+            var resultArray: Bout[][] = Object.keys(groupedBouts).map(function (bout) {
                 return groupedBouts[bout];
             });
             setBouts(resultArray);
@@ -55,7 +55,7 @@ const SeasonSchedule = () => {
     }
 
     function getSkaterImage(skaterId: string) {
-        const player = players?.find(x =>  x.id === skaterId);
+        const player = players?.find(x => x.id === skaterId);
         return encodeURI(player?.imageUrl ?? "");
     }
 
@@ -120,7 +120,7 @@ const SeasonSchedule = () => {
                             <Card.Body>
                                 <Card.Title>
                                     <Row className="align-items-center">
-                                        {date[0].imageUrl  && 
+                                        {date[0].imageUrl &&
                                             <Col lg="auto" className="text-center py-2">
                                                 <a href={date[0].imageUrl} target="_blank" rel="noreferrer" className="btn btn-primary ms-auto">Program</a>
                                             </Col>
@@ -134,7 +134,7 @@ const SeasonSchedule = () => {
                                         <Col lg="auto" className="text-center py-2">
                                             {checkTix(bouts, index) && <Link className="btn btn-primary ms-auto" to="/tickets">Get Tickets</Link>}
                                         </Col>
-                                    </Row> 
+                                    </Row>
                                 </Card.Title>
                                 {date.sort((a, b) => a.date > b.date ? 1 : -1).map((bout, i) => {
                                     const homeTeam = getTeam(bout.homeTeam);
@@ -150,23 +150,27 @@ const SeasonSchedule = () => {
                                                         {bout.homeTeamScore && <div className="lg-only-block">{bout.homeTeamScore}</div>}
                                                     </Col>
                                                     <Col className="w-100 lg-only justify-content-evenly">
-                                                        {bout.homeTeamMVPJammer && 
-                                                            <div style={{backgroundImage: `url(${getSkaterImage(bout.homeTeamMVPJammer)})`,
+                                                        {bout.homeTeamMVPJammer &&
+                                                            <div style={{
+                                                                backgroundImage: `url(${getSkaterImage(bout.homeTeamMVPJammer)})`,
                                                                 backgroundPosition: 'center',
                                                                 backgroundSize: 'cover',
                                                                 backgroundRepeat: 'no-repeat',
-                                                                width: '20%'}}
+                                                                width: '20%'
+                                                            }}
                                                                 className="d-flex flex-column justify-content-end"
                                                             >
                                                                 <div className="lh-1 fs-3">MVJ</div>
                                                             </div>
                                                         }
-                                                        {bout.homeTeamMVPBlocker && 
-                                                            <div style={{backgroundImage: `url(${getSkaterImage(bout.homeTeamMVPBlocker)})`,
+                                                        {bout.homeTeamMVPBlocker &&
+                                                            <div style={{
+                                                                backgroundImage: `url(${getSkaterImage(bout.homeTeamMVPBlocker)})`,
                                                                 backgroundPosition: 'center',
                                                                 backgroundSize: 'cover',
                                                                 backgroundRepeat: 'no-repeat',
-                                                                width: '20%'}}
+                                                                width: '20%'
+                                                            }}
                                                                 className="d-flex flex-column justify-content-end"
                                                             >
                                                                 <div className="lh-1 fs-3">MVB</div>
@@ -185,23 +189,27 @@ const SeasonSchedule = () => {
                                                         {bout.awayTeamScore && <div className="lg-only-block">{bout.awayTeamScore}</div>}
                                                     </Col>
                                                     <Col className="w-100 lg-only justify-content-evenly">
-                                                        {bout.awayTeamMVPJammer && 
-                                                            <div style={{backgroundImage: `url(${getSkaterImage(bout.awayTeamMVPJammer)})`,
+                                                        {bout.awayTeamMVPJammer &&
+                                                            <div style={{
+                                                                backgroundImage: `url(${getSkaterImage(bout.awayTeamMVPJammer)})`,
                                                                 backgroundPosition: 'center',
                                                                 backgroundSize: 'cover',
                                                                 backgroundRepeat: 'no-repeat',
-                                                                width: '20%'}}
+                                                                width: '20%'
+                                                            }}
                                                                 className="d-flex flex-column justify-content-end"
                                                             >
                                                                 <div className="lh-1 fs-3">MVJ</div>
                                                             </div>
                                                         }
-                                                        {bout.awayTeamMVPBlocker && 
-                                                            <div style={{backgroundImage: `url(${getSkaterImage(bout.awayTeamMVPBlocker)})`,
+                                                        {bout.awayTeamMVPBlocker &&
+                                                            <div style={{
+                                                                backgroundImage: `url(${getSkaterImage(bout.awayTeamMVPBlocker)})`,
                                                                 backgroundPosition: 'center',
                                                                 backgroundSize: 'cover',
                                                                 backgroundRepeat: 'no-repeat',
-                                                                width: '20%'}}
+                                                                width: '20%'
+                                                            }}
                                                                 className="d-flex flex-column justify-content-end"
                                                             >
                                                                 <div className="lh-1 fs-3">MVB</div>
@@ -211,7 +219,8 @@ const SeasonSchedule = () => {
                                                 </Row>
                                             </Col>
                                         </Row>
-                                    )}
+                                    )
+                                }
                                 )}
                             </Card.Body>
                         </Card>

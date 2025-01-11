@@ -9,7 +9,7 @@ const cosmosInput = input.cosmosDB({
 });
 
 export async function getBouts(request: HttpRequest, context: InvocationContext): Promise<HttpResponseInit> {
-    cosmosInput.sqlQuery = 'SELECT * from c where c.date like"%2025%"';
+    cosmosInput.sqlQuery = 'SELECT * from c';
     const bouts = <Document>context.extraInputs.get(cosmosInput);
     if (!bouts) {
         return {
