@@ -1,10 +1,13 @@
 {
   "platform": {
-    "apiRuntime": "node:18"
+    "apiRuntime": "node:20"
   },
   "navigationFallback": {
     "rewrite": "/index.html",
-    "exclude": ["/public/images/*.{png,jpg,jpeg,gif,bmp}", "/css/*"]
+    "exclude": [
+      "/public/images/*.{png,jpg,jpeg,gif,bmp}",
+      "/css/*"
+    ]
   },
   "responseOverrides": {
     "401": {
