@@ -17,9 +17,7 @@
     "guid-typescript": "^1.0.9",
     "nodemailer": "^6.9.7",
     "qrcode": "^1.5.3",
-    "square": "^33.1.0"
-  },
-  "devDependencies": {
+    "square": "^33.1.0",
     "@types/node": "^18.x",
     "@types/nodemailer": "^6.4.14",
     "@types/qrcode": "^1.5.5",

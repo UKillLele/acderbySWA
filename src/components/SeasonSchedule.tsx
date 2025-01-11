@@ -29,9 +29,10 @@ const SeasonSchedule = () => {
     useEffect(() => {
         fetch(`/api/players`).then(resp => resp.json()).then(players => {
             setPlayers(players);
-        })
+        });
         fetch(`/api/bouts`).then(resp => resp.json()).then((b: Bout[]) => {
-            const groupedBouts = b.filter(x => x.date >= new Date(2025)).reduce((r, a) => {
+            const thisYear = new Date('2025');
+            const groupedBouts = b.filter(x => new Date(x.date) >= thisYear).reduce((r, a) => {
                 const date: Date = new Date(a.date);
                 const ymd = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
                 r[ymd] = r[ymd] || [];
@@ -43,7 +44,7 @@ const SeasonSchedule = () => {
             });
             setBouts(resultArray);
         }).catch((_: any) => {
-            setError(true);
+            setError(true)
         });
         fetch(`/api/teams`).then(resp => resp.json()).then((teams: Team[]) => {
             setTeams(teams);

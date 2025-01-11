@@ -11,6 +11,7 @@ const cosmosInput = input.cosmosDB({
 export async function getBouts(request: HttpRequest, context: InvocationContext): Promise<HttpResponseInit> {
     cosmosInput.sqlQuery = 'SELECT * from c';
     const bouts = <Document>context.extraInputs.get(cosmosInput);
+    context.log(bouts)
     if (!bouts) {
         return {
             status: 404,
