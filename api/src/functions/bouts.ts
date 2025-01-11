@@ -1,6 +1,6 @@
 import { app, HttpRequest, HttpResponseInit, input, InvocationContext } from '@azure/functions';
 
-interface Document {}
+interface Document { }
 
 const cosmosInput = input.cosmosDB({
     databaseName: 'acderby',
@@ -9,7 +9,7 @@ const cosmosInput = input.cosmosDB({
 });
 
 export async function getBouts(request: HttpRequest, context: InvocationContext): Promise<HttpResponseInit> {
-    cosmosInput.sqlQuery = "SELECT * from c where c.date like '%2025%'";
+    cosmosInput.sqlQuery = 'SELECT * from c where c.date like"%2025%"';
     const bouts = <Document>context.extraInputs.get(cosmosInput);
     if (!bouts) {
         return {

@@ -9,22 +9,22 @@ function keysToCamel(o: unknown): unknown {
         const p = o as object;
         const n = {};
         Object.keys(p).forEach((k) => {
-        n[toCamel(k)] = keysToCamel(p[k]);
-      });
-      return n;
+            n[toCamel(k)] = keysToCamel(p[k]);
+        });
+        return n;
     } else if (Array.isArray(o)) {
-      return o.map((i) => {
-        return keysToCamel(i);
-      });
+        return o.map((i) => {
+            return keysToCamel(i);
+        });
     }
     return o;
-  }
+}
 
-  function toCamel(s: string): string {
+function toCamel(s: string): string {
     return s.replace(/([-_][a-z0-9])/gi, ($1) => {
-      return $1.toUpperCase().replaceAll('-', '').replaceAll('_', '');
+        return $1.toUpperCase().replaceAll('-', '').replaceAll('_', '');
     });
-  }
+}
 
 const states = ["AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "DC", "FL", "GA", "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD", "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ", "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC", "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WI", "WV", "WY"];
 
@@ -64,7 +64,7 @@ const Shop = () => {
     const [address2, setAddress2] = useState("");
     const [city, setCity] = useState("");
     const [state, setState] = useState("");
-    const [zipcode, setZipcode] = useState("");    
+    const [zipcode, setZipcode] = useState("");
     const [fulfillmentSaved, setFulfillmentSaved] = useState(false);
     const [paymentKey, setPaymentKey] = useState(Math.floor(Math.random() * 1000));
 
@@ -81,7 +81,7 @@ const Shop = () => {
                 }
             }, error => setToast(error));
         }
-        
+
         fetch(`/api/catalog?category=${page.split('/')[1]}`).then(resp => resp.json()).catch(() => {
             if (page.split('/')[1] === "tickets") {
                 setToast("Ticket sales have ended. Please purchase tickets at the door.");
@@ -148,8 +148,8 @@ const Shop = () => {
     }
 
     async function onItemAmountChange(amount: string, itemId: string) {
-            const item = [{ lineItemId: itemId, quantity: amount }];
-            updateOrderItems(item);
+        const item = [{ lineItemId: itemId, quantity: amount }];
+        updateOrderItems(item);
     }
 
     async function updateOrderItems(items) {
@@ -306,7 +306,7 @@ const Shop = () => {
                         <span className="visually-hidden">Loading...</span>
                     </Spinner>
                 </Container>
-            :
+                :
                 <Row className="p-5">
                     <Col xs="12" lg className="mb-3">
                         <Row>
@@ -349,13 +349,13 @@ const Shop = () => {
                             )}
                         </Row>
                     </Col>
-                    <Col xs={{ order: 'first' }} lg={{order: 'last', span: '4'}} >
+                    <Col xs={{ order: 'first' }} lg={{ order: 'last', span: '4' }} >
                         <Row>
                             <Col>
                                 <Accordion className="position-sticky" data-bs-theme="light" activeKey={activeKey} onSelect={(event) => event && setActiveKey(event.toString())}>
                                     <Accordion.Item eventKey="0">
                                         <Accordion.Header>
-                                            Order {Number(order?.totalMoney?.amount) > 0 && <span className="ps-3">${Number(order?.totalMoney?.amount)/100}</span>}
+                                            Order {Number(order?.totalMoney?.amount) > 0 && <span className="ps-3">${Number(order?.totalMoney?.amount) / 100}</span>}
                                         </Accordion.Header>
                                         <Accordion.Body>
                                             <ListGroup>
@@ -378,7 +378,7 @@ const Shop = () => {
                                                             </Col>
                                                         </Row>
                                                     </ListGroup.Item>
-                                            )}
+                                                )}
                                             </ListGroup>
                                             {Number(order?.totalDiscountMoney?.amount) > 0 &&
                                                 order?.discounts?.map(discount =>
@@ -421,7 +421,7 @@ const Shop = () => {
                                     </Accordion.Item>
                                     <Accordion.Item eventKey="1">
                                         <Accordion.Header>
-                                            Fulfillment {fulfillment && <span className="ps-3">{fulfillment.toUpperCase()}</span>} {order?.serviceCharges && <span className="ps-3">${Number(order?.serviceCharges[0].amountMoney?.amount) / 100 ?? 0}</span>}
+                                            Fulfillment {fulfillment && <span className="ps-3">{fulfillment.toUpperCase()}</span>} {order?.serviceCharges && <span className="ps-3">${Number(order?.serviceCharges[0].amountMoney?.amount) / 100}</span>}
                                         </Accordion.Header>
                                         <Accordion.Body>
                                             <Row className="pb-3">
@@ -521,9 +521,9 @@ const Shop = () => {
                                                                 value={state}
                                                                 onChange={(e) => setState(e.currentTarget.value)}
                                                             >
-                                                            {states.map(state => 
-                                                                <option key={state} value={state}>{state}</option>
-                                                            )}
+                                                                {states.map(state =>
+                                                                    <option key={state} value={state}>{state}</option>
+                                                                )}
                                                             </Form.Select>
                                                             <Form.Control.Feedback type="invalid">
                                                                 Please select a state.
@@ -565,7 +565,7 @@ const Shop = () => {
                                             Payment
                                         </Accordion.Header>
                                         <Accordion.Body>
-                                            {order?.fulfillments && 
+                                            {order?.fulfillments &&
                                                 (order.fulfillments[0].shipmentDetails?.recipient?.displayName || order.fulfillments[0].pickupDetails?.recipient?.displayName) ?
                                                 <PaymentForm
                                                     key={paymentKey}
@@ -574,7 +574,7 @@ const Shop = () => {
                                                         const dataJsonString = JSON.stringify({ sourceId: token.token, order });
                                                         await fetch('api/process-payment', {
                                                             method: 'POST',
-                                                            headers: { "Content-Type": "application/json"},
+                                                            headers: { "Content-Type": "application/json" },
                                                             body: dataJsonString
                                                         }).then(resp => resp.json()).then(data => {
                                                             if (data.errors && data.errors.length > 0) {
@@ -604,8 +604,8 @@ const Shop = () => {
                                                     {/*<CashAppPay />*/}
                                                     <CreditCard />
                                                 </PaymentForm>
-                                            :
-                                                    <p className="text-center">Please enter fulfillment details</p>
+                                                :
+                                                <p className="text-center">Please enter fulfillment details</p>
                                             }
                                         </Accordion.Body>
                                     </Accordion.Item>
@@ -627,15 +627,15 @@ const Shop = () => {
                                 <Col>
                                     {item.itemVariationData?.name} - ${Number(item.itemVariationData.priceMoney?.amount) / 100}
                                 </Col>
-                                    <Col xs="3">
-                                        <Form.Control
-                                            type="number"
-                                            min="0"
-                                            placeholder="#"
-                                            name={item.id ?? 'no item'}
-                                            value={itemQuantities.find(x => x.id === item.id)?.quantity}
-                                            onChange={(event) => onVariantAdded(event.currentTarget.value, item.id)}
-                                        />
+                                <Col xs="3">
+                                    <Form.Control
+                                        type="number"
+                                        min="0"
+                                        placeholder="#"
+                                        name={item.id ?? 'no item'}
+                                        value={itemQuantities.find(x => x.id === item.id)?.quantity}
+                                        onChange={(event) => onVariantAdded(event.currentTarget.value, item.id)}
+                                    />
                                 </Col>
                             </Row>
                         </ListGroup.Item>
