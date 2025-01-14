@@ -1,5 +1,5 @@
-import { Outlet, NavLink, useNavigation } from 'react-router-dom'
-import { Nav, Navbar, Container, NavDropdown, Spinner } from 'react-bootstrap'
+import { Outlet, NavLink, useNavigation, Link } from 'react-router-dom'
+import { Nav, Navbar, Container, NavDropdown, Spinner, Col } from 'react-bootstrap'
 import { isEditor, clearStorage } from './ProtectedRoute';
 
 
@@ -66,6 +66,9 @@ const Layout = () => {
                             <Nav.Link as={NavLink} to="/join" className="my-auto">Join</Nav.Link>
                             <Nav.Link as={NavLink} to="/news" className="my-auto">News</Nav.Link>
                             <Nav.Link as={NavLink} to="/contact" className="my-auto">Contact</Nav.Link>
+                            <Col className="d-flex align-items-center">
+                                <Link className="btn btn-primary btn-lg shadow" to="tickets">Tickets</Link>
+                            </Col>
                             {editor && 
                                 <Nav.Link href="/.auth/logout" onClick={() => clearStorage()} className="my-auto">Log out</Nav.Link>
                             }

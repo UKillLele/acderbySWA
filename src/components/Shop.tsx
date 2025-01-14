@@ -119,7 +119,7 @@ const Shop = () => {
         })
         setItemQuantities(quantities);
 
-        setFulfillment(order?.fulfillments && order.fulfillments[0].type ? order.fulfillments[0].type.toLowerCase() : "");
+        setFulfillment(order?.fulfillments && order.fulfillments[0].type ? order.fulfillments[0].type.toLowerCase() : "pickup");
         setFulfillmentSaved(order?.fulfillments != null);
 
         // populate form fields
@@ -426,9 +426,8 @@ const Shop = () => {
                                         <Accordion.Body>
                                             <Row className="pb-3">
                                                 <Col>
-                                                    <Form.Select onChange={(e) => setFulfillment(e.currentTarget.value)} disabled={fulfillmentSaved} value={fulfillment}>
+                                                    <Form.Select onChange={(e) => setFulfillment(e.currentTarget.value)} disabled={fulfillmentSaved} value={fulfillment} defaultValue={"pickup"}>
                                                         <option value="" >Select option</option>
-                                                        <option value="shipment">Ship - $6</option>
                                                         <option value="pickup">Bout day pickup - Free</option>
                                                     </Form.Select>
                                                 </Col>
