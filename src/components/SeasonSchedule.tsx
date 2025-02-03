@@ -96,6 +96,7 @@ const SeasonSchedule = () => {
                                     <ListGroup.Item>
                                         <p className="fw-bold">REFRESHMENTS</p>
                                         <p className="m-0">All bouts are BYOB - no glass, please. IDs will be checked at the door.</p>
+                                        <p className="m-0">No outside food is permitted.</p>
                                         <p className="m-0">Non-Alcoholic drinks & snacks are available at the concession stand.</p>
                                     </ListGroup.Item>
                                     <ListGroup.Item>
