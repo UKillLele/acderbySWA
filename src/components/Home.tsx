@@ -9,7 +9,7 @@ const Home = () => {
         <Container fluid className="content bg-img" style={{ backgroundImage: 'url("https://acrdphotos.blob.core.windows.net/photos/Season-Background.png")' }}>
             <Container fluid className="page-loader fw-bold">
                 <Row className="align-items-center">
-                    <Col>
+                    <Col xs={12} lg={6}>
                         <Row>
                             <Col>
                                 <p className="xl-title text-shadow text-center">2025 Season</p>
@@ -102,7 +102,7 @@ const Home = () => {
                             </Col>
                         </Row>
                     </Col>
-                    <Col>
+                    <Col xs={12} lg={6}>
                         <Row>
                             <Col>
                                 <h2 className="xl-title mb-5 text-shadow">2025 Season Passes on sale now!</h2>
