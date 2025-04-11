@@ -28,7 +28,7 @@ const Sponsors = () => {
                     </a>
                 </Col>
                 <Col xs lg="4" className="text-center mt-5">
-                    <a href="https://www.ihttps://urcomped.com/" target="_blank" rel="noreferrer" className="text-decoration-none">
+                    <a href="https://urcomped.com/" target="_blank" rel="noreferrer" className="text-decoration-none">
                         <Image className="skater-image bg-white" alt="URComped" src="https://acrdphotos.blob.core.windows.net/photos/URComped_Logo.png" />
                         <div className="mt-0 border bg-light rounded p-3">
                             <p className="fs-3 m-0"><span className="text-nowrap">URComped</span></p>
