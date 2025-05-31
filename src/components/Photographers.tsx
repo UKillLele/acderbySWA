@@ -29,6 +29,14 @@ const Photographers = () => {
                         </div>
                     </a>
                 </Col>
+                <Col xs lg="4" className="text-center mt-5">
+                    <a href="https://www.facebook.com/calesherry/photos_albums" target="_blank" rel="noreferrer">
+                        <Image className="skater-image" alt="Cale Sherry Photography" src="https://acrdphotos.blob.core.windows.net/photos/photog-cale.jpg" />
+                        <div className="mt-0 border bg-light rounded">
+                            <p className="fs-3 m-0"><span className="text-nowrap">Cale Sherry</span></p>
+                        </div>
+                    </a>
+                </Col>
             </Row>
         </Container>
     )
