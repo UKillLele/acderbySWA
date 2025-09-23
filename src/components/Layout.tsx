@@ -9,8 +9,8 @@ const Layout = () => {
     const editor = isEditor();
     return (
         <Container fluid className="bg-dark text-light page-bg" data-bs-theme="dark">
-            <Navbar collapseOnSelect expand="lg">
-                <Container fluid className="mx-4">
+            <Navbar collapseOnSelect={true} expand="lg">
+                <Container fluid >
                     <Navbar.Brand as={NavLink} to="/" className="d-flex">
                         <img alt="Assassination City Roller Derby"
                             src="/images/logo-black.gif"
