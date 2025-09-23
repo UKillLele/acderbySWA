@@ -3,13 +3,6 @@
 @import '../../node_modules/bootstrap/scss/variables';
 @import '../../node_modules/bootstrap/scss/mixins';
 
-.payment {
-    display: grid;
-    justify-content: center;
-    align-content: center;
-    height: 100vh;
-}
-
 @include media-breakpoint-up(lg) {
     .overlap-left {
         margin: 20px 100px 20px -100px;
@@ -71,6 +64,17 @@
     }
 }
 
+.payment {
+    display: grid;
+    justify-content: center;
+    align-content: center;
+    height: 100vh;
+}
+
+.accent {
+    color: hotpink
+}
+
 .vs {
     z-index: 2;
     text-align: center;
@@ -93,7 +97,7 @@
 }
 
 .page-loader {
-    height: calc(100vh - 130px);
+    height: calc(100vh - 110px);
     display: flex;
     align-items: center;
     justify-content:  center;

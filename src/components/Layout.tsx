@@ -9,31 +9,28 @@ const Layout = () => {
     const editor = isEditor();
     return (
         <Container fluid className="bg-dark text-light page-bg" data-bs-theme="dark">
-            <Navbar expand="lg">
-                <Container className="fs-4">
-                    <Navbar.Brand as={NavLink} to="/" className="d-lg-none">
+            <Navbar collapseOnSelect expand="lg">
+                <Container fluid className="mx-4">
+                    <Navbar.Brand as={NavLink} to="/" className="d-flex">
                         <img alt="Assassination City Roller Derby"
                             src="/images/logo-black.gif"
-                            width="120"
-                            height="120"
-                            className="d-inline-block align-top"
+                            width="80"
+                            height="80"
+                            className="d-inline-block align-top my-2"
                         />
+                        <div className="my-auto ms-2 fs-5 text-shadow fw-bold">
+                            <p className="mb-0">ASSASSINATION CITY <br/> ROLLER DERBY</p>
+                        </div>
                     </Navbar.Brand>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
-                    <Navbar.Collapse className="justify-content-center">
-                        <Nav className="text-shadow">
-                            <Nav.Link as={NavLink} to="/" className="my-auto">Home</Nav.Link>
-                            <NavDropdown title="Events" className="my-auto">
-                                <NavDropdown.Item as={NavLink} to="/season">2025 Season</NavDropdown.Item>
-                                <NavDropdown.Item as={NavLink} to="/events">Events</NavDropdown.Item>
-                                <NavDropdown.Item as={NavLink} to="/tickets">Tickets</NavDropdown.Item>
-                            </NavDropdown>
-                            <NavDropdown title="About" className="my-auto">
+                    <Navbar.Collapse>
+                        <Nav className="text-shadow ms-auto">
+                            <NavDropdown title="ABOUT" className="my-auto">
                                 <NavDropdown.Item as={NavLink} to="/league">Our League</NavDropdown.Item>
                                 <NavDropdown.Item as={NavLink} to="/derby">Roller Derby</NavDropdown.Item>
                                 <NavDropdown.Item as={NavLink} to="/sponsors">Sponsors</NavDropdown.Item>
                             </NavDropdown>
-                            <NavDropdown title="Teams" className="my-auto">
+                            <NavDropdown title="TEAMS" className="my-auto">
                                 <NavDropdown.Header>Travel Team</NavDropdown.Header>
                                 <NavDropdown.Item as={NavLink} to="teams/conspiracy">Conspiracy</NavDropdown.Item>
                                 <NavDropdown.Divider />
@@ -54,21 +51,16 @@ const Layout = () => {
                                     </>
                                 }
                             </NavDropdown>
-                            <Navbar.Brand as={NavLink} to="/" className="d-none d-lg-block mx-5">
-                                <img alt="Assassination City Roller Derby"
-                                    src="/images/logo-black.gif"
-                                    width="120"
-                                    height="120"
-                                    className="d-inline-block align-top"
-                                />
-                            </Navbar.Brand>
-                            <Nav.Link as={NavLink} to="/shop" className="my-auto">Shop</Nav.Link>
-                            <Nav.Link as={NavLink} to="/join" className="my-auto">Join</Nav.Link>
-                            <Nav.Link as={NavLink} to="/news" className="my-auto">News</Nav.Link>
-                            <Nav.Link as={NavLink} to="/contact" className="my-auto">Contact</Nav.Link>
-                            <Col className="d-flex align-items-center">
-                                <Link className="btn btn-primary btn-lg shadow" to="tickets">Tickets</Link>
-                            </Col>
+                            <NavDropdown title="EVENTS" className="my-auto">
+                                <NavDropdown.Item as={NavLink} to="/season">2025 Season</NavDropdown.Item>
+                                <NavDropdown.Item as={NavLink} to="/events">Events</NavDropdown.Item>
+                                <NavDropdown.Item as={NavLink} to="/tickets">Tickets</NavDropdown.Item>
+                            </NavDropdown>
+                            <Nav.Link as={NavLink} to="/news" className="my-auto">NEWS</Nav.Link>
+                            <Nav.Link as={NavLink} to="/contact" className="my-auto">CONTACT</Nav.Link>
+                            <Nav.Link as={NavLink} to="/join" className="my-auto">JOIN</Nav.Link>
+                            <Nav.Link as={NavLink} to="/shop" className="my-auto">STORE</Nav.Link>
+                            <Nav.Link as={NavLink} to="/tickets" className="my-auto">TICKETS</Nav.Link>
                             {editor && 
                                 <Nav.Link href="/.auth/logout" onClick={() => clearStorage()} className="my-auto">Log out</Nav.Link>
                             }
