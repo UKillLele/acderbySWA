@@ -31,7 +31,7 @@ const Home = () => {
                 </Row>
                 <Container className="text-shadow mx-5 text-center">
                     <Row className="fs-3 fw-bold justify-content-center">
-                        <Col className="p-0 mx-1" xs={4} s={1}>
+                        <Col className="p-0 mx-1" xs={4} sm={1}>
                             <OverlayTrigger
                                 placement="bottom"
                                 delay={{ show: 250, hide:400}}
@@ -41,7 +41,7 @@ const Home = () => {
                             </OverlayTrigger>
                         </Col>
                         <Col className="p-0" xs="auto"><p>|</p></Col>
-                        <Col className="p-0 mx-1" xs={4} s={1}>
+                        <Col className="p-0 mx-1" xs={4} sm={1}>
                             <OverlayTrigger
                                 placement="bottom"
                                 delay={{ show: 250, hide:400}}
@@ -50,8 +50,8 @@ const Home = () => {
                                 <p>MAR 15</p>
                             </OverlayTrigger>
                         </Col>
-                        <Col className="p-0 d-none d-sm-block"><p>|</p></Col>
-                        <Col className="p-0 mx-1" xs={4} s={1}>
+                        <Col className="p-0 d-none d-sm-block" sm="auto"><p>|</p></Col>
+                        <Col className="p-0 mx-1" xs={4} sm={1}>
                             <OverlayTrigger
                                 placement="bottom"
                                 delay={{ show: 250, hide:400}}
@@ -61,7 +61,7 @@ const Home = () => {
                             </OverlayTrigger>
                         </Col>
                         <Col className="p-0" xs="auto"><p>|</p></Col>
-                        <Col className="p-0 mx-1" xs={4} s={1}>
+                        <Col className="p-0 mx-1" xs={4} sm={1}>
                             <OverlayTrigger
                                 placement="bottom"
                                 delay={{ show: 250, hide:400}}
@@ -70,8 +70,8 @@ const Home = () => {
                                 <p>MAY 17</p>
                             </OverlayTrigger>
                         </Col>
-                        <Col className="p-0 d-none d-sm-block"><p>|</p></Col>
-                        <Col className="p-0 mx-1" xs={4} s={1}>
+                        <Col className="p-0 d-none d-sm-block" sm="auto"><p>|</p></Col>
+                        <Col className="p-0 mx-1" xs={4} sm={1}>
                             <OverlayTrigger
                                 placement="bottom"
                                 delay={{ show: 250, hide:400}}
@@ -82,7 +82,7 @@ const Home = () => {
                         </Col>
                     </Row>
                     <Row className="fs-3 fw-bold justify-content-center">
-                        <Col className="p-0 mx-1" xs={4} s={1}>
+                        <Col className="p-0 mx-1" xs={4} sm={1}>
                             <OverlayTrigger
                                 placement="bottom"
                                 delay={{ show: 250, hide:400}}
@@ -92,7 +92,7 @@ const Home = () => {
                             </OverlayTrigger>
                         </Col>
                         <Col className="p-0" xs="auto"><p>|</p></Col>
-                        <Col className="p-0 mx-1" xs={4} s={1}>
+                        <Col className="p-0 mx-1" xs={4} sm={1}>
                             <OverlayTrigger
                                 placement="bottom"
                                 delay={{ show: 250, hide:400}}
@@ -101,8 +101,8 @@ const Home = () => {
                             <p>SEP 20</p>
                             </OverlayTrigger>
                         </Col>
-                        <Col className="p-0 d-none d-sm-block"><p>|</p></Col>
-                        <Col className="p-0 mx-1" xs={4} s={1}>
+                        <Col className="p-0 d-none d-sm-block" sm="auto"><p>|</p></Col>
+                        <Col className="p-0 mx-1" xs={4} sm={1}>
                             <OverlayTrigger
                                 placement="bottom"
                                 delay={{ show: 250, hide:400}}
