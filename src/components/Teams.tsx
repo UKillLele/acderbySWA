@@ -37,7 +37,7 @@ const Teams = () => {
         <Container fluid className="content" style={{ background: team?.color }}>
             {team && 
             <Container fluid className="px-0">
-                <Row className="header-img px-lg-5 mx-0">
+                <Row className="header-img px-lg-5 mx-0 team-header" style={{backgroundImage: `url(${team.imageUrl})`}}>
                     <Row>
                         <Col className="my-auto">
                             <h1 className="xl-title my-5 text-shadow">{team.name}</h1>
@@ -46,7 +46,7 @@ const Teams = () => {
                             <Image src={`/images/${team.logoUrl}`} className="skater-image p-5" />
                         </Col>
                     </Row>
-                    {team.description && <p className="text-center bg-white rounded text-black p-3">{team.description}</p>}
+                    {team.description && <p className="text-center bg-white rounded text-black p-3 opacity-75">{team.description}</p>}
                 </Row>
                 <Row className="justify-content-center px-5">
                     {captain &&
@@ -60,7 +60,7 @@ const Teams = () => {
                     }
                     {coCaptain &&
                         <Col xs lg="4" className="text-center mt-5">
-                            <Image className="skater-image" src={coCaptain.imageUrl?.length > 0 ? coCaptain.imageUrl : team.defaultSkaterImage} />
+                            <Image className="skater-image" src={getImage(coCaptain.imageUrl)} />
                             <div className="mt-0 border bg-dark rounded">
                                 <p className={`${coCaptain.number && 'd-flex justify-content-between px-3'} fs-3 m-0`}>{coCaptain.number && <span>#{coCaptain.number}</span>}<span className="text-nowrap">{coCaptain.name}</span></p>
                                 <p className="fs-3 m-0">Co-Captain</p>
@@ -71,7 +71,7 @@ const Teams = () => {
                 <Row className="justify-content-center px-5">
                     {members && members.map((skater: Person) =>
                         <Col xs lg="6" xl="4" xxl="3" key={skater.id} className="text-center mt-5">
-                            <Image className="skater-image" src={skater.imageUrl?.length > 0 ? skater.imageUrl : team.defaultSkaterImage} />
+                            <Image className="skater-image" src={getImage(skater.imageUrl)} />
                             <div className="mt-0 border bg-dark rounded">
                                 <p className={`${skater.number && 'd-flex justify-content-between px-3'} fs-3 m-0`}>{skater.number && <span>#{skater.number}</span>}<span className="text-nowrap">{skater.name}</span></p>
                             </div>
@@ -81,7 +81,7 @@ const Teams = () => {
                 <Row className="justify-content-center px-5">
                     {headCoach &&
                         <Col xs lg="4" className="text-center mt-5">
-                            <Image className="skater-image" src={headCoach.imageUrl?.length > 0 ? headCoach.imageUrl : team.defaultSkaterImage} />
+                            <Image className="skater-image" src={getImage(headCoach.imageUrl)} />
                             <div className="mt-0 border bg-dark rounded">
                                 <p className={`${headCoach.number && 'd-flex justify-content-between px-3'} fs-3 m-0`}>{headCoach.number && <span>#{headCoach.number}</span>}<span className="text-nowrap">{headCoach.name}</span></p>
                                 <p className="fs-3 m-0">Head Coach</p>
@@ -90,7 +90,7 @@ const Teams = () => {
                     }
                     {benchCoach &&
                         <Col xs lg="4" className="text-center mt-5">
-                            <Image className="skater-image" src={benchCoach.imageUrl?.length > 0 ? benchCoach.imageUrl : team.defaultSkaterImage} />
+                            <Image className="skater-image" src={getImage(benchCoach.imageUrl)} />
                             <div className="mt-0 border bg-dark rounded">
                                 <p className={`${benchCoach.number && 'd-flex justify-content-between px-3'} fs-3 m-0`}>{benchCoach.number && <span>#{benchCoach.number}</span>}<span className="text-nowrap">{benchCoach.name}</span></p>
                                 <p className="fs-3 m-0">Bench Coach</p>
