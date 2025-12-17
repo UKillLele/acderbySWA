@@ -15,7 +15,7 @@ import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { Team } from "../models/Team";
 import { Person } from "../models/Person";
 import { isEditor } from "./ProtectedRoute";
-import { Position, PositionType } from "../models/Position";
+import { Position } from "../models/Position";
 
 const months = [
   "January",
