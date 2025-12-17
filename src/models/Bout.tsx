@@ -3,11 +3,11 @@ export interface Bout {
     name: string,
     date: Date,
     homeTeam: string,
-    homeTeamScore: number,
+    homeTeamScore: string,
     homeTeamMVPJammer: string,
     homeTeamMVPBlocker: string,
     awayTeam: string,
-    awayTeamScore: number,
+    awayTeamScore: string,
     awayTeamMVPJammer: string,
     awayTeamMVPBlocker: string,
     imageUrl: string

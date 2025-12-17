@@ -1,6 +1,6 @@
 import { CosmosClient } from '@azure/cosmos';
-import { app, HttpRequest, HttpResponseInit, input, output, InvocationContext, CosmosDBOutput } from '@azure/functions';
-import { BlobSASPermissions, BlobServiceClient, SASProtocol, StorageSharedKeyCredential } from '@azure/storage-blob';
+import { app, HttpRequest, HttpResponseInit, input, output, InvocationContext } from '@azure/functions';
+import { BlobServiceClient, StorageSharedKeyCredential } from '@azure/storage-blob';
 import { Guid } from 'guid-typescript';
 
 interface Person {

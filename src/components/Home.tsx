@@ -19,12 +19,12 @@ const Home = () => {
                     <Col>
                         <Row>
                             <Col>
-                                <h2 className="fs-1 text-shadow fst-italic accent">20th Anniversary Season</h2>
+                                <h2 className="fs-1 text-shadow fst-italic accent">2026 Season Dates are Here!</h2>
                             </Col>
                         </Row>
                         <Row>
                             <Col>
-                                <Link className="btn btn-light btn-lg shadow" to="tickets">Get Tickets</Link>
+                                <Link className="btn btn-light btn-lg shadow disabled" to="tickets">Get Tickets Soon</Link>
                             </Col>
                         </Row>
                     </Col>
@@ -35,9 +35,9 @@ const Home = () => {
                             <OverlayTrigger
                                 placement="bottom"
                                 delay={{ show: 250, hide:400}}
-                                overlay={<Tooltip>the DKs vs Bombshells <br/> LSA vs La Rev</Tooltip>}
+                                overlay={<Tooltip><br/></Tooltip>}
                             >
-                                <p>FEB 22</p>
+                                <p>MAR 28</p>
                             </OverlayTrigger>
                         </Col>
                         <Col className="p-0" xs="auto"><p>|</p></Col>
@@ -45,9 +45,9 @@ const Home = () => {
                             <OverlayTrigger
                                 placement="bottom"
                                 delay={{ show: 250, hide:400}}
-                                overlay={<Tooltip>the DKs vs LSA <br/> Bombshells vs La Rev</Tooltip>}
+                                overlay={<Tooltip><br/></Tooltip>}
                             >
-                                <p>MAR 15</p>
+                                <p>APR 25</p>
                             </OverlayTrigger>
                         </Col>
                         <Col className="p-0 d-none d-sm-block" sm="auto"><p>|</p></Col>
@@ -55,9 +55,9 @@ const Home = () => {
                             <OverlayTrigger
                                 placement="bottom"
                                 delay={{ show: 250, hide:400}}
-                                overlay={<Tooltip>the DKs vs La Rev <br/> Bombshells vs LSA</Tooltip>}
+                                overlay={<Tooltip><br/></Tooltip>}
                             >
-                                <p>APR 26</p>
+                                <p>MAY 16</p>
                             </OverlayTrigger>
                         </Col>
                         <Col className="p-0" xs="auto"><p>|</p></Col>
@@ -65,9 +65,9 @@ const Home = () => {
                             <OverlayTrigger
                                 placement="bottom"
                                 delay={{ show: 250, hide:400}}
-                                overlay={<Tooltip>La Rev vs LSA <br/> Bombshells vs the DKs</Tooltip>}
+                                overlay={<Tooltip><br/></Tooltip>}
                             >
-                                <p>MAY 17</p>
+                                <p>JUN 20</p>
                             </OverlayTrigger>
                         </Col>
                         <Col className="p-0 d-none d-sm-block" sm="auto"><p>|</p></Col>
@@ -75,9 +75,9 @@ const Home = () => {
                             <OverlayTrigger
                                 placement="bottom"
                                 delay={{ show: 250, hide:400}}
-                                overlay={<Tooltip>La Rev vs Bombshells <br/> LSA vs the DKs</Tooltip>}
+                                overlay={<Tooltip><br/></Tooltip>}
                             >
-                                <p>JUN 21</p>
+                                <p>JUL 25</p>
                             </OverlayTrigger>
                         </Col>
                     </Row>
@@ -86,9 +86,9 @@ const Home = () => {
                             <OverlayTrigger
                                 placement="bottom"
                                 delay={{ show: 250, hide:400}}
-                                overlay={<Tooltip>LSA vs Bombshells <br/> La Rev vs the DKs</Tooltip>}
+                                overlay={<Tooltip><br/></Tooltip>}
                             >
-                            <p>JUL 19</p>
+                            <p>AUG 29</p>
                             </OverlayTrigger>
                         </Col>
                         <Col className="p-0" xs="auto"><p>|</p></Col>
@@ -96,9 +96,9 @@ const Home = () => {
                             <OverlayTrigger
                                 placement="bottom"
                                 delay={{ show: 250, hide:400}}
-                                overlay={<Tooltip>LSA vs La Rev <br/>the DKs vs Bombshells</Tooltip>}
+                                overlay={<Tooltip><br/></Tooltip>}
                             >
-                            <p>SEP 20</p>
+                            <p>SEP 26</p>
                             </OverlayTrigger>
                         </Col>
                         <Col className="p-0 d-none d-sm-block" sm="auto"><p>|</p></Col>
@@ -106,9 +106,9 @@ const Home = () => {
                             <OverlayTrigger
                                 placement="bottom"
                                 delay={{ show: 250, hide:400}}
-                                overlay={<Tooltip>Conspiracy vs Charlotte <br/>Zombrutals vs Slampires</Tooltip>}
+                                overlay={<Tooltip><br/></Tooltip>}
                             >
-                            <p>OCT 18</p>
+                            <p>OCT 24</p>
                             </OverlayTrigger>
                         </Col>
                     </Row>
