@@ -34,3 +34,7 @@ Running:
 React: npx vite
 api: cd api func start
 connection: swa start http://localhost:4000 --api-location api
+
+to update api, build using `npm run build` then start
+
+if git action fails with error about too many files, check for problems in terminal - it's likely an unused import.

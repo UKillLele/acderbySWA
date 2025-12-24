@@ -8,6 +8,8 @@ import {
   Spinner,
   Form,
   Button,
+  DropdownButton,
+  Dropdown,
 } from "react-bootstrap";
 import { Bout } from "../models/Bout";
 import { Link } from "react-router-dom";
@@ -54,6 +56,7 @@ const SeasonSchedule = () => {
   const [error, setError] = useState<boolean>();
   const [teams, setTeams] = useState<Team[]>();
   const [players, setPlayers] = useState<Person[]>();
+  const [years, setYears] = useState<string[]>();
 
   const editor = isEditor();
 
@@ -73,6 +76,10 @@ const SeasonSchedule = () => {
   const [updatingAwayTeamMVPBlocker, setUpdatingAwayTeamMVPBlocker] =
     useState("");
   const [updateLoading, setUpdateLoading] = useState<boolean>(false);
+  const [currentYear, setCurrentYear] = useState<string>(
+    new Date().getFullYear().toString()
+  );
+  const [showSeasonPass, setShowSeasonPass] = useState<boolean>(false);
 
   function onBoutClick(bout: Bout) {
     setUpdatingId(bout.id);
@@ -171,28 +178,29 @@ const SeasonSchedule = () => {
     refreshBouts();
   }
 
-  async function refreshBouts() {
+  async function refreshBouts(year?: string | null) {
     try {
-      const resp = await fetch(`/api/bouts`);
+      setCurrentYear(year ?? new Date().getFullYear().toString());
+      const resp = await fetch(`/api/bouts/${year ?? currentYear}`);
       const b = await resp.json();
-      const thisYear = new Date("2025");
-      const groupedBouts = b
-        .filter((x) => new Date(x.date) >= thisYear)
-        .reduce((r, a) => {
-          const date: Date = new Date(a.date);
-          const ymd = `${date.getFullYear()}-${
-            date.getMonth() + 1
-          }-${date.getDate()}`;
-          r[ymd] = r[ymd] || [];
-          r[ymd].push(a);
-          return r;
-        }, {});
+      const groupedBouts = b.reduce((r, a) => {
+        const date: Date = new Date(a.date);
+        const ymd = `${date.getFullYear()}-${
+          date.getMonth() + 1
+        }-${date.getDate()}`;
+        r[ymd] = r[ymd] || [];
+        r[ymd].push(a);
+        return r;
+      }, {});
       var resultArray: Bout[][] = Object.keys(groupedBouts).map(function (
         bout
       ) {
         return groupedBouts[bout];
       });
       setBouts(resultArray);
+      setShowSeasonPass(
+        new Date() < (resultArray?.at(-1)?.at(-1)?.date ?? new Date())
+      );
     } catch (_) {
       setError(true);
     }
@@ -214,6 +222,14 @@ const SeasonSchedule = () => {
       .then((teams: Team[]) => {
         setTeams(teams);
       });
+    fetch(`/api/years`)
+      .then((resp) => resp.json())
+      .then((years: string[]) => {
+        setYears(years);
+      });
+    if (bouts != undefined) {
+      setShowSeasonPass(new Date() < (bouts?.at(-1)?.at(-1) as Bout)?.date);
+    }
   }, []);
 
   function getTeam(id: string) {
@@ -232,12 +248,28 @@ const SeasonSchedule = () => {
     <Container fluid className="content bg-dark text-light">
       <Row className="m-5 align-items-center">
         <Col className="my-auto">
-          <h1 className="xl-title my-5 text-shadow">2025 Season</h1>
+          <h1 className="xl-title my-5 text-shadow">{currentYear} Season</h1>
         </Col>
+        {showSeasonPass && (
+          <Col xs="auto">
+            <Link className="btn btn-primary ms-auto" to="/tickets">
+              Get Season Passes
+            </Link>
+          </Col>
+        )}
+        {/* TODO: add UI for adding seasons*/}
+        {/* TODO: add temp teams */}
+        {/* TODO: fix year dropdown */}
         <Col xs="auto">
-          <Link className="btn btn-primary ms-auto" to="/tickets">
-            Get Season Passes
-          </Link>
+          <DropdownButton title={currentYear} onSelect={refreshBouts}>
+            <Dropdown.Menu>
+              {years?.map((year: string) => (
+                <Dropdown.Item key={year} eventKey={year}>
+                  {year}
+                </Dropdown.Item>
+              ))}
+            </Dropdown.Menu>
+          </DropdownButton>
         </Col>
       </Row>
       <Row className="mx-5">

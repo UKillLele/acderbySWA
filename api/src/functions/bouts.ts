@@ -18,6 +18,7 @@ interface Bout {
 const cosmosInput = input.cosmosDB({
     databaseName: 'acderby',
     containerName: 'bouts',
+    sqlQuery: 'SELECT * from c WHERE CONTAINS(c.date, {year}, true)',
     connection: 'CosmosDbConnectionString'
 });
 
@@ -29,9 +30,7 @@ const cosmosOutput = output.cosmosDB({
 });
 
 export async function getBouts(request: HttpRequest, context: InvocationContext): Promise<HttpResponseInit> {
-    cosmosInput.sqlQuery = 'SELECT * from c';
     const bouts = <Bout[]>context.extraInputs.get(cosmosInput);
-    context.log(bouts)
     if (!bouts) {
         return {
             status: 404,
@@ -65,10 +64,50 @@ export async function updateBout(request: HttpRequest, context: InvocationContex
     return { status: 200 };
 }
 
+export async function addSeason(request: HttpRequest, context: InvocationContext): Promise<HttpResponseInit> {
+    const formData = await request.formData();
+    const bouts: Bout[] = [];
+    const boutsIn = JSON.parse(formData.get('bouts') as string) as Bout[];
+    boutsIn.forEach((b: Bout) => {
+        const bout1: Bout = {
+            id: null,
+            date: b.date.split('T')[0].concat("T19:00:00Z"),
+            name: b.name,
+            homeTeam: null,
+            homeTeamScore: null,
+            homeTeamMVPJammer: null,
+            homeTeamMVPBlocker: null,
+            awayTeam: null,
+            awayTeamScore: null,
+            awayTeamMVPJammer: null,
+            awayTeamMVPBlocker: null,
+            imageUrl: ""
+        }
+        bouts.push(bout1);
+        const bout2: Bout = {
+            id: null,
+            date: b.date.split('T')[0].concat("T20:30:00Z"),
+            name: b.name,
+            homeTeam: null,
+            homeTeamScore: null,
+            homeTeamMVPJammer: null,
+            homeTeamMVPBlocker: null,
+            awayTeam: null,
+            awayTeamScore: null,
+            awayTeamMVPJammer: null,
+            awayTeamMVPBlocker: null,
+            imageUrl: ""
+        }
+        bouts.push(bout2);
+    });
+    context.extraOutputs.set(cosmosOutput, bouts);
+    return { status: 200};
+}
+
 app.http('getBouts', {
     methods: ['GET'],
     authLevel: 'function',
-    route: 'bouts',
+    route: 'bouts/{year}',
     extraInputs: [cosmosInput],
     handler: getBouts
 });
