@@ -1,9 +1,36 @@
 import { Outlet, NavLink, useNavigation } from "react-router-dom";
 import { Nav, Navbar, Container, NavDropdown, Spinner } from "react-bootstrap";
 import { isEditor, clearStorage } from "./ProtectedRoute";
+import { useEffect, useState } from "react";
+import { Team } from "../models/Team";
 
 const Layout = () => {
   const { state } = useNavigation();
+  const [teams, setTeams] = useState<Team[][]>();
+
+  useEffect(() => {
+    const getTeams = async () => {
+      await fetch(`/api/teams`)
+        .then((resp) => resp.json())
+        .then((teams: Team[]) => {
+          const groupedTeams = teams
+            .sort((a, b) => (a.name > b.name ? 1 : -1))
+            .reduce((r, a) => {
+              r[a.type] = r[a.type] || [];
+              r[a.type].push(a);
+              return r;
+            }, {});
+          var resultArray: Team[][] = Object.keys(groupedTeams).map(function (
+            team
+          ) {
+            return groupedTeams[team];
+          });
+          setTeams(resultArray);
+        });
+    };
+
+    getTeams();
+  }, []);
 
   const editor = isEditor();
   return (
@@ -43,32 +70,26 @@ const Layout = () => {
                 </NavDropdown.Item>
               </NavDropdown>
               <NavDropdown title="TEAMS" className="my-auto">
-                <NavDropdown.Header>Travel Team</NavDropdown.Header>
-                <NavDropdown.Item as={NavLink} to="teams/conspiracy">
-                  Conspiracy
-                </NavDropdown.Item>
-                <NavDropdown.Divider />
-                <NavDropdown.Header>Home Teams</NavDropdown.Header>
-                <NavDropdown.Item as={NavLink} to="teams/bombshells">
-                  Bombshell Brigade
-                </NavDropdown.Item>
-                <NavDropdown.Item as={NavLink} to="teams/lsa">
-                  Lone Star Assassins
-                </NavDropdown.Item>
-                <NavDropdown.Item as={NavLink} to="teams/dk">
-                  The Deadly Kennedys
-                </NavDropdown.Item>
-                <NavDropdown.Item as={NavLink} to="teams/la-rev">
-                  &iexcl;Viva La Revoluci&oacute;n!
-                </NavDropdown.Item>
-                <NavDropdown.Divider />
-                <NavDropdown.Header>Volunteers</NavDropdown.Header>
-                <NavDropdown.Item as={NavLink} to="teams/officials">
-                  The Warren Commission
-                </NavDropdown.Item>
-                <NavDropdown.Item as={NavLink} to="/photographers">
-                  Photographers
-                </NavDropdown.Item>
+                {teams &&
+                  teams.map((group: Team[]) => (
+                    <Container key={group[0].type}>
+                      <NavDropdown.Header>
+                        {group[0].type} Teams
+                      </NavDropdown.Header>
+                      {group.map((team: Team) => (
+                        <NavDropdown.Item
+                          as={NavLink}
+                          to={"teams/" + team.slug}
+                          key={team.name}
+                        >
+                          {team.name}
+                        </NavDropdown.Item>
+                      ))}
+                      {teams.indexOf(group) != teams.length - 1 && (
+                        <NavDropdown.Divider />
+                      )}
+                    </Container>
+                  ))}
                 {editor && (
                   <>
                     <NavDropdown.Divider />

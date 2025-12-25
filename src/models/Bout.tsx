@@ -1,7 +1,7 @@
 export interface Bout {
   id: string;
   name: string;
-  date: Date;
+  date: string;
   homeTeam: string;
   homeTeamScore: string;
   homeTeamMVPJammer: string;

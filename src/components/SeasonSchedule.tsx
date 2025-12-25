@@ -8,8 +8,8 @@ import {
   Spinner,
   Form,
   Button,
-  DropdownButton,
   Dropdown,
+  Modal,
 } from "react-bootstrap";
 import { Bout } from "../models/Bout";
 import { Link } from "react-router-dom";
@@ -34,7 +34,7 @@ const months = [
   "December",
 ];
 
-function getDate(date: Date) {
+function getDate(date: string) {
   const d = new Date(date);
   const month = months[d.getMonth()];
   return `${month} ${d.getDate()}`;
@@ -80,11 +80,69 @@ const SeasonSchedule = () => {
     new Date().getFullYear().toString()
   );
   const [showSeasonPass, setShowSeasonPass] = useState<boolean>(false);
+  const [showAddDates, setShowAddDates] = useState<boolean>(false);
+  const [tempDate, setTempDate] = useState<string>("");
+  const [tempName, setTempName] = useState<string>("Season Opener");
+  const [newSeasonDates, setNewSeasonDates] = useState<Bout[]>([]);
+
+  function onDeleteDate(date: string) {
+    setNewSeasonDates(newSeasonDates.filter((x) => x.date.toString() != date));
+  }
+
+  function onAddDatesDate() {
+    console.log(tempDate);
+    const date = new Date(tempDate);
+    console.log(date);
+    if (!isNaN(date.getTime())) {
+      const bout: Bout = {
+        id: "",
+        name: tempName,
+        date: tempDate,
+        homeTeam: "",
+        homeTeamScore: "",
+        homeTeamMVPJammer: "",
+        homeTeamMVPBlocker: "",
+        awayTeam: "",
+        awayTeamScore: "",
+        awayTeamMVPJammer: "",
+        awayTeamMVPBlocker: "",
+        imageUrl: "",
+      };
+      setNewSeasonDates([...newSeasonDates, bout]);
+      const newDate = new Date(tempDate);
+      newDate.setDate(newDate.getDate() + 28);
+      setTempDate(newDate.toISOString().split("T")[0]);
+      setTempName(`Bout ${newSeasonDates.length + 2}`);
+    }
+  }
+
+  function onAddDates(event: FormEvent) {
+    if (newSeasonDates.length > 0) {
+      event.preventDefault();
+      setUpdateLoading(true);
+
+      const formData = new FormData();
+      formData.append("bouts", JSON.stringify(newSeasonDates));
+      return fetch("api/add-dates", {
+        method: "POST",
+        body: formData,
+      }).then(
+        (resp) => {
+          if (resp.status === 200) {
+            setUpdateLoading(false);
+          } else console.log(resp.statusText);
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    }
+  }
 
   function onBoutClick(bout: Bout) {
     setUpdatingId(bout.id);
     setUpdatingName(bout.name);
-    setUpdatingDate(bout.date?.toString());
+    setUpdatingDate(bout.date);
     setUpdatingHomeTeam(bout.homeTeam);
     setUpdatingHomeTeamScore(bout.homeTeamScore?.toString());
     setUpdatingHomeTeamMVPJammer(bout.homeTeamMVPJammer);
@@ -207,29 +265,33 @@ const SeasonSchedule = () => {
   }
 
   useEffect(() => {
-    fetch(`/api/players`)
-      .then((resp) => resp.json())
-      .then((players) => {
-        setPlayers(
-          players.sort((a: Person, b: Person) => {
-            return a.name > b.name ? 1 : -1;
-          })
-        );
-      });
-    refreshBouts();
-    fetch(`/api/teams`)
-      .then((resp) => resp.json())
-      .then((teams: Team[]) => {
-        setTeams(teams);
-      });
-    fetch(`/api/years`)
-      .then((resp) => resp.json())
-      .then((years: string[]) => {
-        setYears(years);
-      });
-    if (bouts != undefined) {
-      setShowSeasonPass(new Date() < (bouts?.at(-1)?.at(-1) as Bout)?.date);
-    }
+    const fetchData = async () => {
+      await fetch(`/api/players`)
+        .then((resp) => resp.json())
+        .then((players) => {
+          setPlayers(
+            players.sort((a: Person, b: Person) => {
+              return a.name > b.name ? 1 : -1;
+            })
+          );
+        });
+      await refreshBouts();
+      await fetch(`/api/teams`)
+        .then((resp) => resp.json())
+        .then((teams: Team[]) => {
+          setTeams(teams);
+        });
+      await fetch(`/api/years`)
+        .then((resp) => resp.json())
+        .then((years: string[]) => {
+          setYears(years);
+        });
+      setShowSeasonPass(
+        new Date().toISOString() < (bouts?.at(-1)?.at(-1) as Bout)?.date
+      );
+    };
+
+    fetchData();
   }, []);
 
   function getTeam(id: string) {
@@ -257,11 +319,16 @@ const SeasonSchedule = () => {
             </Link>
           </Col>
         )}
-        {/* TODO: add UI for adding seasons*/}
         {/* TODO: add temp teams */}
-        {/* TODO: fix year dropdown */}
+        {/* TODO: allow name/date update, object delete */}
+        {editor && (
+          <Col xs="auto">
+            <Button onClick={() => setShowAddDates(true)}>Add Dates</Button>
+          </Col>
+        )}
         <Col xs="auto">
-          <DropdownButton title={currentYear} onSelect={refreshBouts}>
+          <Dropdown onSelect={refreshBouts}>
+            <Dropdown.Toggle>Select Season </Dropdown.Toggle>
             <Dropdown.Menu>
               {years?.map((year: string) => (
                 <Dropdown.Item key={year} eventKey={year}>
@@ -269,12 +336,12 @@ const SeasonSchedule = () => {
                 </Dropdown.Item>
               ))}
             </Dropdown.Menu>
-          </DropdownButton>
+          </Dropdown>
         </Col>
       </Row>
       <Row className="mx-5">
         <Col>
-          <Accordion data-bs-theme="light" defaultActiveKey="0">
+          <Accordion data-bs-theme="light">
             <Accordion.Item eventKey="0">
               <Accordion.Header>Bout Day Info</Accordion.Header>
               <Accordion.Body>
@@ -905,6 +972,61 @@ const SeasonSchedule = () => {
           </Spinner>
         </Container>
       )}
+
+      <Modal show={showAddDates} onHide={() => setShowAddDates(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Add Dates</Modal.Title>
+        </Modal.Header>
+        <Form onSubmit={onAddDates}>
+          <Modal.Body>
+            {newSeasonDates &&
+              newSeasonDates.map((bout) => (
+                <Row key={bout.date.toString()} className="pb-2">
+                  <Col className="my-auto">{`${bout.name} - ${bout.date}`}</Col>
+                  <Col xs="auto">
+                    <Button
+                      type="button"
+                      variant="danger"
+                      onClick={() => onDeleteDate(bout.date.toString())}
+                    >
+                      &times;
+                    </Button>
+                  </Col>
+                </Row>
+              ))}
+            <Row>
+              <Col>
+                <Form.Control
+                  name="tempName"
+                  value={tempName}
+                  onChange={(event) => setTempName(event.target?.value)}
+                  placeholder="Bout Name"
+                ></Form.Control>
+              </Col>
+              <Col>
+                <Form.Control
+                  name="tempDate"
+                  value={tempDate}
+                  onChange={(event) => setTempDate(event.target?.value)}
+                  type="date"
+                  placeholder="Bout Date"
+                ></Form.Control>
+              </Col>
+              <Col xs="auto">
+                <Button type="button" onClick={onAddDatesDate}>
+                  +
+                </Button>
+              </Col>
+            </Row>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="danger" onClick={() => setShowAddDates(false)}>
+              Cancel
+            </Button>
+            <Button type="submit">Add</Button>
+          </Modal.Footer>
+        </Form>
+      </Modal>
     </Container>
   );
 };

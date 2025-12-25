@@ -1,18 +1,19 @@
 import { app, HttpRequest, HttpResponseInit, input, InvocationContext, output } from '@azure/functions';
+import { Guid } from 'guid-typescript';
 
 interface Bout {
     id: string,
     name: string,
     date: string,
-    homeTeam: string,
-    homeTeamScore: string,
-    homeTeamMVPJammer: string,
-    homeTeamMVPBlocker: string,
-    awayTeam: string,
-    awayTeamScore: string,
-    awayTeamMVPJammer: string,
-    awayTeamMVPBlocker: string,
-    imageUrl: string
+    homeTeam?: string,
+    homeTeamScore?: string,
+    homeTeamMVPJammer?: string,
+    homeTeamMVPBlocker?: string,
+    awayTeam?: string,
+    awayTeamScore?: string,
+    awayTeamMVPJammer?: string,
+    awayTeamMVPBlocker?: string,
+    imageUrl?: string
 }
 
 const cosmosInput = input.cosmosDB({
@@ -64,39 +65,21 @@ export async function updateBout(request: HttpRequest, context: InvocationContex
     return { status: 200 };
 }
 
-export async function addSeason(request: HttpRequest, context: InvocationContext): Promise<HttpResponseInit> {
+export async function addDates(request: HttpRequest, context: InvocationContext): Promise<HttpResponseInit> {
     const formData = await request.formData();
-    const bouts: Bout[] = [];
+    const bouts = [];
     const boutsIn = JSON.parse(formData.get('bouts') as string) as Bout[];
     boutsIn.forEach((b: Bout) => {
         const bout1: Bout = {
-            id: null,
+            id: Guid.create().toString(),
             date: b.date.split('T')[0].concat("T19:00:00Z"),
-            name: b.name,
-            homeTeam: null,
-            homeTeamScore: null,
-            homeTeamMVPJammer: null,
-            homeTeamMVPBlocker: null,
-            awayTeam: null,
-            awayTeamScore: null,
-            awayTeamMVPJammer: null,
-            awayTeamMVPBlocker: null,
-            imageUrl: ""
+            name: b.name
         }
         bouts.push(bout1);
         const bout2: Bout = {
-            id: null,
+            id: Guid.create().toString(),
             date: b.date.split('T')[0].concat("T20:30:00Z"),
-            name: b.name,
-            homeTeam: null,
-            homeTeamScore: null,
-            homeTeamMVPJammer: null,
-            homeTeamMVPBlocker: null,
-            awayTeam: null,
-            awayTeamScore: null,
-            awayTeamMVPJammer: null,
-            awayTeamMVPBlocker: null,
-            imageUrl: ""
+            name: b.name
         }
         bouts.push(bout2);
     });
@@ -118,4 +101,12 @@ app.http('updateBout', {
     route: 'update-bout',
     extraOutputs: [cosmosOutput],
     handler: updateBout
+});
+
+app.http('addDates', {
+    methods: ['POST'],
+    authLevel: 'function',
+    route: 'add-dates',
+    extraOutputs: [cosmosOutput],
+    handler: addDates
 });
