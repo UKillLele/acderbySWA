@@ -84,15 +84,15 @@ const SeasonSchedule = () => {
   const [tempDate, setTempDate] = useState<string>("");
   const [tempName, setTempName] = useState<string>("Season Opener");
   const [newSeasonDates, setNewSeasonDates] = useState<Bout[]>([]);
+  const [deleteDate, setDeleteDate] = useState<Bout[]>([]);
+  const [editDate, setEditDate] = useState<Bout[]>([]);
 
-  function onDeleteDate(date: string) {
+  function onDeleteNewDate(date: string) {
     setNewSeasonDates(newSeasonDates.filter((x) => x.date.toString() != date));
   }
 
   function onAddDatesDate() {
-    console.log(tempDate);
     const date = new Date(tempDate);
-    console.log(date);
     if (!isNaN(date.getTime())) {
       const bout: Bout = {
         id: "",
@@ -117,10 +117,9 @@ const SeasonSchedule = () => {
   }
 
   function onAddDates(event: FormEvent) {
+    event.preventDefault();
     if (newSeasonDates.length > 0) {
-      event.preventDefault();
       setUpdateLoading(true);
-
       const formData = new FormData();
       formData.append("bouts", JSON.stringify(newSeasonDates));
       return fetch("api/add-dates", {
@@ -129,7 +128,58 @@ const SeasonSchedule = () => {
       }).then(
         (resp) => {
           if (resp.status === 200) {
+            refreshBouts(currentYear);
             setUpdateLoading(false);
+            setShowAddDates(false);
+            setNewSeasonDates([]);
+          } else console.log(resp.statusText);
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    }
+  }
+
+  function onEditDate(event: FormEvent) {
+    event?.preventDefault();
+    if (updatingName && updatingDate && editDate.length > 0) {
+      setUpdateLoading(true);
+      editDate.forEach((bout: Bout) => {
+        bout.name = updatingName;
+      });
+      const formData = new FormData();
+      formData.append("bouts", JSON.stringify(editDate));
+      return fetch("api/update-bouts", {
+        method: "POST",
+        body: formData,
+      }).then(
+        (resp) => {
+          if (resp.status === 200) {
+            setUpdateLoading(false);
+            setEditDate([]);
+          } else console.log(resp.statusText);
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    }
+  }
+
+  function onDeleteDate(event: FormEvent) {
+    event.preventDefault();
+    if (deleteDate) {
+      setUpdateLoading(true);
+      const formData = new FormData();
+      formData.append("bouts", JSON.stringify(deleteDate));
+      return fetch("api/delete-date", {
+        method: "DELETE",
+        body: formData,
+      }).then(
+        (resp) => {
+          if (resp.status === 200) {
+            window.location.reload();
           } else console.log(resp.statusText);
         },
         (error) => {
@@ -192,21 +242,25 @@ const SeasonSchedule = () => {
   function onBoutUpdate(event: FormEvent) {
     event.preventDefault();
     setUpdateLoading(true);
-
     const formData = new FormData();
-    formData.append("id", updatingId);
-    formData.append("name", updatingName);
-    formData.append("date", updatingDate);
-    formData.append("homeTeam", updatingHomeTeam);
-    formData.append("homeTeamScore", updatingHomeTeamScore);
-    formData.append("homeTeamMVPJammer", updatingHomeTeamMVPJammer);
-    formData.append("homeTeamMVPBlocker", updatingHomeTeamMVPBlocker);
-    formData.append("awayTeam", updatingAwayTeam);
-    formData.append("awayTeamScore", updatingAwayTeamScore);
-    formData.append("awayTeamMVPJammer", updatingAwayTeamMVPJammer);
-    formData.append("awayTeamMVPBlocker", updatingAwayTeamMVPBlocker);
+    const bout: Bout = {
+      id: updatingId,
+      name: updatingName,
+      date: updatingDate,
+      homeTeam: updatingHomeTeam,
+      homeTeamScore: updatingHomeTeamScore,
+      homeTeamMVPJammer: updatingHomeTeamMVPJammer,
+      homeTeamMVPBlocker: updatingHomeTeamMVPBlocker,
+      awayTeam: updatingAwayTeam,
+      awayTeamScore: updatingAwayTeamScore,
+      awayTeamMVPJammer: updatingAwayTeamMVPJammer,
+      awayTeamMVPBlocker: updatingAwayTeamMVPBlocker,
+      imageUrl: "",
+    };
 
-    return fetch("api/update-bout", {
+    formData.append("bouts", JSON.stringify([bout]));
+
+    return fetch("api/update-bouts", {
       method: "POST",
       body: formData,
     }).then(
@@ -233,7 +287,19 @@ const SeasonSchedule = () => {
     setUpdatingAwayTeamMVPJammer("");
     setUpdatingAwayTeamMVPBlocker("");
     setUpdateLoading(false);
-    refreshBouts();
+    refreshBouts(currentYear);
+  }
+
+  function setEdit(date: Bout[]) {
+    setEditDate(date);
+    setUpdatingName(date[0].name);
+    setUpdatingDate(new Date(date[0].date).toISOString().split("T")[0]);
+  }
+
+  function clearEditDate() {
+    setEditDate([]);
+    setUpdatingName("");
+    setUpdatingDate("");
   }
 
   async function refreshBouts(year?: string | null) {
@@ -438,30 +504,100 @@ const SeasonSchedule = () => {
                           </a>
                         </Col>
                       )}
-                      <Col
-                        xs="12"
-                        lg
-                        className="text-lg-end fs-1 fw-bold mx-lg-3"
-                      >
-                        {date[0].name}
-                      </Col>
-                      <Col
-                        xs="12"
-                        lg
-                        className="text-lg-start fs-1 fw-bold mx-lg-3"
-                      >
-                        {getDate(date[0].date)}
-                      </Col>
-                      <Col lg="auto" className="text-center py-2">
-                        {checkTix(bouts, index) && (
-                          <Link
-                            className="btn btn-primary ms-auto"
-                            to="/tickets"
+                      {editor && date === editDate ? (
+                        <Form onSubmit={onEditDate}>
+                          <Row className="py-2">
+                            <Col
+                              xs="12"
+                              lg
+                              className="text-lg-end fs-1 fw-bold mx-lg-3"
+                            >
+                              <Form.Group controlId="updateName">
+                                <Form.Control
+                                  name="updateName"
+                                  value={updatingName}
+                                  onChange={(event) =>
+                                    setUpdatingName(event.target.value)
+                                  }
+                                  type="string"
+                                />
+                              </Form.Group>
+                            </Col>
+                            <Col
+                              xs="12"
+                              lg
+                              className="text-lg-start fs-1 fw-bold mx-lg-3"
+                            >
+                              {getDate(date[0].date)}
+                            </Col>
+                            <Col lg="auto">
+                              <Button
+                                className="btn btn-success ms-auto"
+                                type="submit"
+                              >
+                                Update
+                              </Button>
+                            </Col>
+                            <Col lg="auto">
+                              <Button
+                                className="btn btn-warning ms-auto"
+                                onClick={clearEditDate}
+                              >
+                                Cancel
+                              </Button>
+                            </Col>
+                          </Row>
+                        </Form>
+                      ) : (
+                        <>
+                          <Col
+                            xs="12"
+                            lg
+                            className="text-lg-end fs-1 fw-bold mx-lg-3"
                           >
-                            Get Tickets
-                          </Link>
-                        )}
-                      </Col>
+                            {date[0].name}
+                          </Col>
+                          <Col
+                            xs="12"
+                            lg
+                            className="text-lg-start fs-1 fw-bold mx-lg-3"
+                          >
+                            {getDate(date[0].date)}
+                          </Col>
+                        </>
+                      )}
+                      {editDate !== date && (
+                        <Col lg="auto" className="text-center py-2">
+                          {checkTix(bouts, index) && (
+                            <Link
+                              className="btn btn-primary ms-auto"
+                              to="/tickets"
+                            >
+                              Get Tickets
+                            </Link>
+                          )}
+                        </Col>
+                      )}
+                      {editor && editDate !== date && (
+                        <>
+                          <Col lg="auto" className="text-center py-2">
+                            <Button
+                              className="btn btn-warning ms-auto"
+                              onClick={() => setEdit(date)}
+                            >
+                              Edit
+                            </Button>
+                          </Col>
+                          <Col lg="auto" className="text-center py-2">
+                            <Button
+                              className="btn btn-danger ms-auto"
+                              onClick={() => setDeleteDate(date)}
+                            >
+                              Delete
+                            </Button>
+                          </Col>
+                        </>
+                      )}
                     </Row>
                   </Card.Title>
                   {date
@@ -625,9 +761,8 @@ const SeasonSchedule = () => {
                           </Col>
                         </Row>
                       ) : (
-                        <Form onSubmit={onBoutUpdate}>
+                        <Form onSubmit={onBoutUpdate} key={bout.id + "edit"}>
                           <Row
-                            key={bout.id}
                             className="align-items-center mb-2 text-light fw-bold text-shadow pb-2 text-center"
                             style={{
                               borderBottom:
@@ -661,7 +796,10 @@ const SeasonSchedule = () => {
                                     >
                                       <option>Team</option>
                                       {teams!.map((team: Team) => (
-                                        <option key={team.id} value={team.id}>
+                                        <option
+                                          key={team.id + "home"}
+                                          value={team.id}
+                                        >
                                           {team.name}
                                         </option>
                                       ))}
@@ -719,7 +857,7 @@ const SeasonSchedule = () => {
                                         })
                                         .map((player: Person) => (
                                           <option
-                                            key={player.id}
+                                            key={player.id + "homeJ"}
                                             value={player.id}
                                           >
                                             {player.name}
@@ -762,7 +900,7 @@ const SeasonSchedule = () => {
                                         })
                                         .map((player: Person) => (
                                           <option
-                                            key={player.id}
+                                            key={player.id + "homeB"}
                                             value={player.id}
                                           >
                                             {player.name}
@@ -836,7 +974,10 @@ const SeasonSchedule = () => {
                                     >
                                       <option>Team</option>
                                       {teams!.map((team: Team) => (
-                                        <option key={team.id} value={team.id}>
+                                        <option
+                                          key={team.id + "away"}
+                                          value={team.id}
+                                        >
                                           {team.name}
                                         </option>
                                       ))}
@@ -894,7 +1035,7 @@ const SeasonSchedule = () => {
                                         })
                                         .map((player: Person) => (
                                           <option
-                                            key={player.id}
+                                            key={player.id + "awayJ"}
                                             value={player.id}
                                           >
                                             {player.name}
@@ -937,7 +1078,7 @@ const SeasonSchedule = () => {
                                         })
                                         .map((player: Person) => (
                                           <option
-                                            key={player.id}
+                                            key={player.id + "awayB"}
                                             value={player.id}
                                           >
                                             {player.name}
@@ -981,13 +1122,13 @@ const SeasonSchedule = () => {
           <Modal.Body>
             {newSeasonDates &&
               newSeasonDates.map((bout) => (
-                <Row key={bout.date.toString()} className="pb-2">
+                <Row key={bout.date + "-add"} className="pb-2">
                   <Col className="my-auto">{`${bout.name} - ${bout.date}`}</Col>
                   <Col xs="auto">
                     <Button
                       type="button"
                       variant="danger"
-                      onClick={() => onDeleteDate(bout.date.toString())}
+                      onClick={() => onDeleteNewDate(bout.date.toString())}
                     >
                       &times;
                     </Button>
@@ -1024,6 +1165,29 @@ const SeasonSchedule = () => {
               Cancel
             </Button>
             <Button type="submit">Add</Button>
+          </Modal.Footer>
+        </Form>
+      </Modal>
+
+      <Modal
+        show={(deleteDate?.length ?? 0) > 0}
+        onHide={() => setDeleteDate([])}
+      >
+        <Form onSubmit={onDeleteDate}>
+          <Modal.Header closeButton>
+            <Modal.Title>
+              Delete{" "}
+              {getDate(
+                deleteDate?.map((x) => x.date)[0] ?? new Date().toDateString()
+              )}
+              ?
+            </Modal.Title>
+          </Modal.Header>
+          <Modal.Footer>
+            <Button variant="danger" onClick={() => setDeleteDate([])}>
+              Cancel
+            </Button>
+            <Button type="submit">Confirm</Button>
           </Modal.Footer>
         </Form>
       </Modal>

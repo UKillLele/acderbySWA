@@ -1,3 +1,4 @@
+import { CosmosClient } from '@azure/cosmos';
 import { app, HttpRequest, HttpResponseInit, input, InvocationContext, output } from '@azure/functions';
 import { Guid } from 'guid-typescript';
 
@@ -44,24 +45,12 @@ export async function getBouts(request: HttpRequest, context: InvocationContext)
     }
 }
 
-export async function updateBout(request: HttpRequest, context: InvocationContext): Promise<HttpResponseInit> {
+export async function updateBouts(request: HttpRequest, context: InvocationContext): Promise<HttpResponseInit> {
     const formData = await request.formData();
-    const bout: Bout = {
-        id: formData.get('id') as string,
-        name: formData.get('name') as string,
-        date: formData.get('date') as string,
-        homeTeam: formData.get('homeTeam') as string,
-        homeTeamScore: (formData.get('homeTeamScore') as string),
-        homeTeamMVPJammer: formData.get('homeTeamMVPJammer') as string,
-        homeTeamMVPBlocker: formData.get('homeTeamMVPBlocker') as string,
-        awayTeam: formData.get('awayTeam') as string,
-        awayTeamScore: (formData.get('awayTeamScore') as string),
-        awayTeamMVPJammer: formData.get('awayTeamMVPJammer') as string,
-        awayTeamMVPBlocker: formData.get('awayTeamMVPBlocker') as string,
-        imageUrl: ""
-    }
+    const bouts = JSON.parse(formData.get('bouts') as string) as Bout[];
+    context.log(bouts);
     // save to cosmosDb
-    context.extraOutputs.set(cosmosOutput, bout);
+    context.extraOutputs.set(cosmosOutput, bouts);
     return { status: 200 };
 }
 
@@ -87,6 +76,26 @@ export async function addDates(request: HttpRequest, context: InvocationContext)
     return { status: 200};
 }
 
+export async function deleteDate(request: HttpRequest, context: InvocationContext): Promise<HttpResponseInit> {
+    const formData = await request.formData();
+    const bouts = JSON.parse(formData.get('bouts') as string) as Bout[];
+        if (bouts.length > 0) {
+            // delete from cosmosDb
+            // have to manually set client for delete
+            const client = new CosmosClient(process.env.CosmosDbConnectionString);
+            const container = client.database("acderby").container("bouts");
+            bouts.forEach((bout: Bout) => {
+                const item = container.item(bout.id, bout.date);
+                item.delete();
+            })
+            return { status: 200 };
+        };
+        return {
+            status: 404,
+            body: "Date not found"
+        }
+}
+
 app.http('getBouts', {
     methods: ['GET'],
     authLevel: 'function',
@@ -95,12 +104,12 @@ app.http('getBouts', {
     handler: getBouts
 });
 
-app.http('updateBout', {
+app.http('updateBouts', {
     methods: ['POST'],
     authLevel: 'function',
-    route: 'update-bout',
+    route: 'update-bouts',
     extraOutputs: [cosmosOutput],
-    handler: updateBout
+    handler: updateBouts
 });
 
 app.http('addDates', {
@@ -110,3 +119,11 @@ app.http('addDates', {
     extraOutputs: [cosmosOutput],
     handler: addDates
 });
+
+app.http('deleteDate', {
+    methods: ['DELETE'],
+    authLevel: 'function',
+    route: 'delete-date',
+    extraOutputs: [cosmosOutput],
+    handler: deleteDate
+})
