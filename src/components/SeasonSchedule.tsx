@@ -54,7 +54,7 @@ function checkTix(dates, index) {
 const SeasonSchedule = () => {
   const [bouts, setBouts] = useState<Bout[][]>();
   const [error, setError] = useState<boolean>();
-  const [teams, setTeams] = useState<Team[]>();
+  const [teams, setTeams] = useState<Partial<Record<string, Team[]>>>();
   const [players, setPlayers] = useState<Person[]>();
   const [years, setYears] = useState<string[]>();
 
@@ -86,6 +86,9 @@ const SeasonSchedule = () => {
   const [newSeasonDates, setNewSeasonDates] = useState<Bout[]>([]);
   const [deleteDate, setDeleteDate] = useState<Bout[]>([]);
   const [editDate, setEditDate] = useState<Bout[]>([]);
+  const [tempTeam, setTempTeam] = useState<Team | null>(null);
+  const [updatingImageFile, setUpdatingImageFile] = useState<File>();
+  const [teamType, setTeamType] = useState<string>();
 
   function onDeleteNewDate(date: string) {
     setNewSeasonDates(newSeasonDates.filter((x) => x.date.toString() != date));
@@ -206,13 +209,23 @@ const SeasonSchedule = () => {
   function onUpdatingHomeTeamSelect(event: ChangeEvent) {
     const target = event.target as HTMLSelectElement;
     const { options } = target;
-    setUpdatingHomeTeam(options[options.selectedIndex].value);
+    const selectedOption = options[options.selectedIndex].value;
+    setUpdatingHomeTeam(selectedOption);
+    if (selectedOption === "addTeam") {
+      setTempTeam({} as Team);
+      setTeamType("home");
+    }
   }
 
   function onUpdatingAwayTeamSelect(event: ChangeEvent) {
     const target = event.target as HTMLSelectElement;
     const { options } = target;
-    setUpdatingAwayTeam(options[options.selectedIndex].value);
+    const selectedOption = options[options.selectedIndex].value;
+    setUpdatingAwayTeam(selectedOption);
+    if (selectedOption === "addTeam") {
+      setTempTeam({} as Team);
+      setTeamType("away");
+    }
   }
 
   function onUpdatingHomeTeamMVPJammerSelect(event: ChangeEvent) {
@@ -302,6 +315,83 @@ const SeasonSchedule = () => {
     setUpdatingDate("");
   }
 
+  function onAddUpdatingImage(event: ChangeEvent) {
+    const target = event.target as HTMLInputElement;
+    const files = target.files;
+    if (files) {
+      setUpdatingImageFile(files[0]);
+    }
+  }
+
+  function setTempTeamName(event: ChangeEvent) {
+    tempTeam!.name = (event.target as HTMLInputElement).value;
+    setTempTeam(tempTeam);
+  }
+
+  function setTempTeamColor(event: ChangeEvent) {
+    tempTeam!.color = (event.target as HTMLInputElement).value;
+    setTempTeam(tempTeam);
+  }
+
+  function onAddTeam(event: FormEvent) {
+    event.preventDefault();
+    console.log(tempTeam);
+    if (tempTeam?.name) {
+      const formData = new FormData();
+      tempTeam!.color = hexToRGBA(tempTeam.color);
+      formData.append("team", JSON.stringify(tempTeam));
+      formData.append("logo", updatingImageFile ?? "");
+      return fetch("api/teams/add", {
+        method: "POST",
+        body: formData,
+      }).then(
+        async (resp) => {
+          if (resp.status === 200) {
+            setTempTeam(null);
+            await refreshTeams();
+            if (teamType === "home") {
+              setUpdatingHomeTeam(await resp.text());
+              setUpdatingImageFile(undefined);
+            }
+            if (teamType === "away") {
+              setUpdatingAwayTeam(await resp.text());
+              setUpdatingImageFile(undefined);
+            }
+          } else console.log(resp.statusText);
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    }
+  }
+
+  const hexToRGBA = (hex: string): string => {
+    let r = 0,
+      g = 0,
+      b = 0;
+
+    // Remove the hash if it exists
+    hex = hex.replace(/^#/, "");
+
+    // Handle 3-digit hex (#RGB)
+    if (hex.length === 3) {
+      r = parseInt(hex[0] + hex[0], 16);
+      g = parseInt(hex[1] + hex[1], 16);
+      b = parseInt(hex[2] + hex[2], 16);
+    }
+    // Handle 6-digit hex (#RRGGBB)
+    else if (hex.length === 6) {
+      r = parseInt(hex.substring(0, 2), 16);
+      g = parseInt(hex.substring(2, 4), 16);
+      b = parseInt(hex.substring(4, 6), 16);
+    } else {
+      throw new Error("Invalid hex color format. Use 3 or 6 characters.");
+    }
+
+    return `rgba(${r}, ${g}, ${b}, .8)`;
+  };
+
   async function refreshBouts(year?: string | null) {
     try {
       setCurrentYear(year ?? new Date().getFullYear().toString());
@@ -330,6 +420,16 @@ const SeasonSchedule = () => {
     }
   }
 
+  async function refreshTeams() {
+    await fetch(`/api/teams`)
+      .then((resp) => resp.json())
+      .then((teams: Team[]) => {
+        teams.sort((a, b) => (a.name > b.name ? 1 : -1));
+        const groupedTeams = Object.groupBy(teams, ({ type }) => type);
+        setTeams(groupedTeams);
+      });
+  }
+
   useEffect(() => {
     const fetchData = async () => {
       await fetch(`/api/players`)
@@ -342,11 +442,7 @@ const SeasonSchedule = () => {
           );
         });
       await refreshBouts();
-      await fetch(`/api/teams`)
-        .then((resp) => resp.json())
-        .then((teams: Team[]) => {
-          setTeams(teams);
-        });
+      await refreshTeams();
       await fetch(`/api/years`)
         .then((resp) => resp.json())
         .then((years: string[]) => {
@@ -361,15 +457,23 @@ const SeasonSchedule = () => {
   }, []);
 
   function getTeam(id: string) {
-    return teams?.find((x) => x.id === id);
+    if (teams) {
+      return Object.values(teams as Record<string, Team[]>)
+        ?.flat()
+        ?.find((x: Team) => x.id === id);
+    }
   }
 
   function getSkaterImage(skaterId: string, teamId: string) {
-    const player = players?.find((x) => x.id === skaterId);
-    const team = teams?.find((x) => x.id === teamId);
-    const imageUrl =
-      player?.imageUrl !== "" ? player?.imageUrl : team?.defaultSkaterImage;
-    return encodeURI(imageUrl ?? "");
+    if (teams) {
+      const player = players?.find((x) => x.id === skaterId);
+      const team = Object.values(teams as Record<string, Team[]>)
+        ?.flat()
+        ?.find((x: Team) => x.id === teamId);
+      const imageUrl =
+        player?.imageUrl !== "" ? player?.imageUrl : team?.defaultSkaterImage;
+      return encodeURI(imageUrl ?? "");
+    }
   }
 
   return (
@@ -385,8 +489,6 @@ const SeasonSchedule = () => {
             </Link>
           </Col>
         )}
-        {/* TODO: add temp teams */}
-        {/* TODO: allow name/date update, object delete */}
         {editor && (
           <Col xs="auto">
             <Button onClick={() => setShowAddDates(true)}>Add Dates</Button>
@@ -773,17 +875,23 @@ const SeasonSchedule = () => {
                               className="p-0 bout-bg"
                               style={{
                                 backgroundImage: `url(${
-                                  teams?.find(
-                                    (x: Team) => x.id === updatingHomeTeam
-                                  )?.imageUrl
+                                  Object.values(teams as Record<string, Team[]>)
+                                    ?.flat()
+                                    ?.find(
+                                      (x: Team) => x.id === updatingHomeTeam
+                                    )?.imageUrl
                                 })`,
                               }}
                             >
                               <Row
                                 style={{
-                                  backgroundColor: teams?.find(
-                                    (x: Team) => x.id === updatingHomeTeam
-                                  )?.color,
+                                  backgroundColor: Object.values(
+                                    teams as Record<string, Team[]>
+                                  )
+                                    ?.flat()
+                                    ?.find(
+                                      (x: Team) => x.id === updatingHomeTeam
+                                    )?.color,
                                 }}
                                 className="m-0 h-100 d-flex flex-column justify-content-center fs-1"
                               >
@@ -795,14 +903,24 @@ const SeasonSchedule = () => {
                                       onChange={onUpdatingHomeTeamSelect}
                                     >
                                       <option>Team</option>
-                                      {teams!.map((team: Team) => (
-                                        <option
-                                          key={team.id + "home"}
-                                          value={team.id}
+                                      {Object.entries(
+                                        teams as Record<string, Team[]>
+                                      )?.map(([category, items]) => (
+                                        <optgroup
+                                          key={category + "Home"}
+                                          label={category}
                                         >
-                                          {team.name}
-                                        </option>
+                                          {items?.map((team: Team) => (
+                                            <option
+                                              key={team.id + "Home"}
+                                              value={team.id}
+                                            >
+                                              {team.name}
+                                            </option>
+                                          ))}
+                                        </optgroup>
                                       ))}
+                                      <option value="addTeam">Add Team</option>
                                     </Form.Select>
                                   </div>
                                   <div className="lg-only-block">
@@ -951,17 +1069,23 @@ const SeasonSchedule = () => {
                               className="p-0 bout-bg"
                               style={{
                                 backgroundImage: `url(${
-                                  teams?.find(
-                                    (x: Team) => x.id === updatingAwayTeam
-                                  )?.imageUrl
+                                  Object.values(teams as Record<string, Team[]>)
+                                    ?.flat()
+                                    ?.find(
+                                      (x: Team) => x.id === updatingAwayTeam
+                                    )?.imageUrl
                                 })`,
                               }}
                             >
                               <Row
                                 style={{
-                                  backgroundColor: teams?.find(
-                                    (x: Team) => x.id === updatingAwayTeam
-                                  )?.color,
+                                  backgroundColor: Object.values(
+                                    teams as Record<string, Team[]>
+                                  )
+                                    ?.flat()
+                                    ?.find(
+                                      (x: Team) => x.id === updatingAwayTeam
+                                    )?.color,
                                 }}
                                 className="m-0 h-100 d-flex flex-column justify-content-center fs-1"
                               >
@@ -973,14 +1097,24 @@ const SeasonSchedule = () => {
                                       onChange={onUpdatingAwayTeamSelect}
                                     >
                                       <option>Team</option>
-                                      {teams!.map((team: Team) => (
-                                        <option
-                                          key={team.id + "away"}
-                                          value={team.id}
+                                      {Object.entries(
+                                        teams as Record<string, Team[]>
+                                      )?.map(([category, items]) => (
+                                        <optgroup
+                                          key={category + "Away"}
+                                          label={category}
                                         >
-                                          {team.name}
-                                        </option>
+                                          {items?.map((team: Team) => (
+                                            <option
+                                              key={team.id + "Away"}
+                                              value={team.id}
+                                            >
+                                              {team.name}
+                                            </option>
+                                          ))}
+                                        </optgroup>
                                       ))}
+                                      <option value="addTeam">Add Team</option>
                                     </Form.Select>
                                   </div>
                                   <div className="lg-only-block">
@@ -1188,6 +1322,48 @@ const SeasonSchedule = () => {
               Cancel
             </Button>
             <Button type="submit">Confirm</Button>
+          </Modal.Footer>
+        </Form>
+      </Modal>
+
+      <Modal show={tempTeam != null} onHide={() => setTempTeam(null)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Add Team</Modal.Title>
+        </Modal.Header>
+        <Form onSubmit={onAddTeam}>
+          <Modal.Body>
+            <Row>
+              <Col>
+                <Form.Control
+                  name="teamName"
+                  value={tempTeam?.name}
+                  placeholder="Team Name"
+                  onChange={setTempTeamName}
+                ></Form.Control>
+              </Col>
+              <Col>
+                <Form.Control
+                  name="teamColor"
+                  value={tempTeam?.color}
+                  placeholder="#00ff00"
+                  onChange={setTempTeamColor}
+                ></Form.Control>
+              </Col>
+              <Col>
+                <Form.Control
+                  name="teamLogo"
+                  onChange={onAddUpdatingImage}
+                  type="file"
+                  accept=".png,.jpg,.jpeg"
+                />
+              </Col>
+            </Row>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="danger" onClick={() => setTempTeam(null)}>
+              Cancel
+            </Button>
+            <Button type="submit">Add</Button>
           </Modal.Footer>
         </Form>
       </Modal>
