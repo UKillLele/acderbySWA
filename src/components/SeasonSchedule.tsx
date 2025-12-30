@@ -336,7 +336,6 @@ const SeasonSchedule = () => {
 
   function onAddTeam(event: FormEvent) {
     event.preventDefault();
-    console.log(tempTeam);
     if (tempTeam?.name) {
       const formData = new FormData();
       tempTeam!.color = hexToRGBA(tempTeam.color);
@@ -433,7 +432,6 @@ const SeasonSchedule = () => {
           group[team.type].push(team);
           return group;
         }, {} as Record<string, Team[]>);
-        console.log(groupedTeams);
         setSortedTeams(groupedTeams);
       });
   }
