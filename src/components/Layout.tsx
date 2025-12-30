@@ -71,25 +71,28 @@ const Layout = () => {
               </NavDropdown>
               <NavDropdown title="TEAMS" className="my-auto">
                 {teams &&
-                  teams.map((group: Team[]) => (
-                    <Container key={group[0].type}>
-                      <NavDropdown.Header>
-                        {group[0].type} Teams
-                      </NavDropdown.Header>
-                      {group.map((team: Team) => (
-                        <NavDropdown.Item
-                          as={NavLink}
-                          to={"teams/" + team.slug}
-                          key={team.name}
-                        >
-                          {team.name}
-                        </NavDropdown.Item>
-                      ))}
-                      {teams.indexOf(group) != teams.length - 1 && (
-                        <NavDropdown.Divider />
-                      )}
-                    </Container>
-                  ))}
+                  teams.map(
+                    (group: Team[]) =>
+                      group[0].type != "Misc" && (
+                        <Container key={group[0].type}>
+                          <NavDropdown.Header>
+                            {group[0].type} Teams
+                          </NavDropdown.Header>
+                          {group.map((team: Team) => (
+                            <NavDropdown.Item
+                              as={NavLink}
+                              to={"teams/" + team.slug}
+                              key={team.name}
+                            >
+                              {team.name}
+                            </NavDropdown.Item>
+                          ))}
+                          {teams.indexOf(group) != teams.length - 1 && (
+                            <NavDropdown.Divider />
+                          )}
+                        </Container>
+                      )
+                  )}
                 {editor && (
                   <>
                     <NavDropdown.Divider />
