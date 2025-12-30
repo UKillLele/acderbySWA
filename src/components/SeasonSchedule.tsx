@@ -54,7 +54,8 @@ function checkTix(dates, index) {
 const SeasonSchedule = () => {
   const [bouts, setBouts] = useState<Bout[][]>();
   const [error, setError] = useState<boolean>();
-  const [teams, setTeams] = useState<Partial<Record<string, Team[]>>>();
+  const [sortedTeams, setSortedTeams] = useState<Record<string, Team[]>>({});
+  const [teams, setTeams] = useState<Team[]>();
   const [players, setPlayers] = useState<Person[]>();
   const [years, setYears] = useState<string[]>();
 
@@ -425,8 +426,15 @@ const SeasonSchedule = () => {
       .then((resp) => resp.json())
       .then((teams: Team[]) => {
         teams.sort((a, b) => (a.name > b.name ? 1 : -1));
-        const groupedTeams = Object.groupBy(teams, ({ type }) => type);
-        setTeams(groupedTeams);
+        setTeams(teams);
+
+        const groupedTeams = teams.reduce((group, team) => {
+          group[team.type] ??= [];
+          group[team.type].push(team);
+          return group;
+        }, {} as Record<string, Team[]>);
+        console.log(groupedTeams);
+        setSortedTeams(groupedTeams);
       });
   }
 
@@ -457,19 +465,13 @@ const SeasonSchedule = () => {
   }, []);
 
   function getTeam(id: string) {
-    if (teams) {
-      return Object.values(teams as Record<string, Team[]>)
-        ?.flat()
-        ?.find((x: Team) => x.id === id);
-    }
+    return teams?.find((x: Team) => x.id === id);
   }
 
   function getSkaterImage(skaterId: string, teamId: string) {
-    if (teams) {
+    if (sortedTeams) {
       const player = players?.find((x) => x.id === skaterId);
-      const team = Object.values(teams as Record<string, Team[]>)
-        ?.flat()
-        ?.find((x: Team) => x.id === teamId);
+      const team = getTeam(teamId);
       const imageUrl =
         player?.imageUrl !== "" ? player?.imageUrl : team?.defaultSkaterImage;
       return encodeURI(imageUrl ?? "");
@@ -875,23 +877,14 @@ const SeasonSchedule = () => {
                               className="p-0 bout-bg"
                               style={{
                                 backgroundImage: `url(${
-                                  Object.values(teams as Record<string, Team[]>)
-                                    ?.flat()
-                                    ?.find(
-                                      (x: Team) => x.id === updatingHomeTeam
-                                    )?.imageUrl
+                                  getTeam(updatingHomeTeam)?.imageUrl
                                 })`,
                               }}
                             >
                               <Row
                                 style={{
-                                  backgroundColor: Object.values(
-                                    teams as Record<string, Team[]>
-                                  )
-                                    ?.flat()
-                                    ?.find(
-                                      (x: Team) => x.id === updatingHomeTeam
-                                    )?.color,
+                                  backgroundColor:
+                                    getTeam(updatingHomeTeam)?.color,
                                 }}
                                 className="m-0 h-100 d-flex flex-column justify-content-center fs-1"
                               >
@@ -903,23 +896,23 @@ const SeasonSchedule = () => {
                                       onChange={onUpdatingHomeTeamSelect}
                                     >
                                       <option>Team</option>
-                                      {Object.entries(
-                                        teams as Record<string, Team[]>
-                                      )?.map(([category, items]) => (
-                                        <optgroup
-                                          key={category + "Home"}
-                                          label={category}
-                                        >
-                                          {items?.map((team: Team) => (
-                                            <option
-                                              key={team.id + "Home"}
-                                              value={team.id}
-                                            >
-                                              {team.name}
-                                            </option>
-                                          ))}
-                                        </optgroup>
-                                      ))}
+                                      {Object.entries(sortedTeams).map(
+                                        ([category, items]) => (
+                                          <optgroup
+                                            key={category + "Home"}
+                                            label={category}
+                                          >
+                                            {items?.map((team: Team) => (
+                                              <option
+                                                key={team.id + "Home"}
+                                                value={team.id}
+                                              >
+                                                {team.name}
+                                              </option>
+                                            ))}
+                                          </optgroup>
+                                        )
+                                      )}
                                       <option value="addTeam">Add Team</option>
                                     </Form.Select>
                                   </div>
@@ -934,7 +927,7 @@ const SeasonSchedule = () => {
                                           )
                                         }
                                         type="string"
-                                        placeholder="#"
+                                        placeholder="Score"
                                       />
                                     </Form.Group>
                                   </div>
@@ -1069,23 +1062,14 @@ const SeasonSchedule = () => {
                               className="p-0 bout-bg"
                               style={{
                                 backgroundImage: `url(${
-                                  Object.values(teams as Record<string, Team[]>)
-                                    ?.flat()
-                                    ?.find(
-                                      (x: Team) => x.id === updatingAwayTeam
-                                    )?.imageUrl
+                                  getTeam(updatingAwayTeam)?.imageUrl
                                 })`,
                               }}
                             >
                               <Row
                                 style={{
-                                  backgroundColor: Object.values(
-                                    teams as Record<string, Team[]>
-                                  )
-                                    ?.flat()
-                                    ?.find(
-                                      (x: Team) => x.id === updatingAwayTeam
-                                    )?.color,
+                                  backgroundColor:
+                                    getTeam(updatingAwayTeam)?.color,
                                 }}
                                 className="m-0 h-100 d-flex flex-column justify-content-center fs-1"
                               >
@@ -1097,23 +1081,23 @@ const SeasonSchedule = () => {
                                       onChange={onUpdatingAwayTeamSelect}
                                     >
                                       <option>Team</option>
-                                      {Object.entries(
-                                        teams as Record<string, Team[]>
-                                      )?.map(([category, items]) => (
-                                        <optgroup
-                                          key={category + "Away"}
-                                          label={category}
-                                        >
-                                          {items?.map((team: Team) => (
-                                            <option
-                                              key={team.id + "Away"}
-                                              value={team.id}
-                                            >
-                                              {team.name}
-                                            </option>
-                                          ))}
-                                        </optgroup>
-                                      ))}
+                                      {Object.entries(sortedTeams).map(
+                                        ([category, items]) => (
+                                          <optgroup
+                                            key={category + "Away"}
+                                            label={category}
+                                          >
+                                            {items?.map((team: Team) => (
+                                              <option
+                                                key={team.id + "Away"}
+                                                value={team.id}
+                                              >
+                                                {team.name}
+                                              </option>
+                                            ))}
+                                          </optgroup>
+                                        )
+                                      )}
                                       <option value="addTeam">Add Team</option>
                                     </Form.Select>
                                   </div>
@@ -1128,7 +1112,7 @@ const SeasonSchedule = () => {
                                           )
                                         }
                                         type="string"
-                                        placeholder="#"
+                                        placeholder="Score"
                                       />
                                     </Form.Group>
                                   </div>

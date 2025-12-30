@@ -58,6 +58,7 @@ const Home = () => {
                 overlay={
                   <Tooltip>
                     <br />
+                    {/* TODO: update tooltips */}
                   </Tooltip>
                 }
               >
