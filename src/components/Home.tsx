@@ -39,11 +39,8 @@ const Home = () => {
             </Row>
             <Row>
               <Col>
-                <Link
-                  className="btn btn-light btn-lg shadow disabled"
-                  to="tickets"
-                >
-                  Get Tickets Soon
+                <Link className="btn btn-light btn-lg shadow" to="tickets">
+                  Get Tickets
                 </Link>
               </Col>
             </Row>
@@ -57,8 +54,9 @@ const Home = () => {
                 delay={{ show: 250, hide: 400 }}
                 overlay={
                   <Tooltip>
+                    Co-Conspiracy vs Yellow Rose
                     <br />
-                    {/* TODO: update tooltips */}
+                    Pyros vs 5-0s
                   </Tooltip>
                 }
               >
@@ -74,7 +72,9 @@ const Home = () => {
                 delay={{ show: 250, hide: 400 }}
                 overlay={
                   <Tooltip>
+                    THE DKs vs Bombshells
                     <br />
+                    La Rev vs LSA
                   </Tooltip>
                 }
               >
@@ -90,7 +90,9 @@ const Home = () => {
                 delay={{ show: 250, hide: 400 }}
                 overlay={
                   <Tooltip>
+                    THE DKs vs La Rev
                     <br />
+                    Bombshells vs LSA
                   </Tooltip>
                 }
               >
@@ -106,7 +108,9 @@ const Home = () => {
                 delay={{ show: 250, hide: 400 }}
                 overlay={
                   <Tooltip>
+                    THE DKs vs LSA
                     <br />
+                    Bombshells vs La Rev
                   </Tooltip>
                 }
               >
@@ -122,7 +126,9 @@ const Home = () => {
                 delay={{ show: 250, hide: 400 }}
                 overlay={
                   <Tooltip>
+                    LSA vs La Rev
                     <br />
+                    Bombshells vs THE DKs
                   </Tooltip>
                 }
               >
@@ -137,7 +143,9 @@ const Home = () => {
                 delay={{ show: 250, hide: 400 }}
                 overlay={
                   <Tooltip>
+                    LSA vs Bombshells
                     <br />
+                    La Rev vs THE DKs
                   </Tooltip>
                 }
               >
@@ -153,7 +161,9 @@ const Home = () => {
                 delay={{ show: 250, hide: 400 }}
                 overlay={
                   <Tooltip>
+                    La Rev vs Bombshells
                     <br />
+                    LSA vs THE DKs
                   </Tooltip>
                 }
               >
@@ -169,7 +179,9 @@ const Home = () => {
                 delay={{ show: 250, hide: 400 }}
                 overlay={
                   <Tooltip>
+                    3rd vs 4th
                     <br />
+                    1st vs 2nd
                   </Tooltip>
                 }
               >
@@ -185,7 +197,9 @@ const Home = () => {
                 delay={{ show: 250, hide: 400 }}
                 overlay={
                   <Tooltip>
+                    Conspiracy vs TBA
                     <br />
+                    Mashup
                   </Tooltip>
                 }
               >
