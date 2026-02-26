@@ -32,7 +32,7 @@ export default {
 Running:
 
 React: npx vite
-api: cd api func start
+api: cd api func start (don't have to run this independently - swa starts it)
 connection: swa start http://localhost:4000 --api-location api
 
 to update api, build using `npm run build` then start

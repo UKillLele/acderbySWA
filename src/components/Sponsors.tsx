@@ -76,24 +76,47 @@ const Sponsors = () => {
         </Col>
         <Col xs lg="4" className="text-center mt-5">
           <a
-            href="https://www.alexandmischaautorepair.com/"
+            href="https://cryptidcornerstore.com/"
             target="_blank"
             rel="noreferrer"
             className="text-decoration-none"
           >
             <Image
               className="skater-image"
-              alt="Alex and Mischa Auto Repair"
-              src="https://acrdphotos.blob.core.windows.net/photos/Alex%20and%20Mischa%20Auto%20Repair%20Logo.jpg"
+              alt="Cryptid Corner Store"
+              src="https://acrdphotos.blob.core.windows.net/photos/cryptid.jpeg"
             />
             <div className="mt-0 border bg-light rounded p-3">
               <p className="fs-3 m-0">
-                <span className="text-nowrap">Alex and Mischa Auto Repair</span>
+                <span className="text-nowrap">Cryptid Corner Store</span>
               </p>
-              <p className="fs-3 m-0 text-dark">Marketing Whiz Sponsor</p>
+              <p className="fs-3 m-0 text-dark">Promote Sponsor</p>
               <p className="pt-4 text-dark">
-                Alex and Mischa are the MVPs of mobile auto repair. They'll get
-                your car out of the sin bin before the jam is over.
+                Check this sponsor out at our games to get some really unique
+                art and art jewelry!
+              </p>
+            </div>
+          </a>
+        </Col>
+        <Col xs lg="4" className="text-center mt-5">
+          <a
+            href="https://www.assembly-icehouse.com/"
+            target="_blank"
+            rel="noreferrer"
+            className="text-decoration-none"
+          >
+            <Image
+              className="skater-image h-100 bg-white"
+              alt="Assembly Ice House"
+              src="https://acrdphotos.blob.core.windows.net/photos/Assembly_Ice_House.png"
+            />
+            <div className="mt-0 border bg-light rounded p-3">
+              <p className="fs-3 m-0">
+                <span className="text-nowrap">Assembly Ice House</span>
+              </p>
+              <p className="fs-3 m-0 text-dark">Afterparty Sponsor</p>
+              <p className="pt-4 text-dark">
+                Want to hang out with the skaters? Meet us here after the bout!
               </p>
             </div>
           </a>
@@ -126,91 +149,24 @@ const Sponsors = () => {
         </Col>
         <Col xs lg="4" className="text-center mt-5">
           <a
-            href="https://aceofskatestx.com/"
+            href="https://www.precisionrepro.net/"
             target="_blank"
             rel="noreferrer"
             className="text-decoration-none"
           >
             <Image
-              className="skater-image bg-light"
-              alt="Ace of Skates"
-              src="https://acrdphotos.blob.core.windows.net/photos/Ace%20of%20Skates.png"
+              className="skater-image bg-light h-100"
+              alt="Precision Reprographics"
+              src="https://acrdphotos.blob.core.windows.net/photos/Precision%20Reprographics.png"
             />
             <div className="mt-0 border bg-light rounded p-3">
               <p className="fs-3 m-0">
-                <span className="text-nowrap">Ace of Skates</span>
+                <span className="text-nowrap">Precision Reprographics</span>
               </p>
-              <p className="fs-3 m-0 text-dark">Promote Sponsor</p>
+              <p className="fs-3 m-0 text-dark">Print Sponsor</p>
               <p className="pt-4 text-dark">
-                Ace of skates is where we get our gear. If you're thinking about
-                skating, we recommend them!
-              </p>
-            </div>
-          </a>
-        </Col>
-        <Col xs lg="4" className="text-center mt-5">
-          <a
-            href="https://cryptidcornerstore.com/"
-            target="_blank"
-            rel="noreferrer"
-            className="text-decoration-none"
-          >
-            <Image
-              className="skater-image"
-              alt="Cryptid Corner Store"
-              src="https://acrdphotos.blob.core.windows.net/photos/cryptid.jpeg"
-            />
-            <div className="mt-0 border bg-light rounded p-3">
-              <p className="fs-3 m-0">
-                <span className="text-nowrap">Cryptid Corner Store</span>
-              </p>
-              <p className="fs-3 m-0 text-dark">Promote Sponsor</p>
-              <p className="pt-4 text-dark">
-                Check this sponsor out at our games to get some really unique
-                art and art jewelry!
-              </p>
-            </div>
-          </a>
-        </Col>
-        <Col xs lg="4" className="text-center mt-5">
-          <a className="text-decoration-none">
-            <Image
-              className="skater-image"
-              alt="Boost Mobile Auto Detailing"
-              src="https://acrdphotos.blob.core.windows.net/photos/Boost%20Logo.jpg"
-            />
-            <div className="mt-0 border bg-light rounded p-3">
-              <p className="fs-3 m-0">
-                <span className="text-nowrap">Boost Mobile Auto Detailing</span>
-              </p>
-              <p className="fs-3 m-0 text-dark">Promote Sponsor</p>
-              <p className="pt-4 text-dark">
-                Boost Mobile Auto Detailing can make your car look as good as
-                your favorite skater (but with fewer bruises)!
-              </p>
-            </div>
-          </a>
-        </Col>
-        <Col xs lg="4" className="text-center mt-5">
-          <a
-            href="https://www.instagram.com/kosbplano/"
-            target="_blank"
-            rel="noreferrer"
-            className="text-decoration-none"
-          >
-            <Image
-              className="skater-image h-100"
-              alt="Knockout Sports Bar, Plano"
-              src="https://acrdphotos.blob.core.windows.net/photos/Knockout%20Sports%20Bar.png"
-            />
-            <div className="mt-0 border bg-light rounded p-3">
-              <p className="fs-3 m-0">
-                <span className="text-nowrap">Knockout Sports Bar</span>
-              </p>
-              <p className="fs-3 m-0 text-dark">Afterparty Sponsor</p>
-              <p className="pt-4 text-dark">
-                Want to hang out with the skaters? Meet us at the Plano location
-                after the bout!
+                Wonder who makes us look so good on our posters and programs?
+                These folks!
               </p>
             </div>
           </a>
