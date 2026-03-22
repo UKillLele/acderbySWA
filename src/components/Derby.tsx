@@ -190,7 +190,7 @@ const Derby = () => {
                 </li>
                 <li>
                   {" "}
-                  "Lead jammer"" status allows her to end the jam before 2
+                  "Lead jammer" status allows her to end the jam before 2
                   minutes is up if she so chooses. (This way she can call off a
                   jam after she has scored points, but before the opposing
                   jammer can score.)
