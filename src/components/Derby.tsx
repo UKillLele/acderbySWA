@@ -44,9 +44,10 @@ const Derby = () => {
         <Col xs lg="6" className="overlap-left d-flex align-items-center">
           <iframe
             className="video"
-            src="https://www.youtube.com/embed/OId6gTd2LCM?si=irVUklQ21hguloT_"
+            src="https://www.youtube.com/embed/OId6gTd2LCM?si=Qplm-Q8N2URm0d1_"
             title="YouTube video player"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerPolicy="strict-origin-when-cross-origin"
             allowFullScreen
           ></iframe>
         </Col>
@@ -236,7 +237,8 @@ const Derby = () => {
           className="overlap-right d-flex align-items-center"
         >
           <iframe
-            src="https://www.youtube.com/embed/OId6gTd2LCM?si=Qplm-Q8N2URm0d1_"
+            className="video"
+            src="https://www.youtube.com/embed/bFb52bF-Hp4?si=ZSxOqRECnX39hSoL"
             title="YouTube video player"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
             referrerPolicy="strict-origin-when-cross-origin"
