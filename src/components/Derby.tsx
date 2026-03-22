@@ -217,8 +217,8 @@ const Derby = () => {
               <p className="fs-3">Still confused?</p>
               <p>
                 It's a lot to take in. Don't be shy. You can ask your neighbor
-                or any of the skaters carrying around "ASK ME"" signs. We love
-                to talk derby. Just focus on the hits, watch the jammers (they
+                or any of the skaters carrying around "ASK ME" signs. We love to
+                talk derby. Just focus on the hits, watch the jammers (they
                 usually are on the receiving end of most hits), and build a
                 beer-a-mid or two.
               </p>
