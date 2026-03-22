@@ -44,7 +44,7 @@ const Derby = () => {
         <Col xs lg="6" className="overlap-left d-flex align-items-center">
           <iframe
             className="video"
-            src="https://www.youtube.com/embed/OId6gTd2LCM?si=Qplm-Q8N2URm0d1_"
+            src="https://www.youtube.com/embed/OId6gTd2LCM"
             title="YouTube video player"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
             referrerPolicy="strict-origin-when-cross-origin"
@@ -224,10 +224,9 @@ const Derby = () => {
               </p>
               <p>
                 You can also see a{" "}
-                <a href="www.wftda.com/rules﻿" target="_blank" rel="noreferrer">
+                <a href="www.wftda.com/rules" target="_blank" rel="noreferrer">
                   complete list of rules
                 </a>
-                ﻿
               </p>
             </Col>
           </Row>
@@ -238,7 +237,7 @@ const Derby = () => {
         >
           <iframe
             className="video"
-            src="https://www.youtube.com/embed/bFb52bF-Hp4?si=ZSxOqRECnX39hSoL"
+            src="https://www.youtube.com/embed/bFb52bF-Hp4"
             title="YouTube video player"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
             referrerPolicy="strict-origin-when-cross-origin"
