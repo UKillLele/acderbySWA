@@ -48,14 +48,18 @@ const Players = () => {
   const [updateLoading, setUpdateLoading] = useState<boolean>(false);
 
   const [teams, setTeams] = useState<Team[]>([]);
-  // TODO: update to not show temp teams in dropdowns
 
   useEffect(() => {
     refreshPlayers();
     fetch("/api/teams")
       .then((response) => response.json())
       .then((resp: Team[]) => {
-        setTeams(resp.sort((a, b) => (a.name > b.name ? 1 : -1)));
+        console.log(resp);
+        setTeams(
+          resp
+            .filter((x) => x.type.toLowerCase() !== "misc")
+            .sort((a, b) => (a.name > b.name ? 1 : -1)),
+        );
       });
   }, []);
 
