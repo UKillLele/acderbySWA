@@ -78,7 +78,7 @@ const SeasonSchedule = () => {
     useState("");
   const [updateLoading, setUpdateLoading] = useState<boolean>(false);
   const [currentYear, setCurrentYear] = useState<string>(
-    new Date().getFullYear().toString()
+    new Date().getFullYear().toString(),
   );
   const [showSeasonPass, setShowSeasonPass] = useState<boolean>(false);
   const [showAddDates, setShowAddDates] = useState<boolean>(false);
@@ -140,7 +140,7 @@ const SeasonSchedule = () => {
         },
         (error) => {
           console.log(error);
-        }
+        },
       );
     }
   }
@@ -166,7 +166,7 @@ const SeasonSchedule = () => {
         },
         (error) => {
           console.log(error);
-        }
+        },
       );
     }
   }
@@ -188,7 +188,7 @@ const SeasonSchedule = () => {
         },
         (error) => {
           console.log(error);
-        }
+        },
       );
     }
   }
@@ -285,7 +285,7 @@ const SeasonSchedule = () => {
       },
       (error) => {
         console.log(error);
-      }
+      },
     );
   }
 
@@ -361,7 +361,7 @@ const SeasonSchedule = () => {
         },
         (error) => {
           console.log(error);
-        }
+        },
       );
     }
   }
@@ -406,14 +406,14 @@ const SeasonSchedule = () => {
         r[ymd].push(a);
         return r;
       }, {});
-      var resultArray: Bout[][] = Object.keys(groupedBouts).map(function (
-        bout
-      ) {
-        return groupedBouts[bout];
-      });
+      var resultArray: Bout[][] = Object.keys(groupedBouts).map(
+        function (bout) {
+          return groupedBouts[bout];
+        },
+      );
       setBouts(resultArray);
       setShowSeasonPass(
-        new Date() < (resultArray?.at(-1)?.at(-1)?.date ?? new Date())
+        new Date() < (resultArray?.at(-1)?.at(-1)?.date ?? new Date()),
       );
     } catch (_) {
       setError(true);
@@ -427,11 +427,14 @@ const SeasonSchedule = () => {
         teams.sort((a, b) => (a.name > b.name ? 1 : -1));
         setTeams(teams);
 
-        const groupedTeams = teams.reduce((group, team) => {
-          group[team.type] ??= [];
-          group[team.type].push(team);
-          return group;
-        }, {} as Record<string, Team[]>);
+        const groupedTeams = teams.reduce(
+          (group, team) => {
+            group[team.type] ??= [];
+            group[team.type].push(team);
+            return group;
+          },
+          {} as Record<string, Team[]>,
+        );
         setSortedTeams(groupedTeams);
       });
   }
@@ -444,7 +447,7 @@ const SeasonSchedule = () => {
           setPlayers(
             players.sort((a: Person, b: Person) => {
               return a.name > b.name ? 1 : -1;
-            })
+            }),
           );
         });
       await refreshBouts();
@@ -455,7 +458,7 @@ const SeasonSchedule = () => {
           setYears(years);
         });
       setShowSeasonPass(
-        new Date().toISOString() < (bouts?.at(-1)?.at(-1) as Bout)?.date
+        new Date().toISOString() < (bouts?.at(-1)?.at(-1) as Bout)?.date,
       );
     };
 
@@ -737,10 +740,10 @@ const SeasonSchedule = () => {
                                   {homeTeam
                                     ? homeTeam.name
                                     : bout.name === "Champs"
-                                    ? i === 0
-                                      ? "Team 3"
-                                      : "Team 1"
-                                    : "TBA"}
+                                      ? i === 0
+                                        ? "Team 3"
+                                        : "Team 1"
+                                      : "TBA"}
                                 </div>
                                 {bout.homeTeamScore && (
                                   <div className="lg-only-block">
@@ -754,7 +757,7 @@ const SeasonSchedule = () => {
                                     style={{
                                       backgroundImage: `url(${getSkaterImage(
                                         bout.homeTeamMVPJammer,
-                                        bout.homeTeam
+                                        bout.homeTeam,
                                       )})`,
                                       backgroundPosition: "center",
                                       backgroundSize: "cover",
@@ -771,7 +774,7 @@ const SeasonSchedule = () => {
                                     style={{
                                       backgroundImage: `url(${getSkaterImage(
                                         bout.homeTeamMVPBlocker,
-                                        bout.homeTeam
+                                        bout.homeTeam,
                                       )})`,
                                       backgroundPosition: "center",
                                       backgroundSize: "cover",
@@ -812,10 +815,10 @@ const SeasonSchedule = () => {
                                   {awayTeam
                                     ? awayTeam.name
                                     : bout.name === "Champs"
-                                    ? i === 0
-                                      ? "Team 4"
-                                      : "Team 2"
-                                    : "TBA"}
+                                      ? i === 0
+                                        ? "Team 4"
+                                        : "Team 2"
+                                      : "TBA"}
                                 </div>
                                 {bout.awayTeamScore && (
                                   <div className="lg-only-block">
@@ -829,7 +832,7 @@ const SeasonSchedule = () => {
                                     style={{
                                       backgroundImage: `url(${getSkaterImage(
                                         bout.awayTeamMVPJammer,
-                                        bout.awayTeam
+                                        bout.awayTeam,
                                       )})`,
                                       backgroundPosition: "center",
                                       backgroundSize: "cover",
@@ -846,7 +849,7 @@ const SeasonSchedule = () => {
                                     style={{
                                       backgroundImage: `url(${getSkaterImage(
                                         bout.awayTeamMVPBlocker,
-                                        bout.awayTeam
+                                        bout.awayTeam,
                                       )})`,
                                       backgroundPosition: "center",
                                       backgroundSize: "cover",
@@ -909,7 +912,7 @@ const SeasonSchedule = () => {
                                               </option>
                                             ))}
                                           </optgroup>
-                                        )
+                                        ),
                                       )}
                                       <option value="addTeam">Add Team</option>
                                     </Form.Select>
@@ -921,7 +924,7 @@ const SeasonSchedule = () => {
                                         value={updatingHomeTeamScore ?? ""}
                                         onChange={(event) =>
                                           setUpdatingHomeTeamScore(
-                                            event.target.value
+                                            event.target.value,
                                           )
                                         }
                                         type="string"
@@ -935,7 +938,7 @@ const SeasonSchedule = () => {
                                     style={{
                                       backgroundImage: `url(${getSkaterImage(
                                         updatingHomeTeamMVPJammer,
-                                        updatingHomeTeam
+                                        updatingHomeTeam,
                                       )})`,
                                       backgroundPosition: "center",
                                       backgroundSize: "cover",
@@ -956,10 +959,17 @@ const SeasonSchedule = () => {
                                       {players!
                                         .filter((player: Person) => {
                                           return (
-                                            player.teams.some(
-                                              (position: Position) =>
-                                                position.id === updatingHomeTeam
-                                            ) ||
+                                            (!players
+                                              ?.flatMap((x) =>
+                                                x.teams.map((y) => y.id),
+                                              )
+                                              .includes(updatingHomeTeam)
+                                              ? player
+                                              : player.teams.some(
+                                                  (position: Position) =>
+                                                    position.id ===
+                                                    updatingHomeTeam,
+                                                )) ||
                                             player.id ===
                                               updatingHomeTeamMVPJammer
                                           );
@@ -978,7 +988,7 @@ const SeasonSchedule = () => {
                                     style={{
                                       backgroundImage: `url(${getSkaterImage(
                                         updatingHomeTeamMVPBlocker,
-                                        updatingHomeTeam
+                                        updatingHomeTeam,
                                       )})`,
                                       backgroundPosition: "center",
                                       backgroundSize: "cover",
@@ -999,10 +1009,17 @@ const SeasonSchedule = () => {
                                       {players!
                                         .filter((player: Person) => {
                                           return (
-                                            player.teams.some(
-                                              (position: Position) =>
-                                                position.id === updatingHomeTeam
-                                            ) ||
+                                            (!players
+                                              ?.flatMap((x) =>
+                                                x.teams.map((y) => y.id),
+                                              )
+                                              .includes(updatingHomeTeam)
+                                              ? player
+                                              : player.teams.some(
+                                                  (position: Position) =>
+                                                    position.id ===
+                                                    updatingHomeTeam,
+                                                )) ||
                                             player.id ===
                                               updatingHomeTeamMVPBlocker
                                           );
@@ -1094,7 +1111,7 @@ const SeasonSchedule = () => {
                                               </option>
                                             ))}
                                           </optgroup>
-                                        )
+                                        ),
                                       )}
                                       <option value="addTeam">Add Team</option>
                                     </Form.Select>
@@ -1106,7 +1123,7 @@ const SeasonSchedule = () => {
                                         value={updatingAwayTeamScore ?? ""}
                                         onChange={(event) =>
                                           setUpdatingAwayTeamScore(
-                                            event.target.value
+                                            event.target.value,
                                           )
                                         }
                                         type="string"
@@ -1120,7 +1137,7 @@ const SeasonSchedule = () => {
                                     style={{
                                       backgroundImage: `url(${getSkaterImage(
                                         updatingAwayTeamMVPJammer,
-                                        updatingAwayTeam
+                                        updatingAwayTeam,
                                       )})`,
                                       backgroundPosition: "center",
                                       backgroundSize: "cover",
@@ -1141,10 +1158,17 @@ const SeasonSchedule = () => {
                                       {players!
                                         .filter((player: Person) => {
                                           return (
-                                            player.teams.some(
-                                              (position: Position) =>
-                                                position.id === updatingAwayTeam
-                                            ) ||
+                                            (!players
+                                              ?.flatMap((x) =>
+                                                x.teams.map((y) => y.id),
+                                              )
+                                              .includes(updatingAwayTeam)
+                                              ? player
+                                              : player.teams.some(
+                                                  (position: Position) =>
+                                                    position.id ===
+                                                    updatingAwayTeam,
+                                                )) ||
                                             player.id ===
                                               updatingAwayTeamMVPJammer
                                           );
@@ -1163,7 +1187,7 @@ const SeasonSchedule = () => {
                                     style={{
                                       backgroundImage: `url(${getSkaterImage(
                                         updatingAwayTeamMVPBlocker,
-                                        updatingAwayTeam
+                                        updatingAwayTeam,
                                       )})`,
                                       backgroundPosition: "center",
                                       backgroundSize: "cover",
@@ -1184,10 +1208,17 @@ const SeasonSchedule = () => {
                                       {players!
                                         .filter((player: Person) => {
                                           return (
-                                            player.teams.some(
-                                              (position: Position) =>
-                                                position.id === updatingAwayTeam
-                                            ) ||
+                                            (!players
+                                              ?.flatMap((x) =>
+                                                x.teams.map((y) => y.id),
+                                              )
+                                              .includes(updatingAwayTeam)
+                                              ? player
+                                              : player.teams.some(
+                                                  (position: Position) =>
+                                                    position.id ===
+                                                    updatingAwayTeam,
+                                                )) ||
                                             player.id ===
                                               updatingAwayTeamMVPBlocker
                                           );
@@ -1294,7 +1325,7 @@ const SeasonSchedule = () => {
             <Modal.Title>
               Delete{" "}
               {getDate(
-                deleteDate?.map((x) => x.date)[0] ?? new Date().toDateString()
+                deleteDate?.map((x) => x.date)[0] ?? new Date().toDateString(),
               )}
               ?
             </Modal.Title>
